@@ -1,0 +1,24 @@
+\section{Implementation}
+\label{sec:implementation}
+
+We implemented a complete prototype of the \name system. Our implementation consists of two components: i) \device embedded device prototype, and ii) \name enclave API which enables any application enclaves to communicate with the \device device and execute the proximity verification protocols.
+
+
+\subsection{\device} 
+
+Our embedded device prototype is based on Cypress EZ-USB FX3 USB 3.0 prototyping board that is equipped with an $32$-bit $200$ MHz ARM9 core. The board communicates with the target platform over a native \usb 3.0 connection that provides up to 5 Gbps of bandwidth. FX3 provide direct memory access (DMA) out of the box through its API for efficient communication with the connected platform. We use the ARM mbed TLS~\cite{mbed} cryptographic library for the \tls.
+
+\myparagraph{Portability} We wanted the \device{}s software to be device-agnostic in our implementation. We achieved this by 1) using the mbed TLS library for cryptography and 2) limiting the device-specific functionality in isolated modules. This means that in order to use another device as \device, only the mbed TLS library has to be ported.
+
+\myparagraph{Channel encryption} The implementation supports three modes of channel encryption between the \device and the target platform. Mode selection is controlled by a combination of a run-time parameter and flags set at compile-time.
+
+\begin{enumerate}
+  \item \emph{None} In this mode, the communication is carried out in plain text. It is obviously not recommended to use this configuration in any production setting. This mode is primarily used debugging and measuring the channel capacity.
+  \item \emph{AES} This mode provides a minimal secure channel between the \device and the target platform. With this mode, Curve25519 Diffie-Hellman key exchange is performed. Relevant parts of messages, specifically the challenge-response packets are encrypted with AES-128-CTR. AES-HMAC is used for message authentication codes. SHA256 is used as hashing function.
+  \item \emph{TLS} With this configuration, we use a \tls channel for the communication between the \device and the target platform. As the \device only has limited SRAM, we had to resort to \texttt{TLS\_PSK\_WITH\_AES\_128\_CCM\_8} as the ciphersuit. However, this limitation due to the FX3 board. Note that the target platform is not restricted by this, and supports more ciphersuites. 
+\end{enumerate}
+
+
+
+\subsection{\name enclave API.} 
+The \name API for \app{}s is written in C++ using the Intel SGX API. The API uses native SGX crypto library for the \tls implementation, and it is around 200 lines of code.
