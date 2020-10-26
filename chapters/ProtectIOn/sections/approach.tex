@@ -21,13 +21,13 @@ We consider a typical scenario where the user wants to interact with a trusted r
 
 The \device works as a mediator between all the IO devices and the host. Note that the \device has no network capability to communicate with the server directly, instead it relies on the host and uses it as an untrusted transport. We also assume that the \device comes with preloaded certificates and keys that allow the \device to verify the signatures signed by the server and sign data such as the user input.
 
-\myparagraph{Deployment options}
+\subsubsection{Deployment options}
 There are several possible ways to deploy the \name system. Here we outline two example cases. The first example deployment is one where a service provider, like a bank issues a \device device to each of its customers. In such a deployment, the issued \device is intended to be used with a single application like a web-based online banking application, and it is pre-configured with the public key certificate of that application server (e.g., online banking server). The pre-installed certificate allows the \device to verify messages signed by the correct application server. The service provider (i.e., the issuer of the \device) can ask what OS the customer uses and configure OS-specific settings like the used SAS value to the issued device (see Section~\ref{sec:confidentiality:SAS} for details). 
 %Another option is that the \device is issued by a service provider who also runs the remote server. \red{(\#2)Based on the specific application, \device could be adapted. E.g., safety-critical system administrator may opt to use a \device that is specific for a given application. Financial institutions may also follow the similar approach. 
 
 In another example deployment, the \device is issued by a third-party vendor, and it is intended to be used to protect the user interaction of various security-critical online services. In such a deployment, the \device can be pre-configured with the public key of its issuer and a white-list of trusted application server certificates. The issuer of the device can issue authenticated updates to the white-list after its deployment if needed.
 
-\myparagraph{Attacker model and capabilities} Our attacker model assumes that the host (OS, installed applications, and hardware) and the network are attacker-controlled. The attacker can intercept, and arbitrarily manipulate (such as create, drop, or modify) the user IO data between the user and the remote server. Furthermore, we assume that the attacker can not break the physical security of the \device (more discussion in Section~\ref{sec:securityAnalysis:device}).
+\subsubsection{Attacker model and capabilities} Our attacker model assumes that the host (OS, installed applications, and hardware) and the network are attacker-controlled. The attacker can intercept, and arbitrarily manipulate (such as create, drop, or modify) the user IO data between the user and the remote server. Furthermore, we assume that the attacker can not break the physical security of the \device (more discussion in Section~\ref{sec:securityAnalysis:device}).
 
 
 

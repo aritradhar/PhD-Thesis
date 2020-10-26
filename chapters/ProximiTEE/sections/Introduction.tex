@@ -1,5 +1,3 @@
-%!TEX root =  ../paper_NDSS.tex
-
 \section{Introduction}
 \label{sec:intro}
 
@@ -7,9 +5,7 @@
 Trusted execution environments (TEEs) like Intel's SGX enable to securely execute applications on untrusted computing platforms. Remote attestation is a key feature of SGX, and other similar TEE architectures, as it allows a remote verifier to check that the attested enclave was correctly constructed before provisioning secrets to it. 
 
 
-
-\parasaver
-\myparagraph{Relay attacks.}  While SGX's remote attestation guarantees that the attested enclave runs the expected code, it \emph{does not}, however,  guarantee that the enclave runs on the expected computing platform. An adversary that controls the OS (or other software) on the target platform can relay incoming attestation requests to another platform. Such relay attacks are a long-standing open problem in trusted computing, as already a decade ago Parno identified such attacks in the context of TPM attestation~\cite{parno2008bootstrapping}.
+\subsection{Relay attacks}  While SGX's remote attestation guarantees that the attested enclave runs the expected code, it \emph{does not}, however,  guarantee that the enclave runs on the expected computing platform. An adversary that controls the OS (or other software) on the target platform can relay incoming attestation requests to another platform. Such relay attacks are a long-standing open problem in trusted computing, as already a decade ago Parno identified such attacks in the context of TPM attestation~\cite{parno2008bootstrapping}.
 
 
 Upon a first look, it might seem that relay attacks do not pose a problem for TEEs. If the attacker relays the attestation to another machine, the same security guarantees should hold since the data will only be available within the remote TEE and the enclave code that can access the provisioned secrets is verified. However, such simple reasoning is incorrect. 
@@ -27,13 +23,12 @@ The SGX attestation protocol is designed to be anonymous. The protocol is based 
 We show that all SGX attestation variants, including the ``linkable'' attestation mode and the recently introduced Data Center Attestation Primitives (DCAP)~\cite{DCAP} are vulnerable to relay attacks. We also explain why relay attacks would remain possible, even if all anonymity features would be removed from the attestation.
 
 
-\noindent\textbf{Our solution.} We propose a new solution, called \name, that prevents relay attacks by leveraging a simple embedded device that is attached to the attested target platform. Our solution is best suited to scenarios where i) the deployment cost of such an embedded device is minor compared to the benefit of more secure attestation, and ii) TOFU solutions are not acceptable. Attestation of servers at cloud computing platforms and setup of SGX-based permissioned blockchains are two such examples. 
+\subsection{Our solution.} We propose a new solution, called \name, that prevents relay attacks by leveraging a simple embedded device that is attached to the attested target platform. Our solution is best suited to scenarios where i) the deployment cost of such an embedded device is minor compared to the benefit of more secure attestation, and ii) TOFU solutions are not acceptable. Attestation of servers at cloud computing platforms and setup of SGX-based permissioned blockchains are two such examples. 
 
 In \name, the remote verifier establishes a secure connection to the embedded device whose public key it knows through standard device certification. The device performs normal SGX attestation and additionally \emph{verifies the proximity} of the attested enclave using a simple distance-bounding protocol~\cite{distanceBounding}. After the initial attestation, the device performs \emph{periodic} distance-bounding measurements and the communication channel created during the attestation stays active only as long as the device is connected to the same platform. Thus, the physical act of attaching the device to an SGX platform enables secure attestation (enrollment) while detaching the device will prevent further communication with the attested enclave (revocation). Neither enrollment nor revocation requires interaction with a trusted authority. This property is useful in applications like permissioned blockchains where validator nodes are separate organizations assigned by a trusted authority. The authority can issue one device per organization, and each organization is free to manage their computing resources (e.g., detach the device from one platform and attach it to another) without interaction with the authority. 
 
 
-\parasaver
-\myparagraph{Main results.} Parno~\cite{parno2008bootstrapping} identified distance bounding as a candidate solution to TPM relay attacks already ten years ago, but concluded that it could not be realized securely as the slow TPM identification operations (signatures) make a local and relayed attestation indistinguishable. Our evaluation shows that proximity verification \emph{is} possible for SGX assuming very fast adversaries. The main reason why distance bounding protocols work for SGX, but not with TPMs, is that SGX is a programmable TEE where it is possible to use pre-established security associations and efficient challenge-response protocols based on simple operations such as \texttt{XOR}.
+\subsection{Main results.} Parno~\cite{parno2008bootstrapping} identified distance bounding as a candidate solution to TPM relay attacks already ten years ago, but concluded that it could not be realized securely as the slow TPM identification operations (signatures) make a local and relayed attestation indistinguishable. Our evaluation shows that proximity verification \emph{is} possible for SGX assuming very fast adversaries. The main reason why distance bounding protocols work for SGX, but not with TPMs, is that SGX is a programmable TEE where it is possible to use pre-established security associations and efficient challenge-response protocols based on simple operations such as \texttt{XOR}.
 
 To evaluate \name, we implemented it using a USB 3.0 prototyping board. The main purpose of our evaluation is to demonstrate that the adversary cannot redirect the attestation \emph{over the Internet} to an adversary-controlled platform without being detected. We focus on such re-direction, as it offers the most increased capabilities to the adversary (e.g., physical attacks). The secondary purpose of our evaluation is to determine whether proximity verification can prevent redirection to a co-located platform, like another server on the same server rack. Such relays are typically less harmful, but ideally, they should be prevented as well.
 
@@ -49,7 +44,6 @@ the periodic proximity verification consumes only a very minor fraction of
 the available \usb 3.0 channel capacity. Our implementation shows that the complexity of such a device can be small: the software TCB of our prototype is 3.8 KLoC.
 
 
-\parasaver
 \myparagraph{Emulation attacks.} Additionally, we consider a stronger adversary that has obtained leaked, but not yet revoked, attestation keys and can \emph{emulate} an SGX-enabled processor.
 %
 Proximity verification alone cannot prevent emulation attacks, as a perfectly emulated enclave would pass any proximity test. Therefore, we propose a second attestation mechanism based on \emph{boot-time initialization}. 
@@ -58,10 +52,10 @@ In this solution, the target platform loads a small, single-purpose kernel from 
 %After this initialization, the target platform can reboot onto the regular OS. 
 Subsequently, when attestation is needed, the enclave can verify the proximity of other enclaves on the same platform using SGX's local attestation. This enables secure attestation regardless of potentially leaked attestation keys. Our second solution can be seen as a novel variant of the well-known TOFU principle. The main benefits over previous variants are easier adoption (e.g., no OS re-installation) and increased security (e.g., OS not trusted even temporarily).
 
-\parasaver
-\myparagraph{Contributions} This paper contributions are organized as follows:
 
-\begin{mylist}
+\subsection{Contributions} This paper contributions are organized as follows:
+
+\begin{enumerate}
     \item \emph{Analysis of relay attacks.} While relay attacks have been known for more than a decade, their implications have not been fully analyzed. In Section~\ref{sec:problemStatement}, we provide the first such analysis and show how relaying amplifies the adversary's capabilities for attacking SGX enclaves.   
 
     \item \emph{\name: Addressing relay attacks.} In Section~\ref{sec:systemDesignMain}, we propose a hardened SGX attestation mechanism based on an embedded device and proximity verification to prevent relay attacks. \name does not rely on the common TOFU assumption, and hence, our solution improves the security of previous attestation approaches. Note that the distance bounding approaches are well-known in the literature, but using such method in the context of SGX is non-trivial.
@@ -69,6 +63,6 @@ Subsequently, when attestation is needed, the enclave can verify the proximity o
     \item \emph{Experimental evaluation.} We implement a complete prototype of \name and evaluate it against a very strong and fast adversary. Our evaluation in Section~\ref{sec:evaluation} is the first to show that proximity verification can be both secure and reliable for TEEs like SGX.
     
     \item \emph{Addressing emulation attacks.} We also propose another attestation mechanism based on boot-time initialization to prevent emulation attacks. This mechanism, described in Section~\ref{sec:variantII}, is a novel variant of TOFU with deployment, security and revocation benefits.
-\end{mylist}
+\end{enumerate}
 
 

@@ -1,0 +1,30 @@
+\section{Security Analysis}
+
+\subsection{Attestation security.}
+
+To analyze the security of our hardened attestation mechanism, we must first define successful attestation. We say that the attestation is successful when the remote verifier establishes a connection to the correct enclave that i) has the expected code measurement and ii) runs on the computing platform to which the \device device is attached.
+
+
+The task of establishing a secure channel to the correct enclave can be broken into two subtasks. The first subtask is to establish a secure channel to the correct \device device. This is achieved using standard device certification. We assume that the adversary cannot compromise the specific \device used. If the adversary manages to extract keys from other \device devices, he cannot trick the remote verifier to connect to a wrong enclave, as the remote verifier will only communicate with a pre-defined embedded device.
+
+
+
+
+The second subtask is to establish a secure connection from \device to the correct enclave. For this, we use proximity verification. \device verifies the proximity of the attested enclave through steps \five to \eight of the protocol. These steps essentially check two things. First, through step \seven, whether the messages are received from the correct enclave. This verification is performed by checking the correctness of the decrypted message, and it relies on the assumption that the attacker cannot break the underlying encryption and hence only the enclave that has access to the key that was bound to the attestation could have produced a valid reply. Second, through step \eight, whether the \device and the enclave are in each other's proximity. This check relies on the assumption that a reply from a remote enclave will take more time to reach the \device than a reply from the local enclave.
+
+We evaluate the second aspect experimentally. In particular, we simulate a powerful relay-attack adversary that is connected to the target platform with fast network connection. To consider the best case for the adversary, we make several assumptions in his favor. For example, we assume that he can instantly perform all computations needed to participate in the proximity verification protocol. However, he cannot break cryptographic hardness assumptions. We define the adversary's success as the event in which proximity verification succeeds with an enclave that resides on the attacker's platform and denote the probability of such event $P_{adv}$. We define the legitimate success as the event in which proximity verification succeeds with an enclave that resides in the target platform and denote its probability $P_{legit}$. In Section~\ref{sec:evaluation} we show that it is possible to find parameters ($n=50$, $k=0.3$ and \connect$=186 \mu s$) that make proximity verification very secure ($P_{adv}=3.55\times 10^{-34}$) and reliable ($P_{legit}=0.999999977$).
+
+
+
+
+\subsection{Revocation security.}
+To analyze the security of the periodic proximity verification which we use for platform revocation, we must first define what it means for the attacker to break the periodic proximity verification. The purpose of the periodic proximity verification is to prevent cases where the user detaches the \device device from the attested target platform and attaches it to another SGX platform before the previously established connection is terminated. Since we consider an adversary who does not have physical access to the target platform (recall Section~\ref{sec:problemStatement:systemAttackerModel}), we focus on benign users and exclude scenarios where the \device would be connected to multiple SGX platforms with custom wiring or rapidly and repeatedly plugged in and out of two SGX platforms.
+
+
+
+We define the periodic proximity verification as broken if the adversary can manage to keep the previously established connection alive within a ``short delay'' after the \device was detached from the attested target platform. For most practical purposes we consider a delay of 10 ms as sufficiently short. We denote the adversary's success probability in breaking the periodic proximity verification as $P'_{adv}$.
+%
+A false positive for periodic attestation is the event where the connection to the legitimate enclave is terminated, and the attested platform is revoked despite the \device being connected to the target platform. We denote the probability that this happens during a ``long period'' as $P'_{fp}$. We consider an example period of 10 years sufficiently long for most practical deployments.
+
+In Section~\ref{sec:evaluation} we experimentally shows that revocation can be secure ($P'_{avd}=3.55\times10^{-34}$) and reliable
+($P'_{fp}=1.6\times10^{-4}$) while consuming only a minor fraction of the available channel capacity.

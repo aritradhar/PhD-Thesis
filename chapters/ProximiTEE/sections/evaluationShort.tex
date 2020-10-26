@@ -1,5 +1,3 @@
-%!TEX root =  ../paper_NDSS.tex
-
 \section{Experimental Evaluation}
 \label{sec:evaluation}
 
@@ -10,11 +8,11 @@ In this section, we describe our implementation and evaluation.
 \label{sec:evaluation:implementation}
 
 We implemented a complete prototype of the \name system. Our implementation consists of two components: i) \device embedded device prototype, and ii) \name enclave API which enables any application enclaves to communicate with the \device device and execute the proximity verification protocols.
-\parasaver
-\myparagraph{\device.} Our embedded device prototype is based on Cypress EZ-USB FX3 USB 3.0 prototyping board that is equipped with an $32$-bit $200$ MHz ARM9 core. The board communicates with the target platform over a native \usb 3.0 connection that provides up to 5 Gbps of bandwidth. FX3 provide direct memory access (DMA) out of the box through its API for efficient communication with the connected platform. We use the ARM mbed TLS~\cite{mbed} cryptographic library for the \tls. The limited set of cipher suites in our implementation uses $128$-bit AES (CTR mode) for encryption, AES-HMAC as the message authentication code,  Curve25519 for Diffie-Hellman key exchange and SHA256 as the hash function. Our prototype implementation is approximately $200$ lines of code, and the code size of the \tls library is around $3.6$ KLoC.
 
-\parasaver
-\myparagraph{\name enclave API.} 
+\subsubsection{\device.} Our embedded device prototype is based on Cypress EZ-USB FX3 USB 3.0 prototyping board that is equipped with an $32$-bit $200$ MHz ARM9 core. The board communicates with the target platform over a native \usb 3.0 connection that provides up to 5 Gbps of bandwidth. FX3 provide direct memory access (DMA) out of the box through its API for efficient communication with the connected platform. We use the ARM mbed TLS~\cite{mbed} cryptographic library for the \tls. The limited set of cipher suites in our implementation uses $128$-bit AES (CTR mode) for encryption, AES-HMAC as the message authentication code,  Curve25519 for Diffie-Hellman key exchange and SHA256 as the hash function. Our prototype implementation is approximately $200$ lines of code, and the code size of the \tls library is around $3.6$ KLoC.
+
+
+\subsubsection{\name enclave API.} 
 The \name API for \app{}s is written in C++ using the Intel SGX API. The API uses native SGX crypto library for the \tls implementation, and it is around 200 lines of code.
 
 
@@ -22,7 +20,7 @@ The \name API for \app{}s is written in C++ using the Intel SGX API. The API use
 \label{sec:evaluation:focus}
 
 For the purposes of our evaluation, we make the distinction between two types of relay attacks. In the first type, the adversary redirects the attestation \emph{over the Internet} to another platform that is under his physical control, and therefore in a \emph{different location}. As we explained in Section~\ref{sec:problemStatement:implication}, such relay attack amplifies the adversary's capabilities the most, as he can now attack the attested enclave using physical side-channels, he has unlimited time to launch digital side-channels, or he can wait for the discovery of new attack vectors. 
-
+ 
 In the second type of relay attack, the adversary redirects the attestation to another \emph{co-located platform}, like another server on the same server rack. In most cases, attestation relay to a co-located platform does not improve the adversary's chances of attacking the enclave, because typically the adversary has similar control over the co-located platform. The only exception is privilege escalation in cases where the adversary has user privileged on the target platform and system privileges on the co-located platform. 
 
 Next, we focus on demonstrating that an inexpensive \name prototype can be configured to prevent the first (and typically more dangerous) type of relay attacks with very strong security and robustness. Later, in Section~\ref{sec:co-located}, we discuss the second type of relay.
@@ -35,16 +33,16 @@ To demonstrate that \name prevents relay attacks (over the Internet) we performe
 
 \begin{figure}[t]
   \centering
-    \includegraphics[trim={0 11cm 17cm 0}, clip, width=0.6\linewidth]{Setup2.pdf}
-    \caption{\textbf{Our experimental setup} consists of the \device device prototype, the target platform, the attacker's platform and the connection interfaces between them.}
-   \figsaver
+    \includegraphics[trim={0 11cm 17cm 0}, clip, width=0.6\linewidth]{chapters/ProximiTEE/figures/Setup2.pdf}
+    \caption[\name experimental setup]{\textbf{\name experimental setup} consists of the \device device prototype, the target platform, the attacker's platform and the connection interfaces between them.}
+
     \label{fig:setup}
 \end{figure}
 
-\myparagraph{Assumptions and optimizations.}
+\subsubsection{Assumptions and optimizations.}
 To consider the best possible case for the adversary, we made several generous assumptions in his favor, when designing our experimental setup and post-processing of our measurement:
 
-\begin{mylist}
+\begin{enumerate}
 	\item \emph{Single network hop.} Since we do not want to make any assumptions about the precise network path that the relayed attestation needs to travel, we connected the adversary's platform to the target platform via a direct 1-meter Ethernet cable as seen in Figure~\ref{fig:setup}. With such setup, our goal is to simulate the most direct connectivity and the best possible latency that the adversary could achieve in relay attacks that take place over the Internet. In most realistic attacks, the adversary would need to relay the attestation over multiple network hops which increases the round-trip latency significantly. 
 
 	\item \emph{Instant protocol computation.} Since the adversary might have a faster processor on his platform than the one the one we used in our experiments, we simulated an adversary who is able to perform all computations needed for the proximity verification protocol instantly. Instant replies were simulated by fixing the randomness for the challenges and having precomputed responses for that randomness on the attacker's machine.
@@ -52,9 +50,9 @@ To consider the best possible case for the adversary, we made several generous a
 	\item \emph{Packet forwarding optimizations.} Since the adversary controls the OS on the target platform, he can perform software-based optimizations to reduce the packet forwarding delay. We experimented with several such optimizations. First, we tested the standard \texttt{ping} tool which gave a latency of around $380\ \mu s$ for one-meter Ethernet connection. After that, we used the \texttt{ping} tool in so called flood mode and measured a reduced average network latency of around $153\ \mu s$ (command \texttt{ping -s 300 -af}). Flood mode achieves faster round-trip time as the it forces the OS to fill up the network queue of the kernel. Based on these measurements, we chose to simulate an attacker that fills the kernel's network queues (on both platforms) similar to the flood mode to minimize latency. We also tested other possible OS-level optimizations, but did not observe material reduction in measured latencies, and thus in our experiments we only use the kernel queue filling.
 	
 	\item \emph{Infinitely fast network interface.} Since the adversary's platform might have a faster network interface hardware than the one used in our experiments, we chose to simulate an adversary that has infinitely fast network interface. In our experimental setup, both the target platform and the adversary's platform have identical network interfaces. We assume (in the favor of the adversary) that the transmission time spent on the wire is negligible and most the the round-trip latency is due to processing the in the network interface. This allows us to simulate an adversary with infinitely fast network interface by first performing latency measurements and then in a post-processing phase cutting down all the measured latencies by half. Note that the target platform's network interface cannot be replaced by the attacker has he does not have physical access to it.
-\end{mylist}
+\end{enumerate}
 
-\myparagraph{Experiments.}
+\subsubsection{Experiments.}
 We conducted our experiments on three SGX platforms: two Intel NUC NUC6i7KYK mini-PCs and one Dell Latitude laptop, all equipped with SGX-enabled Skylake core i7 processors and Ubuntu 16.04 LTS installed on them. To measure latencies we used FX-3's GPIO pins that provides 100 nanosecond level accuracy. We performed a total of $20$ million rounds of the protocol for normal attestations and simulated attacks and measured the challenge-response latencies for each. We measure all of them inside the EZ-USB FX3 code. For cross-validation, we tested the \device with the high precision oscilloscope and witnessed identical timing patterns.
 
 
@@ -72,9 +70,8 @@ As can be seen from Figure~\ref{graph:instatAttackerHisto}, the vast majority of
 \begin{figure}[t]
   \centering
     \includegraphics[trim={0 13.4cm 0 0},
-    clip,width=\linewidth]{histo.pdf} 
-    \caption{\blue{\textbf{Latency distributions} for legitimate challenge-response rounds (left) and simulated relay attack (right).}}
-    \figsaver
+    clip,width=\linewidth]{chapters/ProximiTEE/figures/histo.pdf} 
+    \caption[Latency distributions]{\textbf{Latency distributions} for legitimate challenge-response rounds (left) and simulated relay attack (right).}
     \label{graph:instatAttackerHisto}
 \end{figure}
 
@@ -90,37 +87,78 @@ As explained in Section~\ref{sec:systemDesign}, the initial proximity verificati
 
 There are five interlinked parameters that one needs to consider: (i) the legitimate connection latency threshold \connect, (ii) total number of challenge-response rounds $n$, (iii) the fraction $k$, (iv) attacker's success probability $P_{adv}$ that should be negligible, and (v) the legitimate success probability $P_{legit}$ that should be high. We find suitable values for these parameters in the following order:
 
-\begin{mylist}
 
-  \item We start with the threshold \connect. The higher \connect is, the higher the legitimate success probability $P_{legit}$ becomes, on the other hand, a too high value for \connect also makes $P_{adv}$, the attacker's success probability, high. Therefore, we are after a suitable value for \connect that keeps $P_{legit}$ high while minimizing $P_{adv}$ over a varied number of rounds $n$. 
-
-  \item Based on such \connect, we pick a fraction $k$ such that it maximizes the legitimate success probability $P_{legit}$ and reduces the attacker's success probability $P_{adv}$. 
-
-  \item Given \connect and $k$, we evaluate $P_{adv}$ and $P_{legit}$ over a varied number of rounds $n$ and choose the minimum number of rounds that provides the required probabilities, since the fewer rounds, the faster the initial attestation is.
-  %\todo{Should we change the order of this to emphasize that given a constraint on the probabilities we try to minimize $n$?}
-\end{mylist}
-
-
-\newcommand{\timeRoundCaption}{\textbf{Effect of different threshold latencies (\connect).} The figure shows the success probability when no relay attack takes place. The threshold latency \connect $=470\ \mu s$ reaches to $0.999999965$ success probability for number of trials at least 20 ($k.n,\ k=0.4$) out of $n=50$ challenge-response protocol.}
-
-\newcommand{\cumulativeCaption}{\textbf{Cumulative distribution function for latencies.} We set the threshold \connect at 470 $\mu s$ which has a cumulative probability of $0.75$ in the experiment where no rerouting attack takes place with an extremely low probability ($9.73\times10^{-5}$).}
 
 \newcommand{\mainResultCaption}{\textbf{Distinguishing relay attack.} The attacker's success probability $P_{adv}$ and the legitimate success probability $P_{legit}$ in proximity verification for different number of rounds ($n$) given a fixed $k=0.4$.}
 
 
-
-\parasaver
-\myparagraph{Main result.} Figure~\ref{graph:instantAttackerSuccess} shows the legitimate enclave's success probability $P_{legit}$ and the attacker's success probability $P_{adv}$ with different number of rounds. Based on our experiments we set \connect= 186$\mu s$ (see Figure~\ref{graph:instatAttackerHisto}), the threshold fraction $k=0.3$ and the number of rounds $n=50$ which yields a very high legitimate success probability $P_{legit}=0.999999977$ and a negligible attacker's success probability $P_{adv}=3.55\times 10^{-34}$.
+\subsubsection{Finding suitable threshold \connect.} Finding a suitable threshold \connect is a non-trivial task. A very low threshold requires a high number of the challenge-response rounds, since the protocol requires at least a fraction $k$ of the observed responses to be less or equal to \connect and a low threshold has very low cumulative probability value in the latency distribution (see Figure~\ref{fig:cdf}). Conversely, a very high threshold value enables some latencies measured during an attack to be classified as legitimate replies, hence increasing the chances of the attacker to break the proximity verification. To address this challenge, we perform a trial over multiple threshold candidates to evaluate their viability.
 
 
+Figure~\ref{graph:diffTh} shows the legitimate success probability $P_{legit}$ for different number of rounds ($n\in\{10,20,50,100\}$). We iterate through multiple threshold times (\connect$\in\{183\mu s,184\mu s,185\mu s, 186\mu s, 189\mu s\}$), and $186\mu s$ provides high success ratio for different values of $k$ ($P_{legit}=0.9\{7\}77$ $(n=50)$ and $P_{legit}=0.9\{15\}29\ (n=100)$), where $0.9\{n\}x$ denotes $0.n$-times $9$ followed by $x$.
+
+We test \connect up until $186 \mu s$ because as can be observed in Figure~\ref{graph:instatAttackerHisto} for these values we observe extremely small occurrences ($1.33\times10^{-3}$) of latency responses during an attacking scenario. It is possible to increment the latency further to improve the success probability, but doing so will start increasing the probability for the attacker as well. 
+%
+After that, we estimate that any latency value less than or equals to the threshold \connect appears with the cumulative probability of $p_{\mathcal{H}} = \Pr[144\leq x \leq 186] = \sum_{i=144}^{186}\Pr[x=i] = 0.693$ (where $144\ \mu s$ is the smallest latency experienced).
+
+The attacker's success probability for a single round is the cumulative probability sampled from the attacker's distribution (the grey histogram in Figure~\ref{graph:instatAttackerHisto}) $p_\mathcal{A} = \Pr[x \leq 186] = \sum_{i=160}^{183}\Pr[x=i] = 1.33 \times 10^{-4}$.
+
+
+Now, for both cases (simulated attack and benign case) we can model the complete challenge-response protocol of $n$ rounds as a Bernoulli's trial where we look for at least $kn$ responses within $186\ \mu s$ out of $n$. We can write this cumulative probability as a binomial distribution:
+%
+
+\begin{align*}
+    \Pr[x \geq nk] = \sum_{i=nk}^n\binom{n}{i} (p)^{i}(1-p)^{n-i};~~\text{where}~ p \in \{p_\mathcal{H}, p_\mathcal{A}\}
+\end{align*}
 
 \begin{figure}[t]
   \centering
-    \includegraphics[trim={0 12.8cm 0 0}, clip, width=0.9\linewidth]{InstantAttackerSuccess.pdf}
+    \includegraphics[trim={0 10cm 0 0}, clip, width=\linewidth]{chapters/ProximiTEE/data/fx3_data/round_comp_new.pdf}
+    \caption[Finding suitable fraction $k$]{\textbf{Finding suitable fraction $k$.} The graph shows the legitimate enclave's success probability in an ideal scenario and the attacker's success probability in rerouting attack scenario with varying $k$.}
+    \label{graph:roundSuccess}
+\end{figure}
+
+
+
+\begin{figure}[h]
+  \centering
+    \includegraphics[trim={0 5cm 0 0}, clip, width=\linewidth]{chapters/ProximiTEE/data/fx3_data/timeRound.pdf}
+    \caption{Legitimate attestation success probability for different \connect values. The chosen value \connect $=186\ \mu s$ gives success probability $0.999999977$ for number of trials at least 15 out of $n=50$ rounds when $k=0.3$.}
+    \label{graph:diffTh}
+\end{figure}
+
+
+\begin{figure}[h]
+  \centering
+
+    \includegraphics[trim={0 15cm 0 0}, clip, width=\linewidth]{chapters/ProximiTEE/data/fx3_data/CDF_N.pdf}
+    \caption{Cumulative distribution function for latencies. We set the threshold \connect at 183 $\mu s$ which has a cumulative probability of $0.693$ in the experiment where no rerouting attack takes place with probability of $1.33\times10^{-4}$.}
+    \label{fig:cdf}
+\end{figure}
+
+
+\subsubsection{Choosing a suitable fraction $k$.} The next step of the evaluation is to find a suitable fraction $k$ based on the threshold time \connect. Note that both the success probability of the attacker and the legitimate enclave is calculated as the cumulative probability from a binomial distribution (from $nk$ to $n$). Hence, we require to choose a suitable value of $k$ that maximizes $P_{legit}$ while minimizing $P_{adv}$.
+
+We calculate two graphs that are depicted in Figure~\ref{graph:roundSuccess} where the x-axis denotes $k$, and the y-axis denotes attacker's success probability $P_{adv}$ and legitimate success probability $P_{legit}$, respectively, while using \connect$=186 \mu s$. We observe a sharp decrease in the legitimate success probability at $k=0.3$. Hence, fix $k=0.3$ to achieve the maximum $P_{legit}$. Additionally, in the graph of attacker's success probability, the red horizontal line is placed at $10^{-30} \approx 2^{-100}$. Hence we propose to choose any round configuration bellow this horizontal line, where $n \geq 40$. With number of rounds set to $n=50$ and $k=0.3$, we have $P_{legit}=0.99999997$ and $P_{adv}=3.55\times 10^{-34}$. Similar result could be also observed in Figure~\ref{graph:roundSuccess} where the success probability of the legitimate enclave decreases significantly after $k=0.55$ for \connect$=186\mu s$.
+
+
+
+\subsubsection{Generalizing the number of rounds $n$.} Figure~\ref{graph:instatAttackerHisto} extends this analysis to the general number of challenge-response rounds spanning from $n=2$ to $100$. Here we compute the probability of attacker returning the reply within $186 \mu s$ for at least $k=0.3$ fraction of challenges. The y-axis denotes the attacker's success probability which diminishes overwhelmingly with the increasing number of challenges (keeping the fraction constant at $k=0.3$). 
+
+
+
+\begin{figure}[h]
+  \centering
+    \includegraphics[trim={0 12.8cm 0 0}, clip, width=0.9\linewidth]{chapters/ProximiTEE/figures/InstantAttackerSuccess.pdf}
     \caption{Parameter tuning: the attacker's success probability $P_{adv}$ and the legitimate success probability $P_{legit}$ for different number of rounds $n$ given a fixed $k$.}
-   \figsaverL
+
     \label{graph:instantAttackerSuccess}
 \end{figure}
+
+
+\subsubsection{Main result.} Figure~\ref{graph:instantAttackerSuccess} shows the legitimate enclave's success probability $P_{legit}$ and the attacker's success probability $P_{adv}$ with different number of rounds. Based on our experiments we set \connect= 186$\mu s$ (see Figure~\ref{graph:instatAttackerHisto}), the threshold fraction $k=0.3$ and the number of rounds $n=50$ which yields a very high legitimate success probability $P_{legit}=0.999999977$ and a negligible attacker's success probability $P_{adv}=3.55\times 10^{-34}$.
+
+
 
 
 
@@ -130,14 +168,14 @@ There are five interlinked parameters that one needs to consider: (i) the legiti
 
 For periodic proximity verification we have two main requirements. First, the attacker's success probability $P'_{adv}$ must be negligible. Recall that $P'_{adv}$ refers to an event where the device is detached but the connection is not terminated sufficiently fast. Second, the probability of false positives $P'_{fp}$ should be very low. $P'_{fp}$ refers to an event where the connection is terminated when the device is still attached. Next, we explain the three-step process to set up parameters \detach, $w$ and $f$ for the periodic proximity verification:
 
-\begin{mylist}
+\begin{enumerate}
   \item We find out a suitable latency \detach that define the yellow or red round in Figure~\ref{fig:slidingWindow}. The yellow window defines the round of challenge response latency between \connect and \detach, while the red window defines a latency more than \detach. Hence, the probabilities $\Pr[T_{con}\leq \mathcal{L}_{legit}\leq T_{detach}]=\Pr[legit\in\text{yellow}]$, and $\Pr[\mathcal{L}_{legit} \geq T_{detach}]=\Pr[legit\in\text{red}]$ should be very low. $\mathcal{L}_{legit}$ and $\mathcal{L}_{A}$ denote the latency of the legitimate enclave running on the platform in proximity and remote attacker platform's latency respectively.
   \item Based on the threshold \detach, we select a suitable sliding window size $w$ to minimize the attacker success probability $P'_{adv}$ to a negligible quantity.
   \item We fix a suitable frequency $f$ for the periodic challenges. A high $f$ value terminate the communication very fast, leaving very small attacking window.
-\end{mylist}
+\end{enumerate}
 
-\parasaver
-\myparagraph{Main result.} Based on the above strategy, we set the periodic proximity verification parameters as follows: $\Pr[A \in \text{success window}]=P'_{adv} = P'_{fn}= 3.55\times 10^{-34}$, $\Pr[legit \in \text{success window}]=0.999999977$ and $\Pr[legit \in \text{failed window}]=P'_{fp}=\Pr[legit\in\text{red}]^2=1.6\times10^{-4}$ and \detach = $205 \mu s$ (see Figure~\ref{graph:instatAttackerHisto}). If at least two latencies above \detach are received, the \device terminates the connection and revokes the platform. The average downtime due to false positives occurring during a connection of 10 years is around $2$ minutes. 
+
+\subsubsection{Main result} Based on the above strategy, we set the periodic proximity verification parameters as follows: $\Pr[A \in \text{success window}]=P'_{adv} = P'_{fn}= 3.55\times 10^{-34}$, $\Pr[legit \in \text{success window}]=0.999999977$ and $\Pr[legit \in \text{failed window}]=P'_{fp}=\Pr[legit\in\text{red}]^2=1.6\times10^{-4}$ and \detach = $205 \mu s$ (see Figure~\ref{graph:instatAttackerHisto}). If at least two latencies above \detach are received, the \device terminates the connection and revokes the platform. The average downtime due to false positives occurring during a connection of 10 years is around $2$ minutes. 
 
 %We provide the full details of the parameter tuning in the full version that can be access in \url{https://gofile.io/?c=yqYzwA}.
 
@@ -146,7 +184,7 @@ For periodic proximity verification we have two main requirements. First, the at
 
 In addition, we evaluated the following two performance metrics:
 
-\begin{mylist}
+\begin{enumerate}
   \item \emph{Start-up latency.} The initial proximity verification takes $2$ ms. The complete connection establishment including attestation and \tls handshake takes less than 1 second.  
   
 
@@ -154,7 +192,7 @@ In addition, we evaluated the following two performance metrics:
   \item \emph{Operational latency and data overhead.} Our solution adds around $200 \mu s$ of additional latency for \tls and transport over the native \usb interface of the FX3. The data overhead is around 80 bytes per packet for the header and the MAC. Execution of the periodic \name protocol with $83$ rounds/second requires around $156.14$ KBytes/s of data which is only $2.4 \times 10^{-3}$\% of the \usb 3.0 channel capacity. 
 
 
-\end{mylist}
+\end{enumerate}
 
 
 \subsection{Preventing Relay to Co-Located Platform}
