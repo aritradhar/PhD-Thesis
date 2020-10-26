@@ -1,0 +1,28 @@
+\section{Client-side Proximity Guarantee}
+\label{sec:clientSideProximity}
+
+\begin{figure}[h]
+ \centering
+  \includegraphics[trim={8cm 8cm 9cm 0},clip,width=\linewidth]{ClientSide.pdf}
+ \caption{\textbf{\name client-side proximity verification.} The figure shows the scenario where the trusted remote verifier server identifies the client's local host system. The client plugs the \device to her local host system that executes \name protocol (refer to Section~\ref{sec:systemDesign}). The device sends the proof of proximity to the remote verifiers that prove that the remote verifier indeed is communicating with the host system that has \device attached to it.}
+ \label{fig:systemClientVerification} 
+\end{figure}
+
+\subsection{System Assumption}
+
+Here a trusted remote verifier identifies and attests a client's host system. The entire process can be executed without any interaction from the user. We assume that the remote verifier server is trusted. The local host system has a trusted Intel SGX processor, the operating system and rest of the hardware are controlled by the attacker. One of a user case of such setup is where the remote verifier identifies and authenticate client's host system. 
+
+
+\subsection{initialization}
+
+The trusted remote verifier has a public-private key pair to establish a \tls channel with the \device. Similarly, the bridge also has a key pair which is used to establish \tls channels with the verifier and the SGX enclave on the target host system. 
+
+\subsection{Protocol}
+
+The high-level system design is provided in Figure~\ref{fig:systemClientVerification}. The flow of the system is the following.
+
+\begin{enumerate}[leftmargin=*]
+  \item First the \device and the remote verifier establishes a \tls channel with the remote verifier by using the untrusted OS of the target host system as an untrusted transport. Over this \tls channel, the verifier sends a challenge nonce to the \device.
+  \item The \device executed \name protocol (refer to Section~\ref{sec:systemDesign}) with the SGX enclave.
+  \item The \device sends the challenge response to the trusted verifier specifying if the \device is in the close proximity of the enclave or not.  
+\end{enumerate}

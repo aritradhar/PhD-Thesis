@@ -1,7 +1,7 @@
 \begin{figure*}[t]
 \centering
-\includegraphics[trim={0 4.8cm 0 0}, clip, width=0.85\linewidth]{chapters/ProtectIOn/images/formTransform.pdf}
-\caption{\textbf{Transformation of UI elements: HTML $\rightarrow$ encoded specification $\rightarrow$ \device generated UI overlay.} \one The actual webpage and the corresponding \html source shows the UI elements that requires integrity protection. \two These UI elements are transformed into an encoded UI specification (our \name prototype uses QR code that encodes a UI specification, e.g., Specification~\ref{snippet:UISpecification}) by the \name JS. The QR code. \three AThe QR code decoded and overlaid on the HDMI stream by the \device. \four Upon the user's action on the overlaid UI elements, the device signs all the input data. \five The \device sends these signed input data them to the remote server. Note that the intermediate QR code transformation (\two) is not visible by the user.}
+\includegraphics[trim={0 4cm 0 0}, clip, width=\linewidth]{chapters/ProtectIOn/images/formTransform.pdf}
+\caption[Transformation of UI elements: HTML $\rightarrow$ encoded specification $\rightarrow$ \device generated UI overlay]{\textbf{Transformation of UI elements: HTML $\rightarrow$ encoded specification $\rightarrow$ \device generated UI overlay.} \one The actual webpage and the corresponding \html source shows the UI elements that requires integrity protection. \two These UI elements are transformed into an encoded UI specification (our \name prototype uses QR code that encodes a UI specification, e.g., Specification~\ref{snippet:UISpecification}) by the \name JS. The QR code. \three AThe QR code decoded and overlaid on the HDMI stream by the \device. \four Upon the user's action on the overlaid UI elements, the device signs all the input data. \five The \device sends these signed input data them to the remote server. Note that the intermediate QR code transformation (\two) is not visible by the user.}
 \spacesave
 \label{fig:transformation}
 \end{figure*}
@@ -50,7 +50,7 @@ To achieve a more generic and efficient solution, we follow a different approach
 
 The process of rendering the overlay on the screen has two phases: (i) convert the existing sensitive form to specification, and (ii) specification to overlay.
 
-\myparagraph{(i) Secure form $\rightarrow$ Specification} The W3C UI security policy~\cite{w3c_spec} recommends developers to annotate the security-critical UI elements of a page to protect them against malicious JS running on the browser. We use a similar technique by asking developers to manually annotate the sensitive elements in the HTML code (as \emph{protect=``true''} attribute). Then For every request, the \name server-side component parses the HTML source, adds a random identifier (\emph{id}) to the \emph{form} element, signs it, add the \emph{signature} to the \emph{form} and then delivers it to the user's browser. The \emph{id} serves as session identification to prevent the attacker from re-submitting an old input data from the user. On the host-side, \name JS parses the tagged HTML source and produces a specification that can be interpreted by the \device.  An example of a specification is presented in~Specification~\ref{snippet:UISpecification}. In our implementation, the \name JS encodes the specification in a QR code. \red{(\#5)We choose QR codes to encode UIs as it is one of many robust ways to encode data on a visual channel such as HDMI stream.} Figure~\ref{fig:transformation} shows the transformation between the step \one and \two. The step \two is processed by \device in the next phase and is not visible to the user.
+\myparagraph{(i) Secure form $\rightarrow$ Specification} The W3C UI security policy~\cite{w3c_spec} recommends developers to annotate the security-critical UI elements of a page to protect them against malicious JS running on the browser. We use a similar technique by asking developers to manually annotate the sensitive elements in the HTML code (as \emph{protect=``true''} attribute). Then For every request, the \name server-side component parses the HTML source, adds a random identifier (\texttt{id}) to the \texttt{form} element, signs it, add the \texttt{signature} to the \texttt{form} and then delivers it to the user's browser. The \texttt{id} serves as session identification to prevent the attacker from re-submitting an old input data from the user. On the host-side, \name JS parses the tagged HTML source and produces a specification that can be interpreted by the \device.  An example of a specification is presented in~Specification~\ref{snippet:UISpecification}. In our implementation, the \name JS encodes the specification in a QR code. \red{(\#5)We choose QR codes to encode UIs as it is one of many robust ways to encode data on a visual channel such as HDMI stream.} Figure~\ref{fig:transformation} shows the transformation between the step \one and \two. The step \two is processed by \device in the next phase and is not visible to the user.
 
 
 %We further optimize this process that does not require to add the UI specifications into the HTML sources. The developers include small JavaScript code: \name JS to their sources. \name JS has the same functionally as the server-side code that parses the HTML code and outputs the specification. Note the specification generation process is deterministic, hence, given identical HTML sources, both server and the \name \js generate identical UI specifications. Note that \name JS runs on the browser and is not trusted in our system model. We illustrate the method of UI transformation in Figure~\ref{fig:transformation}. 
@@ -72,7 +72,7 @@ Lightbox mitigates the attacks presented above. The paper shows that the Lightbo
 
 When the focusing mechanism (e.g., LightBox) is active, the user can still interact with the UI elements and browser button outside the secure UI elements as the \device does not control those. Browser back button does not influence the state of the overlaid UI as long as it does not remove/change the QR code on the web page.
 
-\parasave
+
 \myparagraph{\bfseries Automated activation} The technique to focus user attention (dimming out or freezing the non-overlaid part of the screen) is triggered automatically in specific situations: The user moves the mouse pointer over the overlaid UI, or the user starts typing into a sensitive UI element. 
 %e.g., when the user moves her mouse pointer over the overlaid UI, or start moving the mouse after a brief pause (like 5 seconds). 
 The advantage of the automated trigger is that the user does not need to remember to activate the mechanism. Hence the system is resilient from user habituation and does not require the user to monitor security indicators actively or perform specific actions. Note that the automated activation provides security to user IO data \emph{only} when the integrity of the data is considered.
@@ -83,8 +83,8 @@ The advantage of the automated trigger is that the user does not need to remembe
 
 \begin{figure}[t]
 \centering
-\includegraphics[trim={0 5.8cm 8cm 0}, clip, width=\linewidth]{chapters/ProtectIOn/images/mouseAnalysis.pdf}
-\caption{\textbf{Pointer tracking.} \one The \device captures the raw mouse events ($\Delta x, \Delta y$) from the mouse that is attached to the \device. \two The \device captures the frames from the HDMI channel and checks into the designated pixel position $(x_i + \Delta x, y_i + \Delta y)$ if there exists a pointer. $t_1, t_2,\ldots t_n$ are the time instances when the \device receives the mouse data. $f_1, f_2,\ldots f_n$ are the corresponding HDMI frames that the \device intercepts.}
+\includegraphics[trim={0 5.2cm 8cm 0}, clip, width=0.9\linewidth]{chapters/ProtectIOn/images/mouseAnalysis.pdf}
+\caption[\name Pointer tracking]{\textbf{Pointer tracking.} \one The \device captures the raw mouse events ($\Delta x, \Delta y$) from the mouse that is attached to the \device. \two The \device captures the frames from the HDMI channel and checks into the designated pixel position $(x_i + \Delta x, y_i + \Delta y)$ if there exists a pointer. $t_1, t_2,\ldots t_n$ are the time instances when the \device receives the mouse data. $f_1, f_2,\ldots f_n$ are the corresponding HDMI frames that the \device intercepts.}
 \spacesave
 \label{fig:mouseAnalysis}
 \centering
@@ -133,7 +133,7 @@ The user could use the \emph{TAB} button that selects the QR code (that is an im
 \begin{figure}[t]
 \centering
 \includegraphics[trim={0 9.5cm 15cm 0}, clip, width=0.85\linewidth]{chapters/ProtectIOn/images/SequencDiagram.pdf}
-\caption{\textbf{Flow of the \name main protocol.} The figure shows the sequence of events for two example scenarios: mouse movement and filling up a web-form.}
+\caption[Flow of the \name main protocol]{\textbf{Flow of the \name main protocol.} The figure shows the sequence of events for two example scenarios: mouse movement and filling up a web-form.}
 \spacesave
 \label{fig:sequence}
 \centering
@@ -165,7 +165,7 @@ Record = & (tb\_1, Data\_1);(tb\_2,Data\_2)
 \end{enumerate} 
 
 %\subsubsection{\bfseries Server-side verification} \label{sec:systemDesign:commit:verification}
-Upon receiving the signed input data from the \device, the remote accepts the input if the signature verification is successful. Note, if an input field is annotated as \emph{protect=``true''}, the server does not accept any input without the \device signature. This prevents the attacker-controlled host to submit data. 
+Upon receiving the signed input data from the \device, the remote accepts the input if the signature verification is successful. Note, if an input field is annotated as \texttt{protect=``true''}, the server does not accept any input without the \device signature. This prevents the attacker-controlled host to submit data. 
 
 \parasave
 \myparagraph{Changing browser tabs or browsers}

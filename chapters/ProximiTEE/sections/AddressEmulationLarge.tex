@@ -1,0 +1,182 @@
+%!TEX root =  ../paper.tex
+
+%\begin{figure}[t]
+% \centering
+%%     \includegraphics[trim={0 10cm 16.8cm 0},clip,width=0.8\linewidth]{boot-attest.pdf}
+%\includegraphics[trim={0 13.5cm 21cm 0},clip,width=0.6\linewidth]{emulationAttack.pdf}
+% \caption{\textbf{Emulation attack.} The attacker emulates a SGX processor on the target platform using a leaked attestation key.}
+%\figsaver
+% \label{fig:emulationAttack}
+%\end{figure}
+
+
+\section{Addressing Emulation Attacks}
+\label{sec:variantII}
+
+We consider attestation key extraction from SGX processors difficult and rare, in contrast to the previously considered relay attacks that require only OS control or other malicious software on the target platform. However, the recently demonstrated Foreshadow attack~\cite{foreshadow-usenix18} that exploited the Meltdown vulnerability~\cite{Lipp2018meltdown} showed how to extract attestation keys from SGX processors. Although, Intel has the possibility to issue microcode patches that address processor vulnerabilities like Meltdown and the processor's microcode version is reflected in the SGX attestation signature, new vulnerabilities like the ZombieLoad attack~\cite{ZombieLoad} may be discovered. Before microcode patches are deployed, in rare occasions, leaked but not revoked attestation keys may be available to the adversary.
+
+In this appendix, we consider such stronger adversary that has leaked attestation keys and present a hardened attestation solution based on boot-time initialization.
+
+\subsection{Emulation Attack} 
+
+\myparagraph{Adversary model.} We consider an \emph{emulation attacker} has all the capabilities of the relay attacker (cf.\ Section~\ref{sec:problemStatement}) and additionally has obtained at least one valid (not yet revoked by Intel) attestation key from any SGX platforms but the target platform. The adversary might obtain an attestation key by attacking one of his processors or by purchasing an extracted key from another party. 
+
+\myparagraph{The emulation attack.} 
+%Emulation attacks require an adversary that has one or more leaked attestation keys. Key extraction from SGX processors could be possible in multiple ways. The adversary could mount a hardware attack against one of his own CPUs or purchase a leaked key from another party that has successfully extracted a key. Although physical attacks on SGX are challenging, we consider them a relevant threat as only one or few processors need to be compromised to enable successful emulation by many adversaries. Assuming that all sold SGX processor remain physically intact forever is an assumption that we rather avoid. Key leakage may also be possible without resorting to sophisticated hardware attacks. 
+In the attack, the adversary uses a leaked attestation key to emulate an SGX-processor on the target platform. 
+%, as shown in Figure~\ref{fig:emulationAttack}. 
+Since the IAS (or any other attestation service) successfully attests the emulated enclave, it is impossible for the remote verifier to distinguish between the emulated enclave and the real one. 
+
+
+\myparagraph{Emulation attack implications.} The emulation attack allows the adversary to fully control the attested execution environment and thus break the two fundamental security guarantees of SGX, enclave's data confidentiality and code integrity, and to access any secrets provisioned to the emulated enclave. Since the OS is also under the control of the attacker, any attempted communication with the real enclave will always be redirected to the emulated enclave.
+
+
+%Our solution is different from the simple and commonly suggested of TOFU approaches (see Section~\ref{sec:problemStatement:limitations}) in two ways. First, we enable improved deployability by reducing the OS reinstallation to platform reboot operation. Second, we leverage the attached embedded device to enable offline enrollment and revocation.
+
+
+\begin{figure}[t]
+ \centering
+\includegraphics[trim={0 11.6cm 16.5cm 0},clip,width=0.72\linewidth]{boot-attest.pdf}
+%\includegraphics[trim={0 14.2cm 12.3cm 0},clip,width=\linewidth]{boot-attest_1.pdf}
+ \caption{\textbf{\name boot-time attestation.} After the boot-time initialization (refer to Figure~\ref{fig:boot-init}) the \nameclave executes a local attestation with the verifier uploaded \app. 
+ }
+\figsaver
+ \label{fig:boot-attest}
+\end{figure}
+
+
+\begin{figure}[t]
+ \centering
+    \includegraphics[trim={0 7cm 19cm 0},clip,width=0.75\linewidth]{boot_init.pdf}
+ \caption{\textbf{Boot-time initialization.} The \device uses a minimal kernel Linux image to boot and load \nameclave on the target platform and seal a platform specific secret to the \device memory.}
+\figsaver
+ \label{fig:boot-init}
+\end{figure}
+
+
+
+\subsection{Boot-Time Initialization Solution}
+
+Proximity verification alone cannot protect against the emulation attacker, as the locally emulated enclave would pass the proximity test. 
+%
+Therefore, we describe a second hardened attestation mechanism that leverages secure boot-time initialization and is designed to prevent emulation attacks. This solution can be seen as a \emph{novel variant} of the well-known TOFU principle and the main benefits of our solution over previous variants is that it simplifies deployment and increases security. Additionally, when such attestation is used in combination with our previously described periodic proximity verification, our solution enables secure offline revocation.
+
+
+\myparagraph{Security assumptions.}
+Our security assumptions regarding the target platform are as described in Section~\ref{sec:problemStatement}. The only difference is that in this case we assume that the UEFI (or BIOS) on the target platform is trusted.
+
+
+\myparagraph{Solution overview.}
+Figure~\ref{fig:boot-attest} illustrates an overview of this solution. During initialization, that is depicted in Figure~\ref{fig:boot-init}, the target platform is booted from the attached device that loads a minimal and single-purpose \name kernel on the target device. In particular, this kernel includes no network functionality. The kernel starts the \name enclave, which shares a secret with the device. This shared secret later bootstraps the secure communication between \device and the \name enclave. \emph{The security of the bootstrapping relies on the fact that the minimal kernel will not perform enclave emulation at boot time.} The \name enclave will later be used as a proxy to attest whether other (application-specific) enclaves in the system are real or emulated and on the same platform.
+
+
+\myparagraph{Boot-time initialization.} The boot-time initialization process is performed only once.
+This process is depicted in Figure~\ref{fig:boot-init} and it proceeds as follows:
+
+
+
+\begin{mylist}
+  \item[\one] The platform owner plugs \device to the target platform, restarts it to BIOS and selects the option to boot from \device.
+  \item[\two] \device loads the \name kernel and boots from it. The \name kernel starts the \nameclave.
+  \item[\three] The user presses a button on \device to confirm that this is a boot-initialization process. This step is necessary to prevent an attack where the compromised OS emulates a system boot.
+  \item[\four] \device sends a randomly generated key $\mathcal{K}$ to the \nameclave.
+  \item[\five] The enclave returns the sealed key $\mathcal{S}$ corresponding to the key $\mathcal{K}$ ($\mathcal{S}\leftarrow\texttt{Seal}(\mathcal{K})$) to \device that stores the key and the seal pair $(\mathcal{K}, \mathcal{S})$ on its flash storage.
+  \item[\six] \device blocks further initializations, sends a restart signal and boots the platform with the normal OS.
+\end{mylist}
+
+
+\myparagraph{Attestation process.} After initialization the target platform runs a regular OS. The attestation process is depicted in Figure~\ref{fig:boot-attest} and proceeds as follows:
+
+\begin{mylist}
+
+  %\item[\circled{0}] The \device executes aforementioned \name boot-time initialization protocol.
+
+  \item[\one] \device sends the seal $\mathcal{S}$ to the \nameclave that unseals it and retrieves the key $\mathcal{K}$. \device and the \nameclave establish a secure channel (\tls) using $\mathcal{K}$.
+
+  \item[\two] The remote verifier uploads a new \app on the target platform.
+
+  \item[\three] The \nameclave performs local attestation (see~Section~\ref{sec:background}) on the \app that binds its public key to the attestation. %The local attestation ensures that i) the \app is on the same physical platform, and ii) the code integrity of the \app.
+
+  \item[\four] The \nameclave sends the measurement and the public key of the \app to \device. \device establishes a secure channel to the \app and sends the measurement of the enclave to the remote verifier. The remote verifier then approves the communication to the \app.
+
+  \item[\five] The remote verifier checks that the measurement of the \app is as expected. If this is the case, it can communicate with the enclave through \device.
+  %s between the \device and \nameclave and the \nameclave and the \app. \todo{Why go through \nameclave every time?}
+
+\end{mylist}
+
+
+\myparagraph{Following communication.} 
+Similar to our previous solution, after the initial attestation all the communication between a remote verifier and the enclave is mediated by the \device that periodically checks the proximity of the attested enclave and terminates the communication channel in case the embedded device is detached.
+
+
+\subsection{Security Analysis}
+
+%On top of the proximity verification, boot-time initialization and attestation prevent emulation attacks. Boot-time initialization and attestation rely on the integrity of the BIOS / UEFI to run once per platform the correct \name kernel which initializes the \nameclave (there exist methods to verify the integrity of the BIOS/UEFI in hardware~\cite{titanchip}). The \name kernel is a single-purpose kernel that only supports a minimal set of features that is essential to run SGX which makes its attack surface small. 
+
+In this attestation mechanism, the task of establishing a secure communication channel to the correct enclave can be broken into three subtasks. The first subtask is to establish a secure channel to the correct \device device. In our solution, this is achieved using standard device certification. Recall that the adversary cannot compromise the specific \device used. 
+
+The second subtask is to establish a secure communication channel from \device to the \nameclave. 
+%For this, we use a secure boot-time initialization (i.e., trust on first use). 
+\device shares a key with an enclave that is started by the trusted \name kernel, hence at a time in which the attacker could not emulate any enclave. \device knows when secure initialization takes place because the user (platform owner) indicates this by pressing a button which is an operation that the adversary cannot perform. The \nameclave seals the key during initialization. Different SGX CPUs cannot unseal each other's data, and therefore even if the adversary has extracted sealing keys from other SGX processors, she cannot unseal the key and masquerade as the legitimate \nameclave. %We leverage a crucial difference between an emulated enclave and a real enclave: the inability to unseal each other's data.
+
+The third subtask is to establish a secure communication channel from the \nameclave to the \app. The security of this step relies on SGX's built-in local attestation. An adversary in possession of leaked sealing attestation keys from other SGX processors, cannot produce a local attestation report that the \name enclave would accept, and therefore the adversary cannot trick the remote verifier to establish a secure communication channel to a wrong enclave.
+
+\iffalse
+\subsection{TCB and Attack Surface}
+
+Figure~\ref{fig:TOFU} illustrates a comparison of trusted components and attack surface between a TOFU solution where a trusted authority (CA) certifies enclave keys (cf.~Section~\ref{sec:problemStatement:limitations}) and our hardened attestation mechanisms. In such TOFU solution, the TCB consists of the target platform hardware, the OS that needs to be trusted only at the time of first use, and a standard certification authority (CA). In our Variant I (distance-bounding), the TCB contains the target platform hardware, the embedded device (\device), and a CA that can be entirely offline. The OS is untrusted. In our Variant II (boot-time initialization), the TCB contains the target platform hardware, the embedded device, an offline CA and a small kernel that needs to be trusted at the time of first use. This small kernel requires no network functionality, and thus this component can be considered offline.
+\fi
+
+\begin{figure}[t]
+ \centering
+  %\includegraphics[trim={0 12.5cm 12.5cm 2cm},clip,width=0.9\linewidth]{TOFU1.pdf}
+  %\includegraphics[trim={0 12cm 21cm 0},clip,width=0.6\linewidth]{TOFU2.pdf}
+  \includegraphics[trim={0 14cm 15.5cm 0},clip,width=0.8\linewidth]{TOFU3.pdf}
+ \caption{\textbf{TCB comparison.} Trusted components in a common TOFU solution and our boot-time solution.}
+ \figsaver
+ \label{fig:TOFU}
+\end{figure}
+
+
+
+\myparagraph{Comparison to TOFU.} Our second attestation mechanism is a novel variant of the well-known ``trust on first use'' principle. In this section we briefly explain the main benefits of our solution over common TOFU variants. 
+
+\begin{mylist}
+\item \textbf{Smaller TCB size and attack surface.} Figure~\ref{fig:TOFU} illustrates a comparison of trusted components and attack surface between a common TOFU solution where a trusted authority (CA) certifies enclave keys (cf.~Section~\ref{sec:problemStatement:limitations}) and our boot-time initialization mechanism. In the TOFU solution, the standard and general-purpose OS needs to be trusted on first use and the CA needs to remain online for enrollment of new SGX platforms. In our solution, a significantly smaller and single-purpose kernel needs to be trusted on first use. Additionally, we require trust on the BIOS (or UEFI). In our solution, the CA can remain offline when a new platform is enrolled.
+
+
+\item \textbf{Reboot instead of re-install.} Our solution requires that the target platform is rebooted once from \device. In most TOFU solutions, the target platform requires a clean state which is difficult to achieve without reinstall that makes deployment difficult.
+
+
+\item \textbf{Secure offline revocation.} When boot-time initialization is combined with the previously explained periodic proximity verification, our solution provides an additional property of secure offline revocation that requires no interaction with the CA. Such property is missing from previous TOFU solutions.
+
+\end{mylist}
+
+%Figure~\ref{fig:TOFU} illustrates a comparison of trusted components and attack surface between a TOFU solution where a trusted authority (CA) certifies enclave keys (cf.~Section~\ref{sec:problemStatement:limitations}) and 
+%\name boot-time initialization and attestation mechanism.
+%
+%\ifusenix
+%\vspace{-15pt}
+%\else
+%\fi
+%\myparagraph{Reboot.} \name boot-time initialization and attestation only require to reboot through the \name kernel only once. As the subsequent initialization of application-specific enclaves is handled by the \name enclave via local attestation process, the user does not require to go through the process once the platform is initialized. Such a mechanism significantly reduce the time user needs to trust the \name kernel provided that the \name kernel is already stripped down to a bare-minimum specification further reducing the attack surface. 
+%\ifusenix
+%\vspace{-15pt}
+%\else
+%\fi
+%\myparagraph{OS re-installation.} Similar to the previous point, the user never needs to reinstall the OS even if the OS is fully compromised to begin with. The \name boot-time initialization ensures that the \device communicate with the \name enclave (running on the physical platform) while booted from the \name kernel.
+%\ifusenix
+%\vspace{-15pt} 
+%\else
+%\fi
+%\myparagraph{Revocation.} The continuous proximity verification provides a reliable, secure and faster way to revoke any platform. Such a feature is not provided to any other TOFU solution in best of our knowledge.
+%\ifusenix
+%\vspace{-15pt}
+%\else
+%\fi
+%\myparagraph{Online CA.} \name does not require any CA to be online all the time for initialization of revocation purpose.
+
+
+\subsection{Implementation}
+
+We implemented a complete prototype of our second attestation mechanism. On top of our previous \name implementation (see Section~\ref{sec:evaluation:implementation}), the boot-time initialization solution requires the \name kernel. We have modified an image of Tiny Core Linux~\cite{tinyCore} and used it as the boot image for our boot-time initialization. The image size of our modified Linux distribution is 14 MB (in contrast to 2 GB standard 64 bit Linux images build on the standard kernel). Our image supports bare minimum functionality and includes \texttt{libusb}, \texttt{gcc}, Intel SGX SDK, Intel SGX platform software (PSW), and Intel SGX Linux driver. The \name enclave is a minimal enclave that uses a simple serial library to communicate with the \device and local attestation mechanism to attest any application-specific enclave.

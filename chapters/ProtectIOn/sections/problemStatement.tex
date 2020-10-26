@@ -21,7 +21,6 @@ The attacker can pass the wrong input to a remote safety-critical system such as
 There are two broad categories of existing solutions that address the problem of trusted paths for IO devices in the presence of a compromised host as illustrated in Figure~\ref{fig:relatedWorksTree}: \textbf{A.}~Solutions where unprotected user interaction first happens and then a trusted component (transaction confirmation device) is used to ensure input integrity,
 and \textbf{B.}~Solutions where a trusted component captures the user's input/output and then securely mediates them to the destination. The trusted component can be a hypervisor, or an external hardware, etc. %Table~\ref{tab:relatedWorks} provides a comprehensive analysis is trusted path literature.
 
-\parasave
 \myparagraph{A.~Transaction confirmation devices} Filyanov et. al~\cite{filyanov2011uni} proposed a transaction confirmation device that requires the user to use a separate device to confirm the input parameters. Systems such as ZTIC~\cite{weigold2011secure} use an external device with display and smartcard attachment to ensure the integrity of the user inputs. Android OS also provides a similar mechanism to confirm protected transactions~\cite{android_confirm}. 
 However, these approaches suffer from three significant drawbacks: i) the risk of \emph{user habituation} -- users confirming transactions without looking to the actual data~\cite{anderson2016warning},
 ii) \emph{usability} -- interacting with a small device can be cumbersome, and iii) only \emph{simple UI} can be supported -- transaction confirmation is not suitable for complex interaction, rather than simple text-based inputs.
@@ -60,15 +59,15 @@ neutral/.style={rectangle, draw, rounded corners, align=center, fill=black!5}
     
     \end{tikzpicture}
     
-   \caption{\textbf{Existing trusted path solutions.}}
-   \spacesave
+   \caption[Existing trusted path solutions]{\textbf{Existing trusted path solutions.}}
+
      \label{fig:relatedWorksTree}
 \end{figure}
 
-\parasave
+
 \myparagraph{B1.~Trusted hypervisor-based solutions} Trusted hypervisors and secure micro-kernels are also alternatives to achieve a Trusted path. Zhou et al.~\cite{zhou2012building} proposed a generic trusted path on $x86$ systems in pure hypervisor-based design. SGXIO~\cite{weiser2017sgxio} combines a TEE and a hypervisor to mitigate the shortcomings of TEEs like SGX (e.g., OS controls the IO operations). Nevertheless, solutions based on hypervisors require a large TCB. Formally verified hypervisors offer limited functionalities, therefore making them impractical for average users. One can also argue that a hypervisor that provides a rich set of functionalities has a code size comparable to an actual OS. Also, systems employing TEEs such as Intel SGX open up new attack surfaces that can be exploited by microarchitectural attacks~\cite{van2018foreshadow}.
 
-\parasave
+
 \myparagraph{B2.~External hardware-based solutions} Several existing works propose a trusted path that utilizes an external trusted device. IntegriKey~\cite{IntegriKey} uses a trusted external device that contains a small program that signs all user inputs and sends the signed input to the remote server. The device works as a second factor for input integrity as the remote server verifies if the signed input matches with the input that is sent by the browser running on the untrusted host. However, as the external device is completely oblivious to the display information that the untrusted host renders, not only IntegriKey but also similar systems that do not consider output integrity are vulnerable to UI manipulation attacks. For example, assume that the user's intended input to a textbox is $100$. She types the correct value, but the host maliciously renders $10$ on the screen by not showing the last zero. Thinking that she might have mistyped, the user types another $0$ that makes the recorded input from the user $1000$. This attack violates input integrity as the host can now submit $1000$ to the remote server as a valid input, although it does not represent the user's intention. 
 %In Appendix~\ref{appendix:security:protocol}, we provide a formal security proof that shows why systems like IntegriKey or transaction confirmation device that do not provide output integrity also lack input integrity.
 %and, the external trusted device also signs $1000$ as the correct input received from the user.
@@ -78,7 +77,7 @@ neutral/.style={rectangle, draw, rounded corners, align=center, fill=black!5}
 \begin{figure}[t]
 \centering
 \includegraphics[trim={0 11.5cm 21.8cm 0}, clip, width=0.8\linewidth]{chapters/ProtectIOn/images/earlyFormSubmission.pdf}
-\caption{\textbf{Early form submission attack} is possible on Fidelius~\cite{Fidelius}. The user selects and edits the field \emph{Units} while the OS triggers \emph{add} button, causing misconfiguration of a remote safety-critical PLC (Control by Web X-600M~\cite{controlbyweb}).}
+\caption[Early form submission attack]{\textbf{Early form submission attack} is possible on Fidelius~\cite{Fidelius}. The user selects and edits the field \emph{Units} while the OS triggers \emph{add} button, causing misconfiguration of a remote safety-critical PLC (Control by Web X-600M~\cite{controlbyweb}).}
 \spacesave
 \label{fig:clickJack}
 \centering 
@@ -115,10 +114,10 @@ Thus, not supporting the mouse causes the integrity violation of the keyboard in
 Finally, the design of Fidelius~\cite{Fidelius} is strictly limited to text-based fields only. As Fidelius does not provide output integrity of the forms, it cannot provide confidentiality to other UI elements such as radio buttons, drop-down menus, sliders, etc.
 Microarchitectural attacks on Intel SGX~\cite{van2018foreshadow} increase the attack surface of the system significantly.
 
-\parasave
+
 \myparagraph{B3.~System TEE-based solutions} VButton~\cite{li2018vbutton} uses ARM TrustZone (TZ) to securely render UI buttons and receive user input from them. This is possible on mobile devices because the TZ architecture support flags on the system bus that indicate whether an IO device like touchscreen communicates with a trusted TZ application or the untrusted OS. Such solutions are infeasible for us because i) secure communication between IO peripherals and TEE applications (like SGX enclaves) is not supported in the x86 architecture -- a similar system in x86 would require changes to the system architecture, TEE architecture and IO devices, ii) such solutions require TEE-aware applications and do not work with current browsers. Our goal is to design a solution that can be deployed on current the x86 architecture and used with existing popular browsers.
 
-\parasave
+
 \myparagraph{Strawman solution: Capturing screenshot} This strawman solution uses a trusted device that takes a screenshot when the user executes an action, e.g., mouse click to submit a form. The device then signs the snapshot and transmits it to the server along with the signed input. The remote server verifies the signature and then uses image/text analysis to extract the information from the UI elements such as labels on buttons or markers of a slider, etc. Therefore, the server would detect if the host has manipulated UI elements when presented to the user.
 
 This method is vulnerable to attacks because it does not capture the spatiotemporal user context. This implies that the attacker may show some spacial information on the screen to influence the user that may not be captured by the snapshot. Furthermore, taking a full-screen snapshot could also reveal private information of the user from other applications. Similarly, taking a snapshot does not guarantee that a specific UI has been presented on the screen as the attacker may render the legitimate UI shortly before the device captures the snapshot.
@@ -132,29 +131,29 @@ One way to mitigate this problem is to capture a video of user interaction. But 
 
 We can summarize the above-discussed limitations of previous solutions as the following requirements for our solution:
 
-\parasave
+
 \myparagraph{R1. Inter-dependency between input and output} 
 The first and second observations from the existing solutions show that the output and input security depend on each other, and they should be considered together. Otherwise, the attacker can manipulate the output to influence the user input.
 %The main lesson that we learn from the previous papers is that input and output integrity, and confidentiality cannot be considered in isolation. Rather, they are needed to be secured simultaneously as the output, and the input both influence each other.  
 
-\parasave
+
 \myparagraph{R2. Inter-dependency between all input modalities} 
 Existing web interfaces allow users to complete forms by using different modalities for the user input, namely the keyboard, the mouse, and the touchpad. The third observation shows that a secure system should protect all user input modalities simultaneously to achieve input integrity (against early-form submission and clickjacking).
 
 %If there exist multiple input sources (typically keyboard and mouse), all of them should be protected simultaneously as these input sources influence each other. For example, in a web application scenario, protecting the integrity of only the keyboard input does not provide input integrity as an attacker-controlled host can always execute an early form submission attack.
 
-\parasave
+
 \myparagraph{R3a. No cognitive load for IO integrity} 
 A system that protects IO operations should introduce minimal or no cognitive load to its users for input integrity.
 The system should guarantee the output integrity of the legitimate information necessary to complete a form and avoid asking the user to interact with an external device or monitor security indicators out-of-context.
 
 %Output integrity protection can eliminate the actions that lead to high cognitive loads to the user.  Such as using an external device to confirm every transaction, looking to a passive security indicator and confirming actions, etc. The systems that rely heavily on such security measures suffer from input errors that originate from user habituation. Moreover, such designs require user training that makes the system hard to deployment and costly.
 
-\parasave
+
 \myparagraph{R3b. User attention for IO confidentiality} Preserving the confidentiality of user inputs against a compromised host is a challenging task because the host can trick the user into revealing her inputs when the system is not active. Therefore, requiring users to perform a small action, e.g., press a key before entering confidential inputs is a valid tradeoff between usability and security.
 
 %Confidentiality requires active triggering from the user to distinguish the secure part of the screen from ensuring part of the screen if the part of the output provides integrity/confidentiality protection.
 
-\parasave
+
 \myparagraph{R4. Small trust assumptions and deployability} 
 Our goal is to provide the rich set of IO and security features with minimal trust assumptions that do not rely on a trusted OS, specialized hypervisor, or TEEs such as Intel SGX. Preferably, the solution should be easy to set up for users, i.e., plug-and-play, and integrate well with the existing infrastructure.  

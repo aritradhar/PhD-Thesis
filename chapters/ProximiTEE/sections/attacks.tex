@@ -1,0 +1,12 @@
+%!TEX root =  ../paper.tex
+\section{Possible Attacks}
+
+Given the attacker and the system model, the attacker can execute the following attacks:
+
+\begin{enumerate}
+  \item \textbf{Replicating and emulating entire enclave in an OS} Here the attacker compromises an Intel SGX processor and emulates it on the compromised operating system on the victim's machine. As the attacker compromises a processor, he has the access to the SGX Root provision key and the root seal key which is required to convince the Intel attestation service (IAS) that an enclave is running on a legitimate Intel processor.
+  \item\textbf{Speeding up/slowing down} As the operating system is compromised, it can speed up or slow down processor codes to delay or speed up.
+  \item\textbf{Relay} The attacker can relay all the traffic from the victims operating system to the attacker system where the Intel SGX processor is compromised. This way the attacker can extract all the secret and/or modify the user input.
+  \item\textbf{Creation of other enclaves} The compromised operating system can spawn multiple enclaves on the same local machine. The operating system can divert user's command to any one of these enclaves. But this attack is ineffective as all the enclaves are running on the local Intel processor which is not compromised by the attacker. By this attack, the attacker can neither extract any secret nor modify any data.
+  \item\textbf{Creation of other applications} The attacker can create an application that is running on the untrusted memory space (outside the enclave memory space). The application is built to imitate the operation of the enclave and to convince the user that he is talking with a legitimate enclave.
+\end{enumerate}

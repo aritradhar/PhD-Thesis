@@ -1,0 +1,19 @@
+\iffalse
+\section{TCB of \name Trust on First Use (TOFU)}
+\label{appendix:tcb}
+
+\begin{figure}[t]
+ \centering
+  \includegraphics[trim={0 13cm 17.3cm 0},clip,width=0.8\linewidth]{TOFU.pdf}
+ \caption{\textbf{\name comparison with different trust on first use (TOFU) modes.}}
+ %\vspace{-1.2em}
+ \label{fig:TOFU}
+\end{figure}
+
+Our boot-time attestation is a modified version of trust on first use (TOFU) and has significantly lower TCB compared to that of the other TOFU methods. Figure~\ref{fig:TOFU} provides a comparison of our methods with other TOFU methods that we discuss in details in Section~\ref{sec:problemStatement:limitations}. Simple TOFU (impractical, secure and offline) has no offline model but requires trust on the standard operating system at the initialization time. This TCB can span up to gigabytes (standard Linux kernel is around 2 GB). On the other hand, the modified TOFU uses a trusted small kernel (size on order of few MB) to initialize. The kernel has network capability, hence it is vulnerable to exploitation. In contrast to these two variants, \name uses \name kernel which is also a small kernel but is isolated from the network communication. Only the \device is connected to network to certify the enclave's key pair. The TCB of the \device is few KB and hence the attack surface is in the order of smaller than the former TOFU variants.
+\fi
+
+
+
+
+

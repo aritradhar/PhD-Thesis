@@ -1,0 +1,149 @@
+\documentclass[sigconf]{acmart}
+
+\settopmatter{printacmref=true}
+
+
+\usepackage{xcolor}
+\usepackage{graphicx,pifont}
+\usepackage{adjustbox}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{mathtools}
+\usepackage{mathrsfs}
+\usepackage{xspace}
+\usepackage{url}
+\usepackage{tikz}
+\usepackage{pifont}
+\usepackage{balance}
+\usetikzlibrary{positioning, trees, arrows, calc}
+
+
+\let\oldding\ding% Store old \ding in \oldding
+\renewcommand{\ding}[2][1]{\scalebox{#1}{\oldding{#2}}}% Scale \oldding via optional argument
+
+\newcommand{\zero}{\ding[1.2]{171}\xspace}
+\newcommand{\one}{\ding[1.2]{172}\xspace}
+\newcommand{\two}{\ding[1.2]{173}\xspace}
+\newcommand{\three}{\ding[1.2]{174}\xspace}
+\newcommand{\four}{\ding[1.2]{175}\xspace}
+\newcommand{\five}{\ding[1.2]{176}\xspace}
+\newcommand{\six}{\ding[1.2]{177}\xspace}
+\newcommand{\seven}{\ding[1.2]{178}\xspace}
+\newcommand{\eight}{\ding[1.2]{179}\xspace}
+\newcommand{\nine}{\ding[1.2]{180}\xspace}
+\newcommand{\ten}{\ding[1.2]{181}\xspace}
+
+\newcommand*\circled[1]{\tikz[baseline=(char.base)]{
+            \node[shape=circle,draw,inner sep=0.3pt] (char) {$#1$};}}
+
+\newcommand{\blue}[1]{\textcolor{black}{#1}}
+\newcommand{\red}[1]{\textcolor{red}{#1}}
+
+
+\setlength{\parindent}{0pt}
+%\setlength{\parskip}{3pt}
+
+\newcommand{\figsaver}[0]{\vspace{-8pt}}
+\newcommand{\figsaverL}[0]{\vspace{-12pt}}
+\newcommand{\parasaver}[0]{\vspace{-5pt}}
+\newcommand{\parasaverL}[0]{\vspace{-3pt}}
+
+
+\newif \ifremoveall
+\removealltrue
+
+\ifremoveall
+\newcommand{\ad}[1]{\textcolor{red}{\textbf{Aritra: #1}}}
+\newcommand{\ip}[1]{\textcolor{red}{Ivan: #1}}
+\newcommand{\todo}[1]{\textcolor{red}{TODO: #1}}
+\newcommand{\todoref}{\textcolor{red}{[ref]}}
+\newcommand{\citneed}{[\textcolor{red}{cit}] }
+\fi
+
+
+\newcommand{\name}{\textsc{ProximiTEE}\xspace}
+\newcommand{\tool}{\textsc{\name API}\xspace}
+%\newcommand{\device}{\textsc{ProximiKey}\xspace}
+\newcommand{\device}{\textsc{ProximiKey}\xspace}
+
+\newcommand{\connect}{$T_{con}$\xspace}
+\newcommand{\detach}{$T_{detach}$\xspace}
+
+
+\newcommand{\id}{\texttt{ID}\xspace}
+\newcommand{\usb}{\texttt{USB}\xspace}
+\newcommand{\http}{\texttt{HTTP}\xspace}
+\newcommand{\https}{\texttt{HTTPS}\xspace}
+\newcommand{\tls}{\texttt{TLS}\xspace}
+
+\newcommand{\myparagraph}[1]{\smallskip\noindent\textbf{#1}\xspace}
+%\newcommand{\myparagraph}[1]{\paragraph{#1}}
+
+\newcommand{\nameclave}{\name enclave\xspace}
+\newcommand{\app}{application-specific enclave\xspace}
+\newcommand{\propname}{secure offline enrollment and revocation\xspace}
+%\newcommand{\propname}{continuous proximity verification\xspace}
+
+
+% Baseline
+\let\markeverypar\everypar
+\newtoks\everypar
+\everypar\markeverypar
+\markeverypar{\the\everypar\looseness=-1\relax}
+\fontdimen2\font=0.8\fontdimen2\font
+% Floats
+\renewcommand{\topfraction}{0.85}
+\renewcommand{\bottomfraction}{0.85}
+\renewcommand{\textfraction}{0.1}
+\renewcommand{\floatpagefraction}{0.85}
+\renewcommand{\dbltopfraction}{0.85}
+\renewcommand{\dblfloatpagefraction}{.85}
+\setcounter{topnumber}{25}
+\setcounter{bottomnumber}{25}
+\setcounter{totalnumber}{25}
+\setcounter{dbltopnumber}{25}
+\setlength{\belowcaptionskip}{-10pt}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%
+%savetrees
+%\usepackage[
+%all=normal,floats=tight
+%,paragraphs=tight
+%,wordspacing=tight
+%,mathspacing=tight
+%,mathdisplays=tight
+%]{savetrees}
+%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+%------------------------------------------------------------------------------
+%                                Space savers.
+%------------------------------------------------------------------------------
+% This mylist environment indents items, and saves less space than the above.
+\newcounter{myctr}
+\newenvironment{mylist}{\begin{list}{\arabic{myctr}.}
+{\usecounter{myctr}
+\setlength{\topsep}{1mm}\setlength{\itemsep}{0.5mm}
+\setlength{\parsep}{0.5mm}
+\setlength{\itemindent}{1mm}\setlength{\partopsep}{0mm}
+\setlength{\labelwidth}{-2mm}
+\setlength{\leftmargin}{0mm}}}{\end{list}}
+
+\newenvironment{mylist_indent}{\begin{list}{\arabic{myctr}.}
+{\usecounter{myctr}
+\setlength{\topsep}{1mm}\setlength{\itemsep}{0.5mm}
+\setlength{\parsep}{0.5mm}
+\setlength{\itemindent}{1.5mm}\setlength{\partopsep}{0mm}
+\setlength{\labelwidth}{-2mm}
+\setlength{\leftmargin}{0mm}}}{\end{list}}
+
+% Space saving List environment for itemizing.
+\newenvironment{mybullet}{\begin{list}{$\bullet$}
+{\setlength{\topsep}{1mm}\setlength{\itemsep}{0.5mm}
+\setlength{\parsep}{0.5mm}
+\setlength{\itemindent}{0mm}\setlength{\partopsep}{0mm}
+\setlength{\labelwidth}{-2mm}
+\setlength{\leftmargin}{0mm}}}{\end{list}}

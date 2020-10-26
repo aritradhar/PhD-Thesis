@@ -1,0 +1,23 @@
+
+\section{Related Work}
+\label{sec:relatedWork}
+
+\myparagraph{TPM proximity verification.} 
+Parno has argued that TPM proximity verification using distance bounding is not secure, as TPM identification operations (signatures) take at least half a second which makes it difficult to reliably distinguish a relayed protocol run from a legitimate one~\cite{parno2008bootstrapping}. 
+Despite such compelling reasoning, previous literature has proposed to use distance-bounding protocols for identification of local TPM~\cite{CatchingCuckoo}. However, the provided evaluation is based on a software TPM emulator~\cite{ibmTPM, trousers}. Another paper has suggested equipping TPMs with NFC interfaces for secure connection establishment~\cite{turtle}, but such solutions are hard to deploy in practice.
+
+\myparagraph{DRTM proximity verification.}
+Presence attestation~\cite{presenceAttestation} enables proximity verification of a TEE that is created using dynamic root of trust (DRTM)~\cite{mccune2008flicker}. The DRTM-based TEE shows an image that is captured by a camera and then communicated to a remote verifier in a small time interval. 
+The same approach cannot not be applied to SGX that lacks trusted path for integrity-protected image output. Additionally, the assumed attacker model is weaker than ours, as emulation attacks with leaked keys cannot be prevented.
+
+%The attacker model does not assume neither physical attacks on the TEEs (extracting private key from any DRTM) nor emulation of broken TEEs on the victim's platform. Moreover, the approach is not suitable for Intel SGX as the authors assume to have a secure IO form the TEEs peripherals like camera which is not available in SGX.
+%The evaluation shows that the visual based distance bounding protocol is executed in (10s of)millisecond timing region, making it susceptible to attackers who posses powerful hardware's.
+
+
+%\myparagraph{Trusted path.} SGXIO~\cite{sgxio} provides trusted path to Intel SGX using a trusted hypervisor. SGXIO uses seL4~\cite{sel4} microkernel as hypervisor and requires additional device drivers to communicate with the I/O devices and requires also TPM-based trusted boot. The main problem of formally-verified minimal hypervisors and kernels is their functional restrictions and complicated updates that make deployment difficult in practice.
+
+%\red{A main advantage of our solution is that the trusted kernel needs to run only once and for a short amount of time, therefore leaving a small window to perform any remote attack, and afterwards the system is protected by the SGX hardware guarantees. This is in contrast with an hypervisor based solution, in which the hypervisor can be compromised at any time, and from that moment on the confidentiality of the I/Os cannot be guaranteed.}
+
+%UTP~\cite{utp} describes a unidirectional trusted path from the user to a remote server using dynamic root of trust based on Intel's TXT technology~\cite{nie2007dynamic, mccune2008flicker}. The system suspends the execution of the OS and loads a minimal protected application for execution. This loading is measured and stored to a TPM and proved to a remote verifier using attestation. The protected application creates a secure channel, records user input and sends them securely to the server. UTP is limited to VGA-based text UIs to keep the TCB small and it does not apply to TEEs like Intel SGX.
+
+%Zhou et al.~\cite{x86} realize a trusted path for TXT-based TEEs, again relying on a small trusted hypervisor. In this solution, also device drivers are included in the TCB. Wimpy kernel~\cite{wimpyKernel} is a small trusted kernel that manages device drivers for secure user input. Our approach requires no trusted hypervisor or kernel and it applies to the latest TEE architectures like SGX.

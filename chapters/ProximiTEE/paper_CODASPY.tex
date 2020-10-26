@@ -1,0 +1,88 @@
+\input{preamble}
+
+\graphicspath{{figures/}}
+
+\settopmatter{authorsperrow=4}
+
+\title[\name]{\name: Hardened SGX Attestation by \\ Proximity Verification} 
+
+\author{Aritra Dhar}
+\affiliation{
+\institution{ETH Zurich}
+aritra.dhar@inf.ethz.ch
+}
+\author{Ivan Puddu}
+\affiliation{
+\institution{ETH Zurich}
+ivan.puddu@inf.ethz.ch
+}
+
+\author{Kari Kostiainen}
+\affiliation{
+\institution{ETH Zurich}
+kari.kostiainen@inf.ethz.ch
+}
+\author{Srdjan Capkun}
+\affiliation{
+\institution{ETH Zurich}
+srdjan.capkun@inf.ethz.ch
+}
+
+%Ivan Puddu, Kari Kostiainen, Srdjan Capkun}
+\copyrightyear{2020}
+\acmYear{2020}
+\setcopyright{acmcopyright}
+\acmConference[CODASPY '20]{Proceedings of the Tenth ACM Conference on Data and
+Application Security and Privacy}{March 16--18, 2020}{New Orleans, LA, USA}
+\acmBooktitle{Proceedings of the Tenth ACM Conference on Data and Application Security and
+Privacy (CODASPY '20), March 16--18, 2020, New Orleans, LA, USA}
+\acmPrice{15.00}
+\acmDOI{10.1145/3374664.3375726}
+\acmISBN{978-1-4503-7107-0/20/03}
+
+\begin{document}
+\fancyhead{}
+
+%\acmConference[Submission]{}{}
+
+\begin{abstract}
+Intel SGX enables protected enclaves on untrusted computing platforms. An important part of SGX is its remote attestation mechanism that allows a remote verifier to check that the expected enclave was correctly initialized before provisioning secrets to it. However, SGX attestation is vulnerable to relay attacks where the attacker, using malicious software on the target platform, redirects the attestation and therefore the provisioning of confidential data to a platform that he physically controls. Although relay attacks have been known for a long time, their consequences have not been carefully examined. In this paper, we analyze relay attacks and show that redirection increases the adversary's abilities to compromise the enclave in several ways, enabling for instance physical and digital side-channel attacks that would not be otherwise possible.
+
+We propose \name, a novel solution to prevent relay attacks. Our solution is based on a trusted embedded device that is attached to the target platform. Our device verifies the proximity of the attested enclave, thus allowing attestation to the intended enclave regardless of malicious software, such as a compromised OS, on the target platform. The device also performs periodic proximity verification which enables secure enclave revocation by detaching the device. Although proximity verification has been proposed as a defense against relay attacks before, this paper is the first to experimentally demonstrate that it can be secure and reliable for TEEs like SGX. Additionally, we consider a stronger adversary that has obtained leaked SGX attestation keys and emulates an enclave on the target platform. To address such emulation attacks, we propose a second solution where the target platform is securely initialized by booting it from the attached embedded device.
+\end{abstract}
+
+
+\begin{CCSXML}
+<ccs2012>
+<concept>
+<concept_id>10002978.10003022</concept_id>
+<concept_desc>Security and privacy~Software and application security</concept_desc>
+<concept_significance>500</concept_significance>
+</concept>
+</ccs2012>
+\end{CCSXML}
+
+\ccsdesc[500]{Security and privacy~Software and application security}
+
+
+\maketitle
+\thispagestyle{empty}
+
+\input{sections/Introduction}
+\input{sections/background}
+\input{sections/problemDesc}
+\input{sections/AddressRelay} 
+\input{sections/evaluationShort}
+\input{sections/AddressEmulation}
+\input{sections/Discussions}
+%\input{sections/relatedWork}
+\input{sections/conclusion}
+
+%\clearpage
+
+\bibliographystyle{ACM-Reference-Format}
+ \balance
+\bibliography{paper}
+
+
+\end{document}

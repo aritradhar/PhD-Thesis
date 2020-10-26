@@ -8,7 +8,7 @@ In the previous sections, we describe how the \name \js and the \device together
 \subsection{IO Operations}
 \label{sec:confidentiality:io}
 
-\lstset{language=HTML, frame=tb, caption=\small{\textbf{HTML page from the remote server that contains the encrypted UI specification for IO confidentiality.}} , label = snippet:encryptedHTML, firstnumber =1}
+\lstset{language=HTML, frame=tb, caption=\textbf{Example HTML form showing encrypted UI specification. } HTML page from the remote server that contains the encrypted UI specification for IO confidentiality. , label = snippet:encryptedHTML, firstnumber =1}
 \begin{figure}[t]
 \small
 \begin{lstlisting}[mathescape=true]
@@ -23,25 +23,25 @@ In the previous sections, we describe how the \name \js and the \device together
   encrypted specification] </script>
 </form> 
 \end{lstlisting}
-\spacesave 
+
 \end{figure}
 
 
 
 %After the server and the \device establish the \tls channel, \name is ready to provide IO confidentiality.
 
-\myparagraph{Establishing TLS} The \device and the server create TLS using the public certificates. The TLS uses the emulated keystroke streams and HDMI as the upstream and downstream channels, respectively, as described in Section~\ref{sec:systemDesign}. Implementation details are provided in Section~\ref{sec:prototype:impl:tls}. 
+\subsection{Establishing TLS} The \device and the server create TLS using the public certificates. The TLS uses the emulated keystroke streams and HDMI as the upstream and downstream channels, respectively, as described in Section~\ref{sec:systemDesign}. Implementation details are provided in Section~\ref{sec:prototype:impl:tls}. 
 
-\parasave
-\myparagraph{Output confidentiality} Output confidentiality ensures that information sent from the remote server and the visual render of the user's input is hidden from the host. To enable output confidentiality, the UI overlay mechanism that is described in Section~\ref{sec:systemDesign:transformation} is modified slightly. The difference is that the specification is not generated in the host side, but rather in the server.
+
+\subsection{Output confidentiality} Output confidentiality ensures that information sent from the remote server and the visual render of the user's input is hidden from the host. To enable output confidentiality, the UI overlay mechanism that is described in Section~\ref{sec:systemDesign:transformation} is modified slightly. The difference is that the specification is not generated in the host side, but rather in the server.
 %Here we \name does not require \name JS to transform all the UI elements to QR code specification. 
 A small server-side module that is very similar to \name JS transforms the UI elements to the UI specification (one example is provided in Specification~\ref{snippet:UISpecification}) and encrypts it with the \tls session key. 
 The encrypted specification is delivered to the client browser inside the \texttt{<encrypted\_qr>} tag in the HTML file which is then encoded (as a QR-code) by the \name JS. The \device decodes the QR code from the intercepted HDMI frames, decrypts the specification and renders the overlay accordingly. One example is provided in the HTML Snippet~\ref{snippet:encryptedHTML} with the corresponding UI illustrated in Figure~\ref{fig:activityPrivacy}. 
 %The \texttt{<encrypted>} tag contains the encrypted UI specification from the server. The \name JS (inside \texttt{<script>} tag) encodes this encrypted UI specification to a QR code.
 This feature of \name allows the remote server to send securely private information to the user in the presence of a compromised host, e.g., bank account statements, or any other confidential message. 
 
-\parasave
-\myparagraph{Input Confidentiality} When the user enters her mouse pointer into the overlaid UI area, the \device stops transmitting any mouse or keyboard event to the host, making it completely oblivious of any mouse movement or keystroke during that time. 
+
+\subsection{Input Confidentiality} When the user enters her mouse pointer into the overlaid UI area, the \device stops transmitting any mouse or keyboard event to the host, making it completely oblivious of any mouse movement or keystroke during that time. 
 However, the user can still see her inputs on the screen as the \device renders the plaintext character on the overlaid UI elements, therefore making them visible only to the user.
 Likewise, when the user selects a UI element, for example, a radio button that is shown in Figure~\ref{fig:activityPrivacy}, the \device stores the selected value in the recorded data.
 On form submission, \device encrypts the recorded data with the \tls key and sends them to the remote server.
@@ -49,9 +49,9 @@ On form submission, \device encrypts the recorded data with the \tls key and sen
 
 \begin{figure}[t]
 \centering
-\includegraphics[trim={0 4cm 16.5cm 0}, clip, width=0.88\linewidth]{activityPrivacyRender.pdf}
+\includegraphics[trim={0 4cm 16.5cm 0}, clip, width=0.88\linewidth]{chapters/ProtectIOn/images/activityPrivacyRender.pdf}
 %\caption{\textbf{\name IO confidentiality.} The figure shows how \name achieves the confidentiality of the UI elements and the mouse pointer in the presence of a compromised host. The upper screenshot shows the host's view of the display, while the lower one shows the user's view. The host can only see a QR code where the specification is encrypted by the \tls session key between the \device and the remote server. The user saw the decoded and overlaid UI objects that are retrieved from the QR code sent by the remote server (as described in Section~\ref{sec:systemDesign:transformation}).}
-\caption{\textbf{\name IO confidentiality.} The figure shows \one the browser render of the webpage in Specification~\ref{snippet:encryptedHTML} where the \name \js produces the encrypted QR code. \two shows the UI overlay that is decrypted and decoded by the \device. \three shows the user's view when the \device overlays the UI on the HDMI frame, and the user starts to interact with the UI.}
+\caption[\name IO confidentiality]{\textbf{\name IO confidentiality.} The figure shows \one the browser render of the webpage in Specification~\ref{snippet:encryptedHTML} where the \name \js produces the encrypted QR code. \two shows the UI overlay that is decrypted and decoded by the \device. \three shows the user's view when the \device overlays the UI on the HDMI frame, and the user starts to interact with the UI.}
 %\spacesave
 \label{fig:activityPrivacy}
 \centering
@@ -64,8 +64,8 @@ The IO confidentiality could be viewed as a similar problem to \emph{phishing} w
 
 Note that SAS is one of many ways to inform the user securely about the trusted overlay on the screen generated by the \device. Evaluation of the effectiveness of SAS over other attention focusing mechanisms is out-of-scope of this paper. Hence, \name uses SAS as an example of the attention focusing mechanism for confidentiality. In principle, \name could be integrated with other proposed approaches such as security indicators, or secret images~\cite{6894474,Marforio2016}.
 
-\parasave
-\myparagraph{UI protection profile} The remote server can set a configurable UI protection profile per overlaid protected UI (i.e., QR code). The protection policy is defined in the \texttt{SAS} attribute in the example specification provided in Specification~\ref{snippet:UISpecification}. The policy dictates how the UI would respond to the SAS provided by the user. By default, the overlaid UI is locked from the user and requires the SAS keystroke from the user to unlock the sensitive UI. This information is overlaid on the UI to remind the user to execute it. One example UI protection policy could be \texttt{5:LB} (refer to Specification~\ref{snippet:UISpecification}), which denotes \device invokes a lightbox on the HDMI frames except for the UI overlay and the mouse pointer overlay for a cool-down period of $5$ seconds. The form remains locked for this cool-down period.
+
+\subsection{UI protection profile} The remote server can set a configurable UI protection profile per overlaid protected UI (i.e., QR code). The protection policy is defined in the \texttt{SAS} attribute in the example specification provided in Specification~\ref{snippet:UISpecification}. The policy dictates how the UI would respond to the SAS provided by the user. By default, the overlaid UI is locked from the user and requires the SAS keystroke from the user to unlock the sensitive UI. This information is overlaid on the UI to remind the user to execute it. One example UI protection policy could be \texttt{5:LB} (refer to Specification~\ref{snippet:UISpecification}), which denotes \device invokes a lightbox on the HDMI frames except for the UI overlay and the mouse pointer overlay for a cool-down period of $5$ seconds. The form remains locked for this cool-down period.
 
 The design of the \name system is independent of the secure attention sequence (SAS) value. In principle, each issuer that deploys \device devices to users (see Section~\ref{sec:approach:systemAttackerModel}) could define its own custom SAS and configure the deployed \device devices to intercept that key sequence. Our recommendation, however, is that the \device issuers follow established platform-specific SAS values. For example, if a \device device is issued for the purposes of protecting user interactions on a  Windows platform, we recommend that the device issuer pre-configures the \device to intercept the Windows-specific \texttt{Ctr+Alt+Del} sequence. Similarly, if a \device device is deployed to be used on another OS, it should be pre-configured to intercept the SAS sequence commonly used on that platform. (In cases where the same \device device would be used on multiple different platforms, it could be either configured to intercept multiple SAS values or it could use a single SAS value that the issuer needs to communicate to its user.)
 %or SAS to prevent the attacker from putting a different SAS instruction on the screen. The SAS keystroke is first intercepted by the \device that checks for the QR code on the HDMI stream.}
