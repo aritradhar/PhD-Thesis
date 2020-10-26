@@ -1,0 +1,22 @@
+\let\oldding\ding% Store old \ding in \oldding
+\renewcommand{\ding}[2][1]{\scalebox{#1}{\oldding{#2}}}% Scale \oldding via optional argument
+
+
+\let\oldemph\name
+\renewcommand{\name}{\textsc{ProximiTEE}\xspace}
+\let\oldemph\tool
+\renewcommand{\tool}{\textsc{\name API}\xspace}
+%\newcommand{\device}{\textsc{ProximiKey}\xspace}
+\let\oldemph\device
+\renewcommand{\device}{\textsc{ProximiKey}\xspace}
+
+\newcommand{\connect}{$T_{con}$\xspace}
+\newcommand{\detach}{$T_{detach}$\xspace}
+
+
+\newcommand{\id}{\texttt{ID}\xspace}
+%\newcommand{\myparagraph}[1]{\paragraph{#1}}
+
+\newcommand{\nameclave}{\name enclave\xspace}
+\newcommand{\app}{application-specific enclave\xspace}
+\newcommand{\propname}{secure offline enrollment and revocation\xspace}

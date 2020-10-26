@@ -20,7 +20,7 @@ This allows the attacker to perform an early form submission with incomplete inp
 The drawbacks of the existing systems show that ensuring the integrity and confidentiality of the IO in the presence of an untrusted host is a non-trivial problem and requires a comprehensive solution. All of the previous trusted path solutions neither protect both input and output simultaneously, nor do they consider different modalities of input. We discuss such drawbacks in details, along with some of the relevant solutions in Section~\ref{sec:problemStatement:existingSolution}.
 
  
-\myparagraph{Our solution} The shortcomings of the existing literature provide the groundwork of our system named \name.
+\subsection{Our solution} The shortcomings of the existing literature provide the groundwork of our system named \name.
 \name is built on the following observations: i) input integrity is possible only when both input and output integrity are ensured simultaneously, ii) all the input modalities are needed to be protected as they influence each other, and iii) high cognitive load results in user habituation errors. \name uses a trusted low-TCB auxiliary device that we call \device which works as a mediator between all user IO devices and the untrusted host. Instead of implementing a separate network interface, the \device uses the host as an untrusted transport - reducing attack surface.  
 %\red{\device does not communicate with the trusted remote server directly. Instead, the \device uses the host as an untrusted transport.}
 
@@ -31,10 +31,10 @@ The drawbacks of the existing systems show that ensuring the integrity and confi
 
 \emph{Deployment.} \device is a fully plug-and-play device that is compatible with any host system regardless of their architecture or OS and does not require the user to install any software on the host. Note that our realization of \name uses an external device. However, the current system architecture can be modified, e.g., \device can be integrated into the graphics processor. 
 
-\myparagraph{Our contributions} We now summarize our contributions:
+\subsection{Our contributions} We now summarize our contributions:
 
 
-\begin{mylist}
+\begin{enumerate}
   \item \textbf{Identification of IO security requirements:} We identify new requirements for trusted path based on the drawbacks of the existing literature: i) unless both output and input integrity are secured simultaneously, it is impossible to achieve any of the two, and ii) without protecting the integrity of all the modalities of inputs, none could be achieved (Section~\ref{sec:problemStatement:existingSolution}).
   
    
@@ -44,7 +44,7 @@ The drawbacks of the existing systems show that ensuring the integrity and confi
   
    
   \item \textbf{Implementation and evaluation:} We also implement a prototype of \name and evaluate its performance (Sections~\ref{sec:prototype},~\ref{sec:eval}, and Appendix~\ref{appendix:implementation}).
-\end{mylist}
+\end{enumerate}
 
 
 %\myparagraph{Organization of the paper} The organization of this paper is as the following. Section~\ref{sec:problemStatement} provides the detailed motivation, problem statement, state-of-the-art and the goals of this paper. Section~\ref{sec:approach} provides the system \& attacker model, challenges and a brief overview of our solution. We discussed the technical details of \name in Section~\ref{sec:systemDesign}. Section~\ref{sec:securityAnalysis} provides in-depth security analysis of \name. Section~\ref{sec:prototype} and~\ref{sec:eval} provide details of \name prototype implementation and corresponding evaluation. Finally, Section~\ref{sec:relatedWorks} and~\ref{sec:conclusion} provides the related research works and concludes the paper respectively.

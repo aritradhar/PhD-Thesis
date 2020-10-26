@@ -1,6 +1,94 @@
 
+\begin{table*}[h]
+\centering
+\resizebox{\textwidth}{!}{
+  \begin{tabular}{l | l | c  c  c  c | c  c  c  c | c c} 
+  \hline
+    \multicolumn{2}{c}{\multirow{2}{*}{Security Requirements} \ldelim\{{2}{-10mm}[]} & \multicolumn{4}{c}{} & \multicolumn{4}{c}{\cellcolor{Gray}\textbf{R1}} & \multicolumn{2}{c}{} \\
+    %\multicolumn{2}{c}{} & \multicolumn{4}{c}{} & \multicolumn{3}{c}{} & \multicolumn{3}{c}{} \\
+    %\multicolumn{2}{c}{} & \multicolumn{8}{c}{} & \multicolumn{2}{c}{} \\
+    \multicolumn{2}{c}{} & \multicolumn{4}{c|}{\cellcolor{Gray}\textbf{R4}} & \multicolumn{3}{c}{\cellcolor{Gray}\textbf{R2}} & \multicolumn{1}{c}{} & \multicolumn{2}{c}{\cellcolor{Gray}\textbf{R3a/b}} \\ \hline
+   \multirow{4}{*}{Category}
+   & \multicolumn{1}{c|}{\multirow{4}{*}{Solutions}} &\multicolumn{4}{c|}{Trust Assumption} & \multicolumn{4}{c| }{IO Security Features} & \multicolumn{2}{c} {Usability}\\  \cline{3-12}
+   & &\multicolumn{2}{c|}{Hardware} & \multicolumn{2}{c|}{Software} & \multicolumn{3}{c|}{Input} & \multicolumn{1}{c|}{Output} & \\  \cline{3-10}
+   %\rowcolor{Gray}
+    & & Requires & \multicolumn{1}{c|}{External} & Isolated & Hypervisor/ & \multirow{2}{*}{Keyboard} & \multirow{2}{*}{Pointer} & \multicolumn{1}{c|}{\multirow{2}{*}{Touch}} & \multirow{2}{*}{Display} & No & \multirow{2}{*}{PnP}\\
+   \cellcolor{white} & & TEE & \multicolumn{1}{c|}{trusted HW} & API/Drivers & OS & & & \multicolumn{1}{c|}{} & & SI &\\
+   \hline    
+    \rowcolor{Gray}
+    \cellcolor{white} & Shadowcrypt~\cite{he2014shadowcrypt}                  &          &      &      \yes      &  \yes    &               & \yes     &           &   &    &\yes\\
+    
+    &Browser-based~\cite{ye2005trusted}             &          &       & \yes         & \yes     &               &       &           & \yesNope &   &\yes\\
+    \rowcolor{Gray}
+       \cellcolor{white} & InContext~\cite{Overshadow}                  &          &      &            & \yes     &               & \yes     &           &   &    &\yes\\
+    & Overshadow~\cite{Overshadow}                  &          &      &            & \yes     &               &       &           &   &  &  \\
+    \rowcolor{Gray}
+    \cellcolor{white}&Virtual ghost~\cite{criswell2014virtual}      &          &      &          & \yes     &               &       &           &   &  & \\
+    &TrustVisor~\cite{mccune2010trustvisor}          &          &      &          & \yes     &               &       &           &   &  & \\
+    \rowcolor{Gray}
+    \cellcolor{white}&Inktag~\cite{hofmann2013inktag}              &          &      &          & \yes     &               &       &           &   &   & \\
+    &Splitting interfaces~\cite{ta2006splitting}  &          &      &          & \yes     & \yes             &       &           & \yes &  & \\
+    \rowcolor{Gray}
+    \cellcolor{white}&$SP^3$~\cite{yang2008using}                  &          &      &          & \yes     & \yes             &       &           &   &  & \\
+    &SGX IO~\cite{weiser2017sgxio}                   & \yes     &      & \yes     & \yes    & \yes             &       &           &   &  & \\
+    \rowcolor{Gray}
+    \cellcolor{white}\parbox[t]{1mm}{\multirow{-11}{*}{\rotatebox[origin=c]{90}{\textbf{Hypervisor/OS-based}}}}  \ldelim\{{-11}{0mm}[] & SchrodinText~\cite{sani2017schrodintext}     & \yes     &   &      & \yes     &               &       &           & \yes &  &  \\
+    &BASTION-SGX~\cite{BASTION-SGX}                 & \yes     &       &          &      & \yes             &       &           &   &  &\yes\\
+    \rowcolor{Gray}
+    \cellcolor{white}&Slice~\cite{azab2011sice}                     & \yesNope &       &          &      &               &       &           &   &  & \\
+    &TrustOTP~\cite{sun2015trustotp}                 & \yes     &       &          &      & \yes             &       &           & \yesNope &  &\yes\\
+    \rowcolor{Gray}
+    \cellcolor{white}&VeriUI~\cite{liu2014veriui}                     & \yes     &   & \yes         &      & \yesNope         &       &           & \yesNope &  & \\
+    &AdAttester~\cite{li2015adattester}             & \yes     &   & \yes         &      &               &   & \yesNope     & \yesNope &  & \\
+    \rowcolor{Gray}
+    \cellcolor{white}&TruZ-Droid~\cite{ying2018truz}                 & \yes     &   & \yes         &      & \yes             &       &           & \yesNope &  &\yes\\
+    &TrustUI~\cite{li2014building}                 & \yes     &   & \yesNope     &      &               &       & \yesNope         & \yesNope &  &\yes\\
+    \rowcolor{Gray}
+    \cellcolor{white}&VButton~\cite{li2018vbutton}                 & \yes     &   & \yes     &      & \yesNope             &       & \yes         & \yes &  & \\
+    &CARMA~\cite{vasudevan2012carma}                 & \yes     & \yes     &          &      &               &       &           &   & \yes & \\
+    \rowcolor{Gray}
+    \cellcolor{white}&\textsc{ProximiTee}~\cite{dhar2018proximitee}&\yes         & \yes  & \yesNope     &      & \yes             &       &           &   &\yes &\yes\\
+     \cellcolor{white}\parbox[t]{3mm}{\multirow{-13}{*}{\rotatebox[origin=c]{90}{\textbf{TEE-based}}}}  \ldelim\{{-13}{0mm}[] & Fidelius~\cite{Fidelius}                        & \yes     & \yes  & \yes         &      & \yes             &       &           & \yesNope &   &  \\
+    \rowcolor{Gray}
+    \cellcolor{white}&FPGA-based~\cite{brandon2017trusted}         &          & \yes  &          &      & \yes             &       &           & \yes &   & \\
+    &IntegriKey~\cite{IntegriKey}                 &          & \yes  & \yesNope     &      & \yesNope         &      &          &  & \yes &\yes\\ 
+    \rowcolor{Gray}
+    \cellcolor{white} \cellcolor{white}\parbox[t]{5mm}{\multirow{-6}{*}{\rotatebox[origin=c]{90}{\textbf{External HW}}}}  \ldelim\{{-6}{0mm}[] &Terra~\cite{garfinkel2003terra}                 &          & \yes  & \yesNope     &      &              &       &           &   &  & \\ 
+    \\[-1em]
+    \rowcolor{white}
+    \hline
+    \cellcolor{white}&\textbf{\name}                    &          & \yes  &          &      & \yes             & \yes     & \yes         & \yes & \yes & \yes\\
+    \hline
+    \multicolumn{12}{c}{\multirow{2}{*}{\yes~requires/supports \hspace{1cm} \yesNope ~partially requires/supports}} \\
+  \end{tabular}
+  }
+  \caption[Summary of existing trusted path solutions]{\textbf{Summary of existing trusted path solutions} by their trust assumptions, security features, and usability. A lower trust assumption, a high number of security features and high usability are desired from a trusted path solution. SI and PnP stand for security indicator and plug and play respectively. The table also categorizes the trust assumptions, IO security features and usability in-terms of the required security and functional properties that we list in Section~\ref{sec:problemStatement:goals}).}
+ % \spacesave
+  \label{tab:relatedWorks}
+\end{table*}
+
+
+\begin{table}[h]
+%\scriptsize
+\centering
+\begin{tabular}{l | c}
+\textbf{Operation} & \textbf{Average time/accuracy} \\\hline
+Detecting mouse pointer $(A)$ & 1.76 ms \\
+Detection QR code $(B)$ & 14 ms\\
+Decoding QR code + Overlay $(C)$ & 6 ms\\
+Effective display latency $(A+B+C)$ & 21.76 ms \\
+Mouse latency & 250 $\mu$s\\
+Keyboard latency & 170 $\mu$s\\\hline
+Image analysis accuracy of mouse pointer & 0.997 \\\hline
+\end{tabular} 
+\caption[\device performance]{\textbf{\device performance}. The table shows the latency and accuracy corresponding to \name prototype operations.}
+%\spacesave
+\label{tab:performance}
+\end{table}
+
 \section{Summary of Related Work}
 \label{sec:relatedWorks}
+
 
 In Table~\ref{tab:relatedWorks}, we summarize the existing research work based on their trust assumptions, IO security features, and usability. Note that it is desirable to have a lower trust assumption, higher security features, and higher usability. The trust assumption is further refined into hardware trust assumption that includes TEE and external trusted hardware, and software trust assumption, which includes isolated device drivers/APIs and trusted hypervisor/OS. The IO security features involve input that includes keyboard, pointer and touch input, and output that only includes the display. Lastly, the usability aspect is divided into two, the requirement of security indicator (SI), and if the solution supports plug-and-play (PnP). PnP implies that the solution can be integrated into the existing system without introducing any major changes into them and supports different architectures and OS out of the box.
 
