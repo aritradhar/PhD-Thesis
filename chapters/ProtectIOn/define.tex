@@ -1,0 +1,142 @@
+\lstset{
+  basicstyle=\ttfamily\ttfamily,
+  numbers=left, xleftmargin=2em,frame=single,framexleftmargin=1.5em,
+  %numberstyle=\tiny,
+  columns=fullflexible,
+  showstringspaces=false,
+  commentstyle=\color{gray}\upshape
+}
+
+\lstdefinelanguage{HTML}
+{
+ basicstyle=\scriptsize\ttfamily\bfseries,
+  morestring=[b]",
+  morestring=[s]{>}{<},
+  morecomment=[s]{<?}{?>},
+  stringstyle=\color{black},
+  identifierstyle=\color{darkblue},
+  keywordstyle=\bfseries\color{blue},
+  backgroundcolor=\color{background},
+  morekeywords={form,input,encrypted_qr,Input, script, br}
+}
+
+\colorlet{punct}{red!70!black}
+\definecolor{background}{HTML}{EEEEEE}
+\definecolor{delim}{RGB}{20,105,176}
+\colorlet{numb}{magenta!20!black}
+
+\lstdefinelanguage{json}{
+    basicstyle=\scriptsize\bfseries,
+    numbers=left,
+    numberstyle=\scriptsize,
+    stepnumber=1,
+    numbersep=5pt,
+    identifierstyle=\color{black},
+    keywordstyle=\bfseries\color{blue},
+    showstringspaces=false,
+    breaklines=true,
+    frame=lines,
+    backgroundcolor=\color{background},
+    morekeywords={formId, formName, signature, nonce, ui, dim, id, type, label, text, trigger, domain, sizeH, sizeW, size_x, size_y, enable, uiGap, size, SAS, RE},
+    literate=
+     *{0}{{{\color{numb}0}}}{1}
+      {1}{{{\color{numb}1}}}{1}
+      {2}{{{\color{numb}2}}}{1}
+      {3}{{{\color{numb}3}}}{1}
+      {4}{{{\color{numb}4}}}{1}
+      {5}{{{\color{numb}5}}}{1}
+      {6}{{{\color{numb}6}}}{1}
+      {7}{{{\color{numb}7}}}{1}
+      {8}{{{\color{numb}8}}}{1}
+      {9}{{{\color{numb}9}}}{1}
+      {:}{{{\color{punct}{:}}}}{1}
+      {,}{{{\color{punct}{,}}}}{1}
+      {\{}{{{\color{delim}{\{}}}}{1}
+      {\}}{{{\color{delim}{\}}}}}{1}
+      {[}{{{\color{delim}{[}}}}{1}
+      {]}{{{\color{delim}{]}}}}{1},
+}
+
+\renewcommand\lstlistingname{Specification}
+
+\let\oldding\ding% Store old \ding in \oldding
+\renewcommand{\ding}[2][1]{\scalebox{#1}{\oldding{#2}}}% Scale \oldding via optional argument
+
+\newcommand{\zero}{\ding[1.2]{171}\xspace}
+\newcommand{\one}{\ding[1.2]{172}\xspace}
+\newcommand{\two}{\ding[1.2]{173}\xspace}
+\newcommand{\three}{\ding[1.2]{174}\xspace}
+\newcommand{\four}{\ding[1.2]{175}\xspace}
+\newcommand{\five}{\ding[1.2]{176}\xspace}
+\newcommand{\six}{\ding[1.2]{177}\xspace}
+\newcommand{\seven}{\ding[1.2]{178}\xspace}
+\newcommand{\eight}{\ding[1.2]{179}\xspace}
+\newcommand{\nine}{\ding[1.2]{180}\xspace}
+\newcommand{\ten}{\ding[1.2]{181}\xspace}
+
+%spacesave is now disabled
+\newcommand{\spacesave}{\vspace{-14pt}}
+\newcommand{\spacesaveL}{\vspace{-16pt}}
+\newcommand{\parasave}{\vspace{-1pt}}
+%\newcommand{\spacesave}{\vspace{-10pt}}
+
+
+\definecolor{gray}{rgb}{0.4,0.4,0.4}
+\definecolor{darkblue}{rgb}{0.0,0.0,0.6}
+\definecolor{cyan}{rgb}{0.0,0.6,0.6}
+%\definecolor{Gray}{gray}{0.1}
+
+\definecolor{Gray}{rgb}{0.88, 0.88, 0.88}
+\definecolor{HGray}{rgb}{0.7, 0.7, 0.7}
+%\definecolor{HGray}{gray}{0.8}
+
+
+
+
+\newcommand{\red}[1]{\textcolor{black}{#1}} 
+\newcommand{\blue}[1]{\textcolor{black}{#1}} 
+
+\newcommand{\ad}[1]{\textcolor{red}{Aritra: #1}}
+\newcommand{\srdjan}[1]{\textcolor{brown}{Srdjan: #1}}
+\newcommand{\todo}[1]{\textcolor{red}{TODO: #1}}
+\newcommand{\tocite}{\textcolor{blue}{[cite]}}
+
+%\widowpenalty 200000
+%\clubpenalty 200000
+%\usepackage[compact]{titlesec}
+
+\newcommand{\name}{\textsc{ProtectIOn}\xspace}
+\newcommand{\tool}{\name}
+\newcommand{\device}{\textsc{IOHub}\xspace}
+
+
+\newcommand{\server}{$\mathcal{S}$\xspace}
+\newcommand{\user}{$\mathcal{U}$\xspace}
+\newcommand{\host}{$\mathcal{H}$\xspace}
+
+\newcommand{\toolname}{\name\xspace}
+
+\newcommand{\usb}{USB\xspace}
+\newcommand{\webusb}{WebUSB\xspace}
+\newcommand{\bluetooth}{Bluetooth\xspace}
+\newcommand{\html}{HTML\xspace}
+\newcommand{\webbt}{WebBluetooth\xspace}
+\newcommand{\http}{HTTP\xspace}
+\newcommand{\https}{HTTPS\xspace}
+\newcommand{\tls}{TLS\xspace}
+\newcommand{\onSelect}{\texttt{onSelect()}\xspace}
+
+%\newcommand{\myparagraph}[1]{{\scshape \bfseries #1.}}
+\newcommand{\myparagraph}[1]{\noindent\textbf{#1.}}
+
+\newcommand{\webrtc}{\texttt{WebRTC}\xspace}
+\newcommand{\js}{JavaScript\xspace}
+
+\newcommand{\mytab}{~~~}
+\newcommand{\java}{\textsc{Java}\xspace}
+
+\definecolor{Gray}{gray}{0.85}
+\definecolor{LightCyan}{rgb}{0.88,1,1}
+
+\newcommand\MyLBrace[2]{%
+  \left.\rule{0pt}{#1}\right\}\text{#2}}

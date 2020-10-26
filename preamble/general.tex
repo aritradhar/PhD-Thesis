@@ -1,4 +1,6 @@
 % File encoding
+\usepackage{etex}
+\usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 
 % Languages
@@ -37,11 +39,31 @@
 
 % Handy packages
 \usepackage{csquotes}  % smart quotes
-\usepackage[T1]{fontenc}
+
 \usepackage{xspace}
 \usepackage{textcomp}
 \usepackage{mparhack}
 \usepackage{relsize}
+\usepackage{graphicx,pifont}
+\usepackage{adjustbox}
+\usepackage{subcaption}
+\usepackage{mathtools}
+\usepackage{mathrsfs}
+\usepackage{amssymb,amsmath,amsthm}
+\usepackage{xspace}
+\usepackage{url}
+\usepackage{pifont}
+\usepackage{listings}
+\usepackage{color, colortbl}
+
+\usepackage{multirow, bigdelim}
+\usepackage{wasysym}
+\usepackage{array}
+\usepackage[mode=buildnew]{standalone}
+\usepackage{rotating}
+
+
+
 
 % Biblatex
 \input{preamble/biblatex}
@@ -103,6 +125,9 @@
 \usepackage{graphicx}
 \usepackage{rotating}
 \usepackage{tikz}
+\usetikzlibrary{positioning}
+\usetikzlibrary{shapes,arrows,calc}
+\usepackage[underline=false]{pgf-umlsd}
 \usepackage{pgfplots}
 \pgfplotsset{compat=newest}
 \usetikzlibrary{shapes.geometric}
