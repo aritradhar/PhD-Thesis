@@ -2,3 +2,5 @@
 /thesis.synctex.gz
 /tmp/
 /thesis.toc
+*.aux
+*.log
