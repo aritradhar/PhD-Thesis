@@ -30,7 +30,7 @@ In the previous sections, we describe how the \name \js and the \device together
 
 %After the server and the \device establish the \tls channel, \name is ready to provide IO confidentiality.
 
-\subsection{Establishing TLS} The \device and the server create TLS using the public certificates. The TLS uses the emulated keystroke streams and HDMI as the upstream and downstream channels, respectively, as described in Section~\ref{sec:systemDesign}. Implementation details are provided in Section~\ref{sec:prototype:impl:tls}. 
+\subsection{Establishing TLS} The \device and the server create TLS using the public certificates. The TLS uses the emulated keystroke streams and HDMI as the upstream and downstream channels, respectively, as described in Section~\ref{sec:protection}. Implementation details are provided in Section~\ref{sec:prototype:impl:tls}. 
 
 
 \subsection{Output confidentiality} Output confidentiality ensures that information sent from the remote server and the visual render of the user's input is hidden from the host. To enable output confidentiality, the UI overlay mechanism that is described in Section~\ref{sec:systemDesign:transformation} is modified slightly. The difference is that the specification is not generated in the host side, but rather in the server.

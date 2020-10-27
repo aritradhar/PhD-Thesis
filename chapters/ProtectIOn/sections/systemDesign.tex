@@ -7,7 +7,7 @@
 \end{figure*}
 
 \section{\name for IO Integrity}
-\label{sec:systemDesign}
+\label{sec:protection}
 
 
 
@@ -32,7 +32,7 @@
     "label":"Cancel", "trigger":"false"}],
   "signature": "0x45AB...", "id": "0x0ab.."}
 \end{lstlisting}
-\spacesave
+
 \end{figure}
 
 %In this section, we provide the technical details of \name for the integrity protection of IO devices. 
@@ -127,7 +127,7 @@ and starts tracking the pointer afterward. Note, that at any point, if the \devi
 \subsubsection{\bfseries Entering/exiting secure mode with keyboard} In our implementation of \name, entering and exiting the secure mode is performed by moving the mouse pointer into or out of the protected UI area (sensitive web form). 
 %But similar could be done with the keyboard also.
 This could similarly be done with the keyboard.
-The user could use the \emph{TAB} button that selects the QR code (that is an image on the webpage) on the browser. When the QR code is selected, \name JS triggers a change in the JSON specification that is encoded in the QR code. E.g., the specification contains a parameter named \emph{selected} that defines if the user is inside the secure mode or not. By changing this parameter, the \name JS signals the \device that the user is currently in the secure mode. While inside the secure mode, the \device handles the \emph{TAB} signal from the keyboard, allowing the user to switch UI elements within the secure UI. When the user reaches at the end of the secure UI, the device returns control back to the \name JS when the user presses \emph{TAB}.
+The user could use the \emph{TAB} button that selects the QR code (that is an image on the webpage) on the browser. When the QR code is selected, \name JavaScript triggers a change in the JSON specification that is encoded in the QR code. E.g., the specification contains a parameter named \emph{selected} that defines if the user is inside the secure mode or not. By changing this parameter, the \name JavaScript signals the \device that the user is currently in the secure mode. While inside the secure mode, the \device handles the \emph{TAB} signal from the keyboard, allowing the user to switch UI elements within the secure UI. When the user reaches at the end of the secure UI, the device returns control back to the \name JavaScript when the user presses \emph{TAB}.
 
 
 \begin{figure}[t]
@@ -145,14 +145,14 @@ The user could use the \emph{TAB} button that selects the QR code (that is an im
 
 When the user finishes providing her input via input devices (mouse and keyboard), the \device sends these values (with signature to ensure integrity) to the remote server. Sending these signed input values to the server requires an upstream channel from the \device to the server. 
 
-\parasave
-\myparagraph{Upstream channel}\label{sec:systemDesign:commit:upload} 
+
+\subsubsection{Upstream channel}\label{sec:systemDesign:commit:upload} 
 The data from the \device to the remote server is transmitted using the \name JavaScript snippet as a helper. 
 %The \name JavaScript snippet uses a hidden text field to accept data coming from the \device. 
 The \device emulates itself as a composite human interface device (HID) when it is connected to the host. The \device emulates keystrokes that transmit encoded data to the \name JavaScript snippet, which then forwards them to the remote server.
 
-\parasave
-\myparagraph{Sending input data} Figure~\ref{fig:sequence} depicts the user interactions in a sequence diagram. The user input transmission procedure is illustrated in Figure~\ref{fig:transformation}. This has two phases: \emph{record} and \emph{transmit} as described in the following:
+
+\subsubsection{Sending input data} Figure~\ref{fig:sequence} depicts the user interactions in a sequence diagram. The user input transmission procedure is illustrated in Figure~\ref{fig:transformation}. This has two phases: \emph{record} and \emph{transmit} as described in the following:
 
 \begin{enumerate}
 \item \textbf{Record.} After the UI elements are correctly overlaid on the screen, the users can interact with these UI elements. The user interaction with the overlaid UI element is no different than a standard UI. The UI specification encodes the behavior of all generated UI elements, making the \device aware of the semantics of the UI objects. E.g., when a user selects a text box and types on with her keyboard, the \device intercepts all keystrokes and renders the characters on the overlay.
@@ -167,15 +167,15 @@ Record = & (tb\_1, Data\_1);(tb\_2,Data\_2)
 %\subsubsection{\bfseries Server-side verification} \label{sec:systemDesign:commit:verification}
 Upon receiving the signed input data from the \device, the remote accepts the input if the signature verification is successful. Note, if an input field is annotated as \texttt{protect=``true''}, the server does not accept any input without the \device signature. This prevents the attacker-controlled host to submit data. 
 
-\parasave
-\myparagraph{Changing browser tabs or browsers}
+
+\subsubsection{Changing browser tabs or browsers}
 The \device supports multiple browsing tabs across multiple browsers. The UI specification contains \emph{formId} and \emph{domain} that works as the unique identifier for a specific form served from a specific web server. The \device can maintain multiple parallel TLS connection to web servers. Depending on the observed \emph{formId} and \emph{domain} (refer to Specification~\ref{snippet:UISpecification}), the device retrieves the data that is entered by the user. This way even if the user switches tabs, the \device can still allow editing the forms across tabs.
 
-\parasave
-\myparagraph{Input validation} Input validation, i.e., checking the input against a recommended input policy (e.g., regular expression) is one of the most widely used JavaScript functionalities, and it is a critical part of input integrity. The remote server sends the regular expression in the UI specification (\emph{RE} in Specification~\ref{snippet:UISpecification}) that the \device uses to validate the user input.
+
+\subsubsection{Input validation} Input validation, i.e., checking the input against a recommended input policy (e.g., regular expression) is one of the most widely used JavaScript functionalities, and it is a critical part of input integrity. The remote server sends the regular expression in the UI specification (\emph{RE} in Specification~\ref{snippet:UISpecification}) that the \device uses to validate the user input.
 
 %\myparagraph{Sequence of Events} In the previous sections, we explain the basic components of \name. Here we summarize the overall flow of the system. The sequence diagram of \name is illustrated in Figure~\ref{fig:sequence} that shows snapshots of two example sequences: mouse movement and filling up a web-form.
 
-\parasave
-\myparagraph{Fallback for legacy clients} \name is backward-compatible with the clients who do not use the \device. This is achieved by the remote server by showing a QR code briefly on the screen when the user visits the \name-enabled webpage. The \device intercepts the QR code and sends a signal to the server about its presence. In the absence of the \device, the remote server does not send the \name JS to the host that acts as a communication channel between the \device and the remote server. Note that the fallback mechanism is application-specific, and the service provider could decide if the fallback is detrimental to security.
+
+\subsubsection{Fallback for legacy clients} \name is backward-compatible with the clients who do not use the \device. This is achieved by the remote server by showing a QR code briefly on the screen when the user visits the \name-enabled webpage. The \device intercepts the QR code and sends a signal to the server about its presence. In the absence of the \device, the remote server does not send the \name JS to the host that acts as a communication channel between the \device and the remote server. Note that the fallback mechanism is application-specific, and the service provider could decide if the fallback is detrimental to security.
 

@@ -5,11 +5,11 @@ We implemented a complete prototype of the \name system. Our implementation cons
 
 \subsection{\device} 
 
-Our embedded device prototype is based on Cypress EZ-USB FX3 USB 3.0 prototyping board that is equipped with an $32$-bit $200$ MHz ARM9 core. The board communicates with the target platform over a native \usb 3.0 connection that provides up to 5 Gbps of bandwidth. FX3 provide direct memory access (DMA) out of the box through its API for efficient communication with the connected platform. We use the ARM mbed TLS~\cite{mbed} cryptographic library for the \tls.
+Our embedded device prototype is based on Cypress EZ-USB FX3 SuperSpeed USB controller prototyping board~\cite{fx3} that is equipped with an $32$-bit $200$ MHz ARM926EJ core, 512 KB SRAM and a USB 3.1 peripheral. The board communicates with the target platform over a native \usb 3.0 connection that provides up to 5 Gbps of bandwidth. FX3 provide direct memory access (DMA) out of the box through its API for efficient communication with the connected platform. We use the ARM mbed TLS~\cite{mbed} cryptographic library for the \tls.
 
 \myparagraph{Portability} We wanted the \device{}s software to be device-agnostic in our implementation. We achieved this by 1) using the mbed TLS library for cryptography and 2) limiting the device-specific functionality in isolated modules. This means that in order to use another device as \device, only the mbed TLS library has to be ported.
 
-\myparagraph{Channel encryption} The implementation supports three modes of channel encryption between the \device and the target platform. Mode selection is controlled by a combination of a run-time parameter and flags set at compile-time.
+\subsubsection{Channel encryption} The implementation supports three modes of channel encryption between the \device and the target platform. Mode selection is controlled by a combination of a run-time parameter and flags set at compile-time.
 
 \begin{enumerate}
   \item \emph{None} In this mode, the communication is carried out in plain text. It is obviously not recommended to use this configuration in any production setting. This mode is primarily used debugging and measuring the channel capacity.
@@ -18,6 +18,22 @@ Our embedded device prototype is based on Cypress EZ-USB FX3 USB 3.0 prototyping
 \end{enumerate}
 
 
+\subsubsection{SDK} Cypress, the manufacturer, provides a SDK for firmware development, available at~\cite{fx3_sdk}. In particular, it contains:
+
+\begin{enumerate}
+  \item Tool-chain to cross-compile.
+  \item Auxiliary programs to perform various tasks such as uploading an image file to the board, read USB descriptors and send/read data. Additionally, the SDK installs cyusb linux, a graphical user interface wrapped on top of those programs.
+  \item Firmware API Libraries.  
+ \end{enumerate}
+  
+\subsubsection{Challenges} While implementing the \device, we faced various challenges.
+
+\begin{enumerate}
+  \item \emph{Limited System Memory} The board features 512 KB memory. By default 180 KB are allocated for code and 32 KB as data area. However, a simple FX3 application with the required firmware libraries already comes in at roughly 100 KB. This turned out to be a problem when integrating mbed TLS. Their SSL example program was reported to measure 160 KB. Fortunately, by using a minimal configuration, we were able to reduce the size of the binary enough. This came at the cost of only supporting \texttt{TLS\_PSK\_WITH\_AES\_128\_CCM\_8} and limiting the maximum content length. The content length limitation is not a problem in our case, as we control both sides of the connection and our messages are small.
+
+ \item \emph{System Clock Resolution} The firmware API call \texttt{CyU3PGetTime} only provides a resolution of 1 ms. Since we deal with roundtrip times on the scale of $\mu$s between the \device and the target platform, this timing resolution is insufficient. However, the GPIO clock operates at a faster rate. By using a counter on a I/O pin, we are able to get a resolution of roughly 0.1 $\mu$s.
+  
+\end{enumerate}
 
 \subsection{\name enclave API.} 
 The \name API for \app{}s is written in C++ using the Intel SGX API. The API uses native SGX crypto library for the \tls implementation, and it is around 200 lines of code.

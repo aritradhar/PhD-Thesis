@@ -1,5 +1,5 @@
 \section{Problem Statement}
-\label{sec:problemStatement}
+\label{sec:problemStatementProtection}
 
 In this section, we motivate our work in the context of ensuring the integrity and confidentiality of IO data between the user and the remote servers. We also analyze existing research works that tackle the relevant problem. We explain how these works lack a proper solution and report the observations we derive from them. Lastly, we present the required security properties of \name that we obtain from the observations.
 
@@ -11,8 +11,6 @@ An adversary that controls the user's host can alter user intentions, i.e., it c
 The attacker can pass the wrong input to a remote safety-critical system such as a medical device, power plant, etc., or leak sensitive information such as credentials for e-banking, candidate preference in the e-voting, etc.
 
 
-
-%In this paper, we primarily target the trusted path problem to a remote server (such as a remote PLC, web server, or remotely accessible medical device, etc.) that is being accessed from a browser running on a commodity $x86$ host.
 
 
 \subsection{Analysis of Existing and Strawman Solutions}
@@ -38,8 +36,6 @@ neutral/.style={rectangle, draw, rounded corners, align=center, fill=black!5}
     \node[neutral, right=3cm of empty](root) {Trusted path}
     child { node[neutral, xshift=-70pt, yshift=15pt] (tc) {\textbf{A.} Transaction confirmation Device}}  
     child { node[neutral, right=10pt of tc] (td) {\textbf{B.} Trusted intermediary}       
-        %child { node[neutral, yshift=0pt, xshift=-30pt, yshift=7pt] (tee) {\textbf{B2.} TEE}}
-      %child { node[neutral, yshift=2pt, xshift=-50pt, yshift=7pt] (br) {\textbf{B1.} Browser-based}}   
      child { node[neutral, yshift=5pt, xshift=-60pt] (hv) {\textbf{B1.} Hypervisor-based}} 
      child { node[neutral, right=10pt of hv] (hw) {\textbf{B2.} External HW}}
      child { node[neutral, right=10pt of hw] (tee) {\textbf{B3.} System TEE}}
@@ -53,9 +49,6 @@ neutral/.style={rectangle, draw, rounded corners, align=center, fill=black!5}
     \node[below=0cm of hv](os) {Overshadow~\cite{Overshadow}};
     \node[below=0cm of os] {SGXIO~\cite{weiser2017sgxio}};
     \node[below=0cm of gurdion] {Fidelius~\cite{Fidelius}};
-     %\node[below=0cm of br](ic) {InContext~\cite{blake1998authenticated}};
-     %\node[below=0cm of ic] {W3C UI security policy~\cite{w3c_spec}};
-
     
     \end{tikzpicture}
     
@@ -76,8 +69,7 @@ neutral/.style={rectangle, draw, rounded corners, align=center, fill=black!5}
 \begin{figure}[t]
 \centering
 \includegraphics[trim={0 11.5cm 21.8cm 0}, clip, width=0.8\linewidth]{chapters/ProtectIOn/images/earlyFormSubmission.pdf}
-\caption[Early form submission attack]{\textbf{Early form submission attack} is possible on Fidelius~\cite{Fidelius}. The user selects and edits the field \emph{Units} while the OS triggers \emph{add} button, causing misconfiguration of a remote safety-critical PLC (Control by Web X-600M~\cite{controlbyweb}).}
-\spacesave
+\caption[Early form submission attacks]{\textbf{Early form submission attack} is possible on Fidelius~\cite{Fidelius}. The user selects and edits the field \emph{Units} while the OS triggers \emph{add} button, causing misconfiguration of a remote safety-critical PLC (Control by Web X-600M~\cite{controlbyweb}).}
 \label{fig:clickJack}
 \centering 
 \end{figure}
@@ -94,8 +86,6 @@ This allows an attacker to modify the instructions on the UI, such as changing t
 Fidelius already introduces a high cognitive load to users as they need to monitor multiple security indicators simultaneously before filling up one text field. Previous research works~\cite{egelman2008you,sobey2008exploring, anderson2016warning} have shown that systems that require users to observe multiple security indicators %that require the users to observe multiple markers on the screen (and also on an external device) 
 do not guarantee security in practice.
 Also, in specific scenarios, even the training to properly explain these indicators to users could be a significant drawback for a real deployment.
-%as the users require training to familiarize themselves with the system (such as different security indicators).
-%Fidelius overlays only user inputs on the screen and keeps them isolated from the host. 
 
 \vskip 1em
 \noindent\emph{$\rightarrow$ Observation 2}: If the \emph{protected output} is provided out-of-context, users are more likely not to verify it. Therefore input integrity can be violated.
@@ -118,7 +108,6 @@ Microarchitectural attacks on Intel SGX~\cite{van2018foreshadow} increase the at
 
 \myparagraph{B3.~System TEE-based solutions} VButton~\cite{li2018vbutton} uses ARM TrustZone (TZ) to securely render UI buttons and receive user input from them. This is possible on mobile devices because the TZ architecture support flags on the system bus that indicate whether an IO device like touchscreen communicates with a trusted TZ application or the untrusted OS. Such solutions are infeasible for us because i) secure communication between IO peripherals and TEE applications (like SGX enclaves) is not supported in the x86 architecture -- a similar system in x86 would require changes to the system architecture, TEE architecture and IO devices, ii) such solutions require TEE-aware applications and do not work with current browsers. Our goal is to design a solution that can be deployed on current the x86 architecture and used with existing popular browsers.
 
-
 \myparagraph{Strawman solution: Capturing screenshot} This strawman solution uses a trusted device that takes a screenshot when the user executes an action, e.g., mouse click to submit a form. The device then signs the snapshot and transmits it to the server along with the signed input. The remote server verifies the signature and then uses image/text analysis to extract the information from the UI elements such as labels on buttons or markers of a slider, etc. Therefore, the server would detect if the host has manipulated UI elements when presented to the user.
 
 This method is vulnerable to attacks because it does not capture the spatiotemporal user context. This implies that the attacker may show some spacial information on the screen to influence the user that may not be captured by the snapshot. Furthermore, taking a full-screen snapshot could also reveal private information of the user from other applications. Similarly, taking a snapshot does not guarantee that a specific UI has been presented on the screen as the attacker may render the legitimate UI shortly before the device captures the snapshot.
@@ -128,32 +117,21 @@ One way to mitigate this problem is to capture a video of user interaction. But 
 \subsection{Requirements of Security and Functional Properties}
 \label{sec:problemStatement:goals}
 
-%The lack of security properties and features in the existing solutions provides the necessary security and functional requirements for a trusted path that provides IO integrity and confidentiality and is usable. We can now summarize the observations that we derived from the literature and the strawman solution (refer to Section~\ref{sec:problemStatement:existingSolution}) as following:
-
 We can summarize the above-discussed limitations of previous solutions as the following requirements for our solution:
-
 
 \myparagraph{R1. Inter-dependency between input and output} 
 The first and second observations from the existing solutions show that the output and input security depend on each other, and they should be considered together. Otherwise, the attacker can manipulate the output to influence the user input.
-%The main lesson that we learn from the previous papers is that input and output integrity, and confidentiality cannot be considered in isolation. Rather, they are needed to be secured simultaneously as the output, and the input both influence each other.  
-
 
 \myparagraph{R2. Inter-dependency between all input modalities} 
 Existing web interfaces allow users to complete forms by using different modalities for the user input, namely the keyboard, the mouse, and the touchpad. The third observation shows that a secure system should protect all user input modalities simultaneously to achieve input integrity (against early-form submission and clickjacking).
-
-%If there exist multiple input sources (typically keyboard and mouse), all of them should be protected simultaneously as these input sources influence each other. For example, in a web application scenario, protecting the integrity of only the keyboard input does not provide input integrity as an attacker-controlled host can always execute an early form submission attack.
 
 
 \myparagraph{R3a. No cognitive load for IO integrity} 
 A system that protects IO operations should introduce minimal or no cognitive load to its users for input integrity.
 The system should guarantee the output integrity of the legitimate information necessary to complete a form and avoid asking the user to interact with an external device or monitor security indicators out-of-context.
 
-%Output integrity protection can eliminate the actions that lead to high cognitive loads to the user.  Such as using an external device to confirm every transaction, looking to a passive security indicator and confirming actions, etc. The systems that rely heavily on such security measures suffer from input errors that originate from user habituation. Moreover, such designs require user training that makes the system hard to deployment and costly.
-
 
 \myparagraph{R3b. User attention for IO confidentiality} Preserving the confidentiality of user inputs against a compromised host is a challenging task because the host can trick the user into revealing her inputs when the system is not active. Therefore, requiring users to perform a small action, e.g., press a key before entering confidential inputs is a valid tradeoff between usability and security.
-
-%Confidentiality requires active triggering from the user to distinguish the secure part of the screen from ensuring part of the screen if the part of the output provides integrity/confidentiality protection.
 
 
 \myparagraph{R4. Small trust assumptions and deployability} 

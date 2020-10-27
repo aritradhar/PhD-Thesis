@@ -3,7 +3,7 @@
 
 \begin{figure}[t]
 \centering
-\includegraphics[trim={0 8.5cm 17cm 0}, clip, width=0.85\linewidth]{chapters/ProtectIOn/images/approachOverview.pdf}
+\includegraphics[trim={0 8.5cm 17cm 0}, clip, width=0.8\linewidth]{chapters/ProtectIOn/images/approachOverview.pdf}
 \caption[High-level approach overview of \name]{\textbf{High-level approach overview of our solution.}  The \device connects the trusted IO devices and the attacker-controlled host.}
 \label{fig:approachOverview}
 \centering
@@ -28,7 +28,7 @@ There are several possible ways to deploy the \name system. Here we outline two 
 In another example deployment, the \device is issued by a third-party vendor, and it is intended to be used to protect the user interaction of various security-critical online services. In such a deployment, the \device can be pre-configured with the public key of its issuer and a white-list of trusted application server certificates. The issuer of the device can issue authenticated updates to the white-list after its deployment if needed.
 
 \subsubsection{Attacker model and capabilities} Our attacker model assumes that the host (OS, installed applications, and hardware) and the network are attacker-controlled. The attacker can intercept, and arbitrarily manipulate (such as create, drop, or modify) the user IO data between the user and the remote server. Furthermore, we assume that the attacker can not break the physical security of the \device (more discussion in Section~\ref{sec:securityAnalysis:device}).
-
+ 
 
 
 \subsection{High-level Description of the System}
