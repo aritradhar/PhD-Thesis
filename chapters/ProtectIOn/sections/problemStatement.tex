@@ -27,7 +27,7 @@ ii) \emph{usability} -- interacting with a small device can be cumbersome, and i
 
 
 \begin{figure}[t]
-\scriptsize
+\small
     \centering
     \begin{tikzpicture}[
 solved/.style={rectangle,draw,fill=purple!40, rounded corners, align=center},
@@ -36,13 +36,13 @@ neutral/.style={rectangle, draw, rounded corners, align=center, fill=black!5}
 ]]
   \node[not](empty) {};
     \node[neutral, right=3cm of empty](root) {Trusted path}
-    child { node[neutral, yshift=16pt, xshift=-70pt, yshift=10pt] (tc) {\textbf{A.} Transaction confirmation Device}}  
-    child { node[neutral, yshift=10pt, xshift=10pt, yshift=15pt] (td) {\textbf{B.} Trusted intermediary}       
+    child { node[neutral, xshift=-70pt, yshift=15pt] (tc) {\textbf{A.} Transaction confirmation Device}}  
+    child { node[neutral, right=10pt of tc] (td) {\textbf{B.} Trusted intermediary}       
         %child { node[neutral, yshift=0pt, xshift=-30pt, yshift=7pt] (tee) {\textbf{B2.} TEE}}
       %child { node[neutral, yshift=2pt, xshift=-50pt, yshift=7pt] (br) {\textbf{B1.} Browser-based}}   
-     child { node[neutral, yshift=18pt, xshift=-45pt] (hv) {\textbf{B1.} Hypervisor-based}} 
-     child { node[neutral, yshift=18pt, xshift=-20pt] (hw) {\textbf{B2.} External HW}}
-     child { node[neutral, yshift=18pt, xshift=0pt] (tee) {\textbf{B3.} System TEE}}
+     child { node[neutral, yshift=5pt, xshift=-60pt] (hv) {\textbf{B1.} Hypervisor-based}} 
+     child { node[neutral, right=10pt of hv] (hw) {\textbf{B2.} External HW}}
+     child { node[neutral, right=10pt of hw] (tee) {\textbf{B3.} System TEE}}
     } ; 
       
     
@@ -69,9 +69,8 @@ neutral/.style={rectangle, draw, rounded corners, align=center, fill=black!5}
 
 
 \myparagraph{B2.~External hardware-based solutions} Several existing works propose a trusted path that utilizes an external trusted device. IntegriKey~\cite{IntegriKey} uses a trusted external device that contains a small program that signs all user inputs and sends the signed input to the remote server. The device works as a second factor for input integrity as the remote server verifies if the signed input matches with the input that is sent by the browser running on the untrusted host. However, as the external device is completely oblivious to the display information that the untrusted host renders, not only IntegriKey but also similar systems that do not consider output integrity are vulnerable to UI manipulation attacks. For example, assume that the user's intended input to a textbox is $100$. She types the correct value, but the host maliciously renders $10$ on the screen by not showing the last zero. Thinking that she might have mistyped, the user types another $0$ that makes the recorded input from the user $1000$. This attack violates input integrity as the host can now submit $1000$ to the remote server as a valid input, although it does not represent the user's intention. 
-%In Appendix~\ref{appendix:security:protocol}, we provide a formal security proof that shows why systems like IntegriKey or transaction confirmation device that do not provide output integrity also lack input integrity.
-%and, the external trusted device also signs $1000$ as the correct input received from the user.
 
+\vskip 1em
 \noindent\emph{$\rightarrow$ Observation 1:} The lack of output integrity -- \emph{the render of user inputs on the screen} -- compromises input integrity.
 
 \begin{figure}[t]
@@ -98,6 +97,7 @@ Also, in specific scenarios, even the training to properly explain these indicat
 %as the users require training to familiarize themselves with the system (such as different security indicators).
 %Fidelius overlays only user inputs on the screen and keeps them isolated from the host. 
 
+\vskip 1em
 \noindent\emph{$\rightarrow$ Observation 2}: If the \emph{protected output} is provided out-of-context, users are more likely not to verify it. Therefore input integrity can be violated.
 
 
@@ -108,6 +108,7 @@ This attack could cause the misconfiguration of a remote system, as illustrated 
 Moreover, Fidelius is also vulnerable to clickjacking attacks where the attacker can spawn a fake mouse pointer and trick the user into following it while the real mouse pointer is on a sensitive text field protected by the system. This allows the attacker to fool the user into providing (possibly incorrect) input, while the user thinks that she is interacting with a non-sensitive text field. To prevent such attacks, the user has to look at the security indicators continuously even when she is not doing any security-sensitive task, which is a very strong assumption. 
 Thus, not supporting the mouse causes the integrity violation of the keyboard input also.
 
+\vskip 1em
 \noindent\emph{$\rightarrow$ Observation 3:} If not \emph{all the modalities of inputs} are secured simultaneously, none of them can be fully secured.
 
 
