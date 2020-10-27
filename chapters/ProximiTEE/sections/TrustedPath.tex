@@ -25,7 +25,7 @@ The commonly suggested solution for the trusted path problem is to leverage a tr
 \begin{figure}[t]
  \centering
  \includegraphics[trim={0 12cm 20cm 0},clip,width=0.65\linewidth]{chapters/ProximiTEE/images/TrustedPath_revised2.pdf}
- \caption{\textbf{Trusted path to local enclave.} The IO devices are connected to \device that is connected to the local platform. The \device performs attestation using one of our mechanisms and then mediates all IO communication.}
+ \caption[Trusted path to local enclave using \device]{\textbf{Trusted path to local enclave using \device.} The IO devices are connected to \device that is connected to the local platform. The \device performs attestation using one of our mechanisms and then mediates all IO communication.}
 
  \label{fig:secureInput}
 \end{figure}
@@ -56,7 +56,7 @@ Now, we describe the process of establishing a trusted path to an enclave on a \
 \begin{figure}[t]
  \centering
   \includegraphics[width=0.85\linewidth]{chapters/ProximiTEE/images/SystemDesignRemote.pdf}
- \caption{\textbf{Trusted path to a remote enclave.} This setup uses two embedded devices. The local \device is connected to the local platform and the remote \device is connected with the remote platform.}
+ \caption[Trusted path to a remote enclave using \device]{\textbf{Trusted path to a remote enclave using \device.} This setup uses two embedded devices. The local \device is connected to the local platform and the remote \device is connected with the remote platform.}
  \label{fig:systemRemoteHost}
 \end{figure}
 
@@ -74,7 +74,7 @@ Next, we describe how such trusted path can be extended to an enclave that resid
 \begin{figure}[t]
   \centering
     \includegraphics[trim={0 7.5cm 9cm 0}, clip, width=0.7\linewidth]{chapters/ProximiTEE/images/Setup1.pdf}
-    \caption{\textbf{\name trusted path implementation.} The figure shows the \device based on Arduino Due prototype board that is used as an I/O hub for trusted path implementation. The \device also uses a small LCD display to show the identity of the SGX enclave that is is communicating with.}
+    \caption[\name trusted path implementation]{\textbf{\name trusted path implementation.} The figure shows the \device based on Arduino Due prototype board that is used as an I/O hub for trusted path implementation. The \device also uses a small LCD display to show the identity of the SGX enclave that is is communicating with.}
     \label{fig:trustedPathImplementation}
 \end{figure}
 

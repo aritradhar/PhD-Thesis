@@ -3,7 +3,6 @@
 
 We implemented a complete prototype of the \name system. Our implementation consists of two components: i) \device embedded device prototype, and ii) \name enclave API which enables any application enclaves to communicate with the \device device and execute the proximity verification protocols.
 
-
 \subsection{\device} 
 
 Our embedded device prototype is based on Cypress EZ-USB FX3 USB 3.0 prototyping board that is equipped with an $32$-bit $200$ MHz ARM9 core. The board communicates with the target platform over a native \usb 3.0 connection that provides up to 5 Gbps of bandwidth. FX3 provide direct memory access (DMA) out of the box through its API for efficient communication with the connected platform. We use the ARM mbed TLS~\cite{mbed} cryptographic library for the \tls.

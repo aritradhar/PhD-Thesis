@@ -218,7 +218,7 @@ In addition, we evaluated the following two performance metrics:
 \begin{figure}[t]
   \centering
     \includegraphics[trim={0 18cm 0 0}, clip, width=\linewidth]{chapters/ProximiTEE/data/graph/PlatformDevice_1.pdf}
-    \caption{\textbf{Different target platforms/\device.} We evaluates latencies using three different SGX platforms. The Intel NUCs were few microseconds faster. Additionally, we evaluated latencies using three different Arduino boards. The latencies are consistent.}
+    \caption[Effect of different target platforms/\device on the latency.]{\textbf{Effect of different target platforms/\device on the latency.} We evaluates latencies using three different SGX platforms. The Intel NUCs were few microseconds faster. Additionally, we evaluated latencies using three different FX3 boards. The latencies are consistent.}
     %\vspace{-17pt}
     \label{graph:sgxLatency}
 \end{figure}
@@ -226,7 +226,7 @@ In addition, we evaluated the following two performance metrics:
 \begin{figure}[t]
   \centering
     \includegraphics[trim={0 18cm 0 0}, clip, width=\linewidth]{chapters/ProximiTEE/data/graph/CombinedCable_1.pdf}
-    \caption{\textbf{Different Ethernet/USB cables.} We evaluated latencies two different USB cables: one with an \usb cable (1m) and another with an \usb extender of length 2m attached. Additionally, we evaluated latencies using three different Ethernet cables (1, 7 and 10 m). Latencies are consistent. Note, that the latency is sampled in the experiment conducted with non-\texttt{ping} flood mode.}
+    \caption[Effect of Different Ethernet/USB cables on the latency]{\textbf{Effect of different Ethernet/USB cables on the latency.} We evaluated latencies two different USB cables: one with an \usb cable (1m) and another with an \usb extender of length 2m attached. Additionally, we evaluated latencies using three different Ethernet cables (1, 7 and 10 m). Latencies are consistent. Note, that the latency is sampled in the experiment conducted with non-\texttt{ping} flood mode.}
     \label{graph:usbCableLength}
 \end{figure}
 
@@ -239,7 +239,7 @@ We evaluated the consistency of measured latencies across different computing pl
 \begin{figure}[t]
   \centering
     \includegraphics[trim={0 18cm 1.8cm 0}, clip, width=0.75\linewidth]{chapters/ProximiTEE/data/CPU_stress/plot_pin_1.pdf}
-    \caption{\textbf{Effect of CPU core pinning on the enclave application.} Restricting the enclave application to a specific core has a very minor effect on the observed latency.}
+    \caption[Effect of CPU core pinning on the enclave application]{\textbf{Effect of CPU core pinning on the enclave application.} Restricting the enclave application to a specific core has a very minor effect on the observed latency.}
 
     \label{graph:cpuPin}
 \end{figure}
@@ -248,17 +248,11 @@ We evaluated the consistency of measured latencies across different computing pl
 
 \begin{figure}[t]
   \centering
-    \includegraphics[trim={0 16cm 0 0}, clip, width=\linewidth]{chapters/ProximiTEE/data/CPU_stress/allCore_1.pdf}
-    \caption{\textbf{Effect on latency experienced by the \device with different number of stressed CPU cores.} We evaluated latencies while running CPU intensive benchmark on different number of cores. Note that with higher number of busy cores, the means of the  distributions start to shift towards right but stayed within \connect $= 186\mu s$. We used \texttt{stress-ng} Linux stress-testing application.}
-    \label{graph:cpuLoad}
-\end{figure}
-
-\begin{figure}[t]
-  \centering
     \includegraphics[trim={0 12cm 0 0}, clip, width=0.8\linewidth]{chapters/ProximiTEE/data/CPU_stress/allCore_SGX_1.pdf}
-    \caption{\textbf{Effect on enclave execution time with different number of stressed CPU cores.} Increase system load has a minor effect on observed enclave execution time.}
+    \caption[Effect on latency experienced by the \device with different number of stressed CPU cores]{\textbf{Effect on latency experienced by the \device with different number of stressed CPU cores.} We evaluated latencies while running CPU intensive benchmark on different number of cores. Note that with higher number of busy cores, the means of the  distributions start to shift towards right but stayed within \connect $= 186\mu s$. We used \texttt{stress-ng} Linux stress-testing application.}
     \label{graph:cpuLoad_SGX}
 \end{figure}
+
 
 \subsubsection{Effects of CPU load.} Figure~~\ref{graph:cpuLoad_SGX} shows the enclave execution times with varying degree of CPU stress testing. We used \texttt{stress-ng} to stress different number of CPU cores. We experienced a minor slowdown with the increasing number of busy CPU cores. But the slowdown is insignificant. For example, as shown in the Figure~\ref{graph:cpuLoad_SGX}, we experienced a shift of $12\mu s$ when all the 8 CPU cores are busy executing the benchmark software. Also, note that the load introduced by the benchmark is a sustained load on all the CPU cores which is much more demanding for the CPUs compared to the CPU loads introduced by real-life applications. In that scenarios, the deviation would be even lesser. We conclude that proximity verification for SGX enclaves is reliable even under high system load. In rare cases of extreme system load, proximity verification might fail, but this is an availability concern, not a security threat.
 
