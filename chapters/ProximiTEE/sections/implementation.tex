@@ -1,39 +1,44 @@
 \section{Implementation}
 \label{sec:implementation}
 
-We implemented a complete prototype of the \name system. Our implementation consists of two components: i) \device embedded device prototype, and ii) \name enclave API which enables any application enclaves to communicate with the \device device and execute the proximity verification protocols.
+We implemented a complete prototype of the \name system. Our implementation consists of two components: i) \device embedded device prototype, and ii) \name enclave API, which enables any application enclaves to communicate with the \device device and execute the proximity verification protocols.
 
 \subsection{\device} 
 
-Our embedded device prototype is based on Cypress EZ-USB FX3 SuperSpeed USB controller prototyping board~\cite{fx3} that is equipped with an $32$-bit $200$ MHz ARM926EJ core, 512 KB SRAM and a USB 3.1 peripheral. The board communicates with the target platform over a native \usb 3.0 connection that provides up to 5 Gbps of bandwidth. FX3 provide direct memory access (DMA) out of the box through its API for efficient communication with the connected platform. We use the ARM mbed TLS~\cite{mbed} cryptographic library for the \tls.
+Our embedded device prototype is based on Cypress EZ-USB FX3 SuperSpeed USB controller prototyping board~\cite{fx3} that is equipped with a $32$-bit $200$ MHz ARM926EJ core, 512 KB SRAM and a USB 3.1 peripheral. The board communicates with the target platform over a native \usb 3.0 connection that provides up to 5 Gbps of bandwidth. FX3 provides direct memory access (DMA) out of the box through its API for efficient communication with the connected platform. We use the ARM mbed TLS~\cite{mbed} cryptographic library for the \tls.
 
-\myparagraph{Portability} We wanted the \device{}s software to be device-agnostic in our implementation. We achieved this by 1) using the mbed TLS library for cryptography and 2) limiting the device-specific functionality in isolated modules. This means that in order to use another device as \device, only the mbed TLS library has to be ported.
+\myparagraph{Portability} We wanted the \device{}s software to be device-agnostic in our implementation. We achieved this by 1) using the mbed TLS library for cryptography and 2) limiting the device-specific functionality in isolated modules. Thus, to use another device as \device, only the mbed TLS library has to be ported.
 
-\subsubsection{Channel encryption} The implementation supports three modes of channel encryption between the \device and the target platform. Mode selection is controlled by a combination of a run-time parameter and flags set at compile-time.
+\myparagraph{Channel encryption} The implementation supports three modes of channel encryption between the \device and the target platform. Mode selection is controlled by a combination of a run-time parameter and flags set at compile-time.
 
 \begin{enumerate}
-  \item \emph{None} In this mode, the communication is carried out in plain text. It is obviously not recommended to use this configuration in any production setting. This mode is primarily used debugging and measuring the channel capacity.
-  \item \emph{AES} This mode provides a minimal secure channel between the \device and the target platform. With this mode, Curve25519 Diffie-Hellman key exchange is performed. Relevant parts of messages, specifically the challenge-response packets are encrypted with AES-128-CTR. AES-HMAC is used for message authentication codes. SHA256 is used as hashing function.
-  \item \emph{TLS} With this configuration, we use a \tls channel for the communication between the \device and the target platform. As the \device only has limited SRAM, we had to resort to \texttt{TLS\_PSK\_WITH\_AES\_128\_CCM\_8} as the ciphersuit. However, this limitation due to the FX3 board. Note that the target platform is not restricted by this, and supports more ciphersuites. 
+  \item \emph{None} In this mode, the communication is carried out in the plain text. This mode is primarily used for debugging and measuring the channel capacity.
+  \item \emph{AES} This mode provides a minimal secure channel between the \device and the target platform. With this mode, Curve25519 Diffie-Hellman key exchange is performed. Relevant parts of messages, specifically the challenge-response packets are encrypted with AES-128-CTR. AES-HMAC is used for message authentication codes. SHA256 is used as a hashing function.
+  \item \emph{TLS} With this configuration, we use a \tls channel for the communication between the \device and the target platform. As the \device only has limited SRAM, we had to resort to \texttt{TLS\_PSK\_WITH\_AES\_128\_CCM\_8} as the cipher suite. However, this limitation due to the FX3 board. Note that the target platform is not restricted by this and supports more cipher suites. 
 \end{enumerate}
 
 
-\subsubsection{SDK} Cypress, the manufacturer, provides a SDK for firmware development, available at~\cite{fx3_sdk}. In particular, it contains:
-
-\begin{enumerate}
-  \item Tool-chain to cross-compile.
-  \item Auxiliary programs to perform various tasks such as uploading an image file to the board, read USB descriptors and send/read data. Additionally, the SDK installs cyusb linux, a graphical user interface wrapped on top of those programs.
-  \item Firmware API Libraries.  
- \end{enumerate}
   
-\subsubsection{Challenges} While implementing the \device, we faced various challenges.
+\myparagraph{Challenges} While implementing the \device, we faced various challenges.
 
 \begin{enumerate}
-  \item \emph{Limited System Memory} The board features 512 KB memory. By default 180 KB are allocated for code and 32 KB as data area. However, a simple FX3 application with the required firmware libraries already comes in at roughly 100 KB. This turned out to be a problem when integrating mbed TLS. Their SSL example program was reported to measure 160 KB. Fortunately, by using a minimal configuration, we were able to reduce the size of the binary enough. This came at the cost of only supporting \texttt{TLS\_PSK\_WITH\_AES\_128\_CCM\_8} and limiting the maximum content length. The content length limitation is not a problem in our case, as we control both sides of the connection and our messages are small.
+  \item \emph{Limited System Memory} The board features 512 KB memory. By default, 180 KB are allocated for code and 32 KB as a data area. However, a simple FX3 application with the required firmware libraries already comes in at roughly 100 KB. This turned out to be a problem when integrating mbed TLS. Their SSL example program was reported to measure 160 KB. Fortunately, by using a minimal configuration, we were able to reduce the size of the binary enough. This came at the cost of only supporting \texttt{TLS\_PSK\_WITH\_AES\_128\_CCM\_8} and limiting the maximum content length. The content length limitation is not a problem in our case, as we control both sides of the connection and our messages are small.
 
  \item \emph{System Clock Resolution} The firmware API call \texttt{CyU3PGetTime} only provides a resolution of 1 ms. Since we deal with roundtrip times on the scale of $\mu$s between the \device and the target platform, this timing resolution is insufficient. However, the GPIO clock operates at a faster rate. By using a counter on a I/O pin, we are able to get a resolution of roughly 0.1 $\mu$s.
   
 \end{enumerate}
 
-\subsection{\name enclave API.} 
-The \name API for \app{}s is written in C++ using the Intel SGX API. The API uses native SGX crypto library for the \tls implementation, and it is around 200 lines of code.
+\subsection{\name Enclave API on the Target Platform} 
+
+The \name enclave API consists of two parts: i) the untrusted application that faciliate the communication channel over the USB interface with the \device, and ii) the enclave component that executes the challenge-response protocol with the \device.
+
+\begin{figure}[t]
+  \centering
+    \includegraphics[width=\linewidth]{chapters/ProximiTEE/images/hotcalls.pdf}
+    \caption[Program flow control for Intel SGX SDK vs HotCalls]{\textbf{Program flow control for Intel SGX SDK vs HotCalls.} }
+    \label{fig:hotcalls}
+\end{figure}
+
+\myparagraph{HotCalls} ECalls and OCalls are expensive. To overcome this, Weisse et al. propose a solution called HotCalls~\cite{weisse2017regaining}. The key concept is that instead of having one thread that calls ECall and OCall functions, thereby entering and leaving the enclave context, we have two threads: one running in an untrusted context, the other in the enclave context. Both threads have access to a shared data structure (SDS) in unencrypted memory. We designate one thread to be the responder, while the other is the requester. The responder is dedicated to polling the SDS. The requester issues a request by passing its arguments to the SDS, including an ID of the function he wants to call. The responder detects these requests and calls the function indicated by the ID. Upon completion, it writes any results back to the SDS. The requester polls the SDS until the responder has indicated completion. It can then read the return values from the SDS. In order to have HotOCalls, the application thread acts as a responder, and the enclave thread is the requester. This is what we have used in our implementation. For HotECalls, the roles are reversed. Figure~\ref{fig:hotcalls}(a) shows the control flow of a normal OCall. Figure~\ref{fig:hotcalls}(b) shows the control flow of the same function call, but using HotCalls.
+
+We evaluate the effect of incorporating HotCalls with our simulated client. When using SDK calls, we get an average of 12.8$\mu$s per round. When using HotCalls, we can reduce it to 2.7$\mu$s per round, an improvement of a factor of 4.7.

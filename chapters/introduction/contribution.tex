@@ -1,0 +1,38 @@
+\section{Thesis contribution} This thesis has three primary aspect related to trusted interaction and trusted computing. Under each of these aspects, the major contributions are listed.
+
+\begin{enumerate}
+    \item \textbf{\protection: Understanding trusted path and building secure trusted path systems}
+    \begin{enumerate}
+        \item  \textbf{Identification of IO security requirements:} We identify new requirements for trusted path based on the drawbacks of the existing literature: i) unless both output and input integrity are secured simultaneously, it is impossible to achieve any of the two, and ii) without protecting the integrity of all the modalities of inputs, none could be achieved.
+        
+        \item \textbf{System for IO integrity:} We describe the design of \protection, a system that provides a remote trusted path from the server to the user, in an attacker-controlled environment. The design of \protection leverages a small, low-TCB auxiliary device that acts as a \emph{root-of-trust} for the IO. \protection ensures the integrity of the UI, specifically the integrity of mouse pointer and keyboard input. \protection is further designed to avoid user habituation.
+        
+        \item \textbf{System for IO confidentiality:} We also describe an extension of \protection that provides IO confidentiality, where user needs to execute an operation like a secure attention sequence (SAS) to identify the trusted overlay on the display.
+        
+        \item \textbf{Implementation and evaluation:} We also implement a prototype of \protection and evaluate its performance ).
+    \end{enumerate}
+    
+    \item \textbf{\proximitee: Understanding Relay attacks on in Intel SGX remote attestation and building system for addressing the relay attacks in different attacker models (non-emulating vs emulating attacker)}
+    
+    \begin{enumerate}
+        \item \textbf{Analysis of relay attacks.} While relay attacks have been known for more than a decade, their implications have not been fully analyzed. We provide the first such analysis and show how relaying amplifies the adversary's capabilities for attacking SGX enclaves.   
+
+        \item \textbf{\proximitee, a system for addressing relay attacks.} We propose a hardened SGX attestation mechanism based on an embedded device and proximity verification to prevent relay attacks. \proximitee does not rely on the common TOFU assumption, and hence, our solution improves the security of previous attestation approaches. Note that the distance bounding approaches are well-known in the literature, but using such method in the context of SGX is non-trivial.
+    
+        \item \textbf{Experimental evaluation.} We implement a complete prototype of \proximitee and evaluate it against a very strong and fast adversary. Our evaluation is the first to show that proximity verification can be both secure and reliable for TEEs like SGX.
+    
+        \item \textbf{Addressing emulation attacks.} We also propose another attestation mechanism based on boot-time initialization to prevent emulation attacks. This mechanism is a novel variant of TOFU with deployment, security and revocation benefits.
+    \end{enumerate}
+    
+    \item \textbf{\pie: Generalizing platform security in the context of TEEs and peripherals}
+    
+    \begin{enumerate}
+        \item \textbf{Security properties for platform-wide integrity} We extend traditional TEEs by introducing a dynamic hardware TCB. We call these new systems platform isolation environment (\pie{}). We identify key security properties for \pie{}, namely \emph{platform-wide attestation} and \emph{platform awareness}.
+        
+        \item \textbf{Programming model} We propose a programming model that provides the flexibility to the developers is comparable to the modern operating systems for developing enclaves that communicate with peripherals. The programming model abstracts the underlying hardware layer. 
+        
+        \item \textbf{Prototype and experimental evaluation} We demonstrate a prototype of a \pie{} based on Keystone~\cite{keystone} on an open-source RISC-V processor~\cite{ariane}. The prototype includes a simplified model of the entire platform, including external peripherals emulated by multiple Arduino microcontrollers. In total, our modifications to the software TCB of Keystone only amount to around 350 LoC.
+
+    \end{enumerate}
+
+\end{enumerate}
