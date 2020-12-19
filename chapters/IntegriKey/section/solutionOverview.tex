@@ -1,0 +1,25 @@
+\section{Solution Overview}
+\label{sec:solutionoverview}
+
+
+The goal of our solution is four fold:
+\begin{enumerate}
+  \item The secure USB/Bluetooth hub have very small footprint i.e., extremely   small trusted computing base (TCB). Also the solution hardware should be very simple so it does not open additional attack vectors such as vulnerability in complex operating system or browser program. This ensures minimal trust assumption.
+  
+  \item The solution should provide privacy against the strongest adversary model i.e., an attacker who is capable of compromising entire network and the host system. The solution provides protection against local and remote phishing attacker, provides data (sensitive user input) confidentiality and authenticity.
+ 
+  \item The secure hub should be resilient against side channel attacks such as power, timing analysis etc. 
+  
+  \item All these functionalities are achieved with the addition of minimal delay.
+
+\end{enumerate}
+
+Our system model primarily involves four parties. The USB/bluetooth enabled peripheral (keyboard, mice, bulk storage or any peripheral), a host which is a computer/smartphone which connects to the remote server, the aforementioned remote server where the host is connected to and lastly a secure \usb/Bluetooth bub that convert any generic \usb/Bluetooth peripherals to secure peripheral. The general settings assumes that the peripherals are connected to the secure hub devices which is connected to the host system. The connection could be wired or wireless depending on the case if the host system is a computer or a smart phone. Similarly the communication between the secure hub and the peripheral can be carried out by wired or wireless channel depending on the nature of the peripherals. The system model is independent from the physical connection between the host, secure hub and the peripherals. We assume that the secure hub is a small embedded device with very small TCB (few thousand lines of code) yet computationally powerful.
+
+
+%\subsection{Usecase scenarios}
+%\label{sec:solutionOverview:usecase}
+
+%\ad{Talk about some of the use case scenarios such as banking application, upload sensitive information to Wikileaks, comment on a post or news, p2p messenger etc.}
+
+%We evaluate several use-case scenarios where our proposed secure hub provides security against phishing attacks and privacy against compromised host for sensitive data transfer.

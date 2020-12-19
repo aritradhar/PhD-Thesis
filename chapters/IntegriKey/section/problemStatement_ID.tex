@@ -1,0 +1,28 @@
+\section{Problem Statement}
+\label{sec:problemStatement}
+
+Numerous revelations such as Snowden leaks show that the attackers powerful as state nations are capable to compromise host systems such as personal computers, smart phone etc to gain control over the information stored on there or intercept inputs from the users. Such attacks can be orchestrated by compromising the operating system, planting hardware bug in the system, installing malwares etc. Simple attacks such as a hardware keylogger device or a software based key logger can intercept all the input from the keyboard or mouse and send them to the attacker. Browsers are also complex piece of applications and susceptible to a number zero-day attacks/exploits. Together this attacks can not only see user's input but manipulate them. One such concrete example is internet banking that runs on the browser. A banking transaction requires the beneficiary name, account number and the amount of money to send. A malicious host system or browser can change these information at the time of dispatching the web call to the remote server. Currently there exists no way to authenticate and/or preserve the integrity of user input from peripheral devices. In some of the cases the confidentiality of the data is also critical such as user credential or sensitive private information.
+
+We extend this idea to detect and mitigate phishing attacks lunch by the attacker to steal user credential by imitating a legitimate looking website. There can be several ways the attacker can orchestrate the phishing attack; i) replicating a legitimate looking website and here the user failed to notice the security indicator such as the \ssl/\tls padlock indicating secure domain and the correct spelling of the website. ii) The host system is compromised and it render legitimate looking website or directly steals sensitive information from user input.
+
+We assume the attacker can compromise the host system so he can red out all the input and the display. The attacker can also manipulate these input and output, drop or delay or modify any network packets.
+
+
+\subsection{Research Objectives}
+
+Our goal is to prevent the attacker from altering or generating data that is given by the users through the input peripheral device. Additionally we want to prevent users to provide sensitive information to a fraudulent web site that imitates a legitimate web site. More specifically, we aim to achieve the following properties.
+
+\subsubsection{Data integrity and authenticity}
+
+The peripheral and the website are able to detect when the attacker alters their communication or inserts false information. In the case where the browser and the OS are compromised, we do not ensure the authenticity of data displayed in the browser but focus on ensuring that information provided through the peripheral comes from the authentic website.
+
+
+\subsubsection{Web authentication}
+
+In particular, the user should be protected from phishing websites. This includes website. We strengthen this feature by using the secure hub as a dedicated both remote and local phishing attacker. In the remote setting the attacker launches attacks externally by imitating a legitimate website where the local phishing attacker compromises the host system and renders legitimate looking hardware backed password manager where the user can predefine her web credential corresponding to specific web servers. Only upon the successful authentication of the remote web server, the secure hub dispatches the login credentials. The user should be able to validate the authenticity of the remote website. In
+ 
+Additionally our goal is also to achieve client authentication which enables the remote server to authenticate a legitimate user using the secure hub with \webusb functionality.
+
+\subsubsection{Data Confidentiality}
+
+The attacker does not learn the sensitive content exchanged between the user and the legitimate website. Since website content is typically shown on the browser, we do not preserve the privacy of web. Data confidentiality is crucial for messaging service where the compromised host of messaging service can not see what the users are communicating.

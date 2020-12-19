@@ -1,0 +1,15 @@
+\section{Peer-to-peer secure messenger}
+\label{sec:p2p}
+
+We additionally design a peer-to-peer secure messenger application based on the
+secure hub. The secure hub establishes an end-to-end secure channel (\tls)
+between two hubs by leveraging the \webusb and \webrtc protocol. The \webrtc
+protocol establishes communication between two browsers. Using this channel, the
+secure hubs two end points can establish a secure channel and the malicious host
+would be completely oblivious (\dy{Is this true? I think the OS still knows some
+meta data. Or perhaps you assume some CoverUp-like solution deployed here?}) of
+any communication between two such secure hub devices.
+
+\dy{Good start, let's add mention some more explicit security properties as goals in the problem statement. We'd have to also talk about \webrtc in the background now. Regarding ``secure hub'' We'll need to fix the name some time. Let's think about this along with the name for \tool}
+
+\subsection{Set-up}

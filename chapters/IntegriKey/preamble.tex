@@ -1,0 +1,200 @@
+
+%NDSS
+%\documentclass[conference]{IEEEtran}
+%\pagestyle{plain}
+%CHES
+%CHES
+\documentclass[submission]{iacrtrans}
+
+\newif\ifdraft
+%\drafttrue
+%\usepackage{appendix}
+\usepackage{graphicx}
+%\usepackage{adjustbox}
+%\usepackage{enumitem}
+%\usepackage[small]{caption} 
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage{mathtools}
+\usepackage{mathrsfs}
+\usepackage{xspace}
+\usepackage{url}
+%\usepackage{subfig}
+%\usepackage[compact]{titlesec}
+%\usepackage{tikz}
+%\usepackage{float}
+%\usepackage{subfig}
+\usepackage{listings}
+\usepackage[ruled,linesnumbered,vlined]{algorithm2e}
+\usepackage{rotating}
+\usepackage{longtable}
+\usepackage{balance}
+%\usepackage{mathtools}
+%\usepackage{array}
+%\usepackage{booktabs}
+\usepackage{multirow, bigdelim}
+\usepackage{cite}
+\usepackage{hyphenat}
+\usepackage{adjustbox}
+%\usepackage[graphicx]{realboxes}
+%\usepackage{rotating}
+
+%% Compacting 
+%%
+%\usepackage[
+%all=normal,floats=tight
+%,paragraphs=tight
+%,wordspacing=tight
+%,mathspacing=tight
+%,mathdisplays=tight
+%]{savetrees}
+%\usepackage[compact]{titlesec}
+
+
+\lstset{
+  basicstyle=\ttfamily,
+  %numbers=left,
+  %numberstyle=\tiny,
+  columns=fullflexible,
+  showstringspaces=false,
+  commentstyle=\color{gray}\upshape
+}
+
+\lstdefinelanguage{XML}
+{
+  morestring=[b]",
+  morestring=[s]{>}{<},
+  morecomment=[s]{<?}{?>},
+  stringstyle=\color{black},
+  basicstyle={\scriptsize\ttfamily\bfseries\color{black}},
+  identifierstyle=\color{darkblue},
+  keywordstyle=\color{blue},
+  morekeywords={RegEx,Tag,Type,Input}
+}
+\renewcommand\lstlistingname{Specification}
+
+\usepackage{color}
+\definecolor{gray}{rgb}{0.4,0.4,0.4}
+\definecolor{darkblue}{rgb}{0.0,0.0,0.6}
+\definecolor{cyan}{rgb}{0.0,0.6,0.6}
+
+\newcommand{\red}[1]{\textcolor{red}{#1}} 
+
+\newcommand{\dy}[1]{\textcolor{blue}{DY: #1}} 
+\newcommand{\ad}[1]{\textcolor{red}{Aritra: #1}}
+\newcommand{\srdjan}[1]{\textcolor{brown}{Srdjan: #1}}
+\newcommand{\todo}[1]{\textcolor{red}{TODO: #1}}
+\newcommand{\tocite}{\textcolor{blue}{[cite]}}
+\newcommand{\blue}[1]{\textcolor{blue}{#1}}
+
+%\widowpenalty 200000
+%\clubpenalty 200000
+%\usepackage[compact]{titlesec}
+
+\newcommand{\name}{\textsc{IntegriKey}\xspace}
+\newcommand{\tool}{\textsc{IntegriTool}\xspace}
+%\newcommand{\tool}{\name}
+\newcommand{\device}{\textsc{Bridge}\xspace}
+\newcommand{\server}{\textsc{Server}\xspace}
+
+\newcommand{\toolname}{\name\xspace}
+\newcommand{\credential}{$\mathcal{C}_S$\xspace}
+\newcommand{\credentialServer}[1]{$\mathcal{C}_{#1}$\xspace}
+\newcommand{\serverside}{\name tool\xspace}
+
+\newcommand{\usb}{USB\xspace}
+\newcommand{\bluetooth}{Bluetooth\xspace}
+\newcommand{\webusb}{WebUSB\xspace}
+\newcommand{\html}{HTML\xspace}
+\newcommand{\webbt}{WebBluetooth\xspace}
+\newcommand{\sensitive}{$\mathcal{F}_s$\xspace}
+\newcommand{\insensitive}{$\mathcal{F}_p$\xspace}
+\newcommand{\redir}{$\mathcal{S}_{redir}$\xspace}
+\newcommand{\http}{HTTP\xspace}
+\newcommand{\https}{HTTPS\xspace}
+\newcommand{\tls}{TLS\xspace}
+\newcommand{\ssl}{\texttt{SSl}\xspace}
+\newcommand{\onSelect}{\texttt{onSelect()}\xspace}
+
+%\newcommand{\myparagraph}[1]{{\scshape \bfseries #1.}}
+%\newcommand{\myparagraph}[1]{\noindent{\textbf{#1.}}}
+\newcommand{\myparagraph}[1]{\paragraph{#1.}}
+
+\newcommand{\webrtc}{\texttt{WebRTC}\xspace}
+\newcommand{\js}{JavaScript\xspace}
+\newcommand{\relay}{$\mathcal{S}_{relay}$\xspace}
+\newcommand{\messenger}{$\mathcal{S}_{messenger}$\xspace}
+\newcommand{\serial}{\texttt{serial}\xspace}
+\newcommand{\String}{\texttt{string}\xspace}
+\newcommand{\integer}{\texttt{integer}\xspace}
+\newcommand{\float}{\texttt{float}\xspace}
+\newcommand{\menu}{\texttt{menu}\xspace}
+\newcommand{\radio}{\texttt{radio button}\xspace}
+\newcommand{\Boolean}{\texttt{boolean}\xspace}
+\newcommand{\Date}{\texttt{date}\xspace}
+\newcommand{\Menu}{\texttt{menu}\xspace}
+\newcommand{\Time}{\texttt{time}\xspace}
+\newcommand{\mytab}{~~~}
+\newcommand{\java}{\textsc{Java}\xspace}
+
+\definecolor{Gray}{gray}{0.85}
+\definecolor{LightCyan}{rgb}{0.88,1,1}
+
+\newcommand\MyLBrace[2]{%
+  \left.\rule{0pt}{#1}\right\}\text{#2}}
+
+%\newcounter{myExampleCounter}
+%\setcounter{myExampleCounter}{-1} % Start with -1.
+%\refstepcounter{myExampleCounter}
+
+
+\newcounter{para}
+\newcommand\mypara{\par\refstepcounter{para}\thepara.\space}
+\newcommand{\myparapara}[1]{\mypara\textbf{{#1.}}\xspace}
+
+%\newcommand{\redCircle}{$\otimes$}
+%\newcommand{\greenCircle}[2][black,fill=white]{\tikz[baseline=-0.5ex]\draw[#1,radius=3pt]
+%(0,0) circle ;}
+%\newcommand{\yellowCircle}[2][black,fill=black]{\tikz[baseline=-0.5ex]\draw[#1,radius=3pt]
+%(0,0) circle ;}
+
+\DeclareGraphicsExtensions{.pdf,.jpeg,.png,.jpg}
+
+%\hyphenation{Integri-Key}
+
+% \newcommand{\redCircle}[][red,fill=red]{\tikz[baseline=-0.5ex]\draw[#1,radius=3pt]
+% (0,0) circle ;}
+% \newcommand{\greenCircle}[2][green,fill=green]{\tikz[baseline=-0.5ex]\draw[#1,radius=3pt]
+% (0,0) circle ;}
+% \newcommand{\yellowCircle}[2][red,fill=yellow]{\tikz[baseline=-0.5ex]\draw[#1,radius=3pt]
+% (0,0) circle ;}
+
+%------------------------------------------------------------------------------
+%                                Space savers.
+%------------------------------------------------------------------------------
+
+% This mylist environment indents items, and saves less space than the above.
+\newcounter{myctr}
+\newenvironment{mylist}{\begin{list}{\arabic{myctr})}
+{\usecounter{myctr}
+\setlength{\topsep}{1mm}\setlength{\itemsep}{0.5mm}
+\setlength{\parsep}{0.5mm}
+\setlength{\itemindent}{0mm}\setlength{\partopsep}{0mm}
+\setlength{\labelwidth}{-2mm}
+\setlength{\leftmargin}{1mm}}}{\end{list}}
+
+\newcounter{myctrA}
+\newenvironment{mylistAlph}{\begin{list}{\textbf{\Alph{myctrA}})}
+{\usecounter{myctrA}
+\setlength{\topsep}{1mm}\setlength{\itemsep}{0.5mm}
+\setlength{\parsep}{0.5mm}
+\setlength{\itemindent}{0mm}\setlength{\partopsep}{0mm}
+\setlength{\labelwidth}{-2mm}
+\setlength{\leftmargin}{0.5mm}}}{\end{list}}
+
+% Space saving List environment for itemizing.
+\newenvironment{mybullet}{\begin{list}{$\bullet$}
+{\setlength{\topsep}{1mm}\setlength{\itemsep}{0.5mm}
+\setlength{\parsep}{0.5mm}
+\setlength{\itemindent}{4mm}\setlength{\partopsep}{0mm}
+\setlength{\labelwidth}{-2mm}
+\setlength{\leftmargin}{2mm}}}{\end{list}}

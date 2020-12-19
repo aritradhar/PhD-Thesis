@@ -1,0 +1,59 @@
+\section{Background}
+
+\subsection{USB}
+\ad{talk about USB here and that all the peripherals are driven by USB. USB provide both data and power and make it ubiquitous}
+
+\subsection{Browser Security}
+
+\dy{We need a background to motivate the work and discuss the security model of browsers (sandboxing, permission delegation...) and mention the attack vectors (zero-days, etc)}
+
+\subsection{WebUSB}
+
+\dy{Please describe the WebUSB browser/OS mechanisms we rely on in this work.}
+The Universal Serial Bus (USB) is the de-facto standard for wired (even some
+wireless) peripherals.
+\webusb\ is an emerging standard developed primarily bu Google which enables
+browsers to directly communicate with USB devices. \webusb API safely exposes
+USB functionalities where a Javascript code served by a HTTPS page can query and
+communicate with USB devices and acts as an USB endpoint.
+\ad{I will provide more details later on}
+
+\subsection{Web Bluetooth}
+
+\dy{I will fill in this part}
+
+\subsection{Sensitive Use Cases}
+
+We now motivate this work by addressing some important applications in which
+sensitive user data are sent through modern browsers.
+
+\textbf{Secure Communication.}
+Users would like to communicate online using web applications in the browser
+(e.g., using WebRTC) and discuss sensitive topics with minimal disclosure to any
+other party. In such a context, the browser or the hosting website should not be
+able to eavesdrop the conversation.
+
+\textbf{Online credentials.}
+This is applied to almost all websites which require users to log-in using
+username and password. These credentials are extremely sensitive and subject to
+phishing attack or extraction via password database leakages.
+
+\textbf{Online Payment.} 
+The user makes an online payment by entering credit card details and would like
+to be assured that such sensitive information is sent only to the servers of the
+respective credit card firms. Otherwise, an online vendor may store the user's
+credit card information and abuse it elsewhere.
+
+\textbf{Online Posting.}
+The user makes an online posting (e.g., comments to a news article) to express a
+personal opinion on sensitive matters, while wishing to remain anonymous from
+other parties. If the user's identity is revealed, there may be threats to
+personal safety or profile security.
+
+\textbf{Online Voting.}
+Electronic voting requires some strong security properties such as: 1. nobody
+except the voter knows her vote i.e., the voting decision of the voter remains
+anonymous and 2. The counting of the voting must be legitimate. Out of these two
+properties the first i.e., the vote casting is done on the browser and the
+sensitive data such as voter credential and the vote itself are confidential and
+handled by the browser.

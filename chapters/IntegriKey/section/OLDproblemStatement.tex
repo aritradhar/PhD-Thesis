@@ -1,0 +1,105 @@
+\section{Problem Statement}
+\label{sec:problemStatement}
+
+
+% \tool provides an secure input channel from a \usb peripheral to the remote
+% server. This secure input channel provides confidentiality, authenticity and
+% integrity from the input peripherals connected to the untrusted host. Sensitive
+% applications such as online voting is a prime example where such security
+% properties are the absolute requirements.
+% 
+% \subsection{System Model}
+% 
+% Our system consists of the following components: the website, the browser, the
+% underlying operating system, the user, and a peripheral that is accessible by
+% the website. The user operates the peripheral and uses the browser to visit the
+% website to access its online service. We assume that the browser supports the
+% \webusb\ and \webbt\ APIs so that websites can interact with peripheral
+% devices on the user side. As required by both \webusb\ and \webbt\ standard, the
+% browser and the website establishes a secure channel(\ssl/\tls) for
+% communication.
+
+Numerous revelations such as Snowden leaks show that the attackers as powerful as state nations are capable of compromising host systems such as personal computers, smartphones etc to gain control over the information stored on there or intercept inputs from the users. Such attacks can be orchestrated by compromising the operating system, planting hardware bugs in the system (such as the production line attacks), installing malwares etc. Simple attacks such as a hardware or software-based keylogger can intercept all the input from the keyboard or mouse, modify them. The web browsers is a complex application software and susceptible to a number zero-day attacks/exploits. Together these attacks can not only see user's input but also manipulate them. One such concrete example is the internet banking that runs on the browser. A banking transaction requires the beneficiary name, account number and the amount of money to send. A malicious host system or browser can change this information at the time of dispatching the web call to the remote server. Currently, there exists no way to authenticate and/or preserve the integrity of user input from peripheral devices. 
+
+We extend the idea of input integrity and authenticity of the input confidentiality where the user input is confidential such as the voting choice in the electronic voting application or the credential to access some services. In such cases leaking the information to the malicious host could be a major threat to the user privacy. 
+
+
+\iffalse
+Numerous messaging services allows full end-to-end security so that a global adversary can not see the messages. Moreover the services also ensures client authentication by some registration process. None of the existing messaging services assume that the host systems (both operating system and the hardware) can be compromised. A fully compromised system can see all the user input and incoming messages and send them to the attacker. Moreover the authenticity and integrity of the messages are not preserved. \tool provides a secure input channel from the input peripheral and a secure display unit by which users can exchange messages even if the host system and the network is completely compromised.
+
+We extend this idea to detect and mitigate phishing attacks lunch by the attacker to steal user credential by imitating a legitimate looking website. There can be several ways the attacker can orchestrate the phishing attack; i) replicating a legitimate looking website and here the user failed to notice the security indicator such as the \ssl/\tls padlock indicating secure domain and the correct spelling of the website. ii) The host system is compromised and it render legitimate looking website or directly steals sensitive information from user input.
+
+We assume the attacker can compromise the host system so he can red out all the input and the display. The attacker can also manipulate these input and output, drop or delay or modify any network packets.
+\fi
+\iffalse
+\begin{table}[t]
+\centering
+\begin{tabular}{c c c c c}
+
+& \multicolumn{2}{c}{Host system} \\
+& \multicolumn{2}{c}{\downbracefill}   \\
+\textbf{Property} & Browser & OS & Remote Server & Device\\ \hline
+
+Remote authentication & \redCircle{}{} & \redCircle{}{} & \greenCircle{}{} &
+\greenCircle{}{}\\\hline
+ 
+Input confidentiality & \redCircle{}{} & \redCircle{}{} &
+\greenCircle{}{} & \greenCircle{}{} \\\hline 
+
+Input integrity & \redCircle{}{} & \redCircle{}{} & \greenCircle{}{} & \greenCircle{}{}
+\\\hline
+
+Online voting & \redCircle{}{} & \redCircle{}{} & \redCircle{}{} & \yellowCircle{}{}
+\\\hline
+\end{tabular}
+\caption{Different trust assumptions for different privacy property;
+\redCircle{}{} : untrusted, \greenCircle{}{} : trusted \& \yellowCircle{}{} :
+requires strong client authentication.}
+\label{table:trustAssumption}
+\end{table}
+\fi
+
+
+\subsection{Research Objectives}
+
+Our goal is to prevent the attacker from affecting the security of the input data provided by the user to a web application. More specifically, we aim to achieve the following properties.
+
+\iffalse
+\subsubsection{Fully secure input private end-to-end messaging}
+
+The prime object is to design and develop a messaging service that provides input privacy and authenticity even if the host system is fully compromised. 
+\fi
+
+\subsubsection{Input Integrity and Authenticity}
+
+As we assume that the attacker is able to fully compromise the host system and the network communication, any input data given by the user can be manipulated, added or dropped. Our proposed method should protect users from such kind of attacks including some graphical element manipulation attack such as input field swapping. 
+
+
+\subsubsection{Input Confidentiality}
+
+The attacker does not learn the sensitive content exchanged between the user and the legitimate website. Since website content is typically shown on the browser, we do not preserve the privacy of web. Data confidentiality is crucial for applications such as electronic voting where a malicious host sytem can compromise the voting privacy of the user.
+
+
+\subsubsection{Web Authentication}
+
+particular, the user should be protected from phishing websites. This includes
+website. We strengthen this feature by using the secure hub as a dedicated
+both remote and local phishing attacker. In the remote setting the attacker
+launches attacks externally by imitating a legitimate website where the local
+phishing attacker compromises the host system and renders legitimate looking
+hardware backed password manager where the user can predefine her web credential
+corresponding to specific web servers. Only upon the successful authentication
+of the remote web server, the secure hub dispatches the login credentials.
+The user should be able to validate the authenticity of the remote website. In
+ 
+Additionally our goal is also to achieve client authentication which enables the remote server to authenticate a legitimate user using the secure hub with \webusb functionality.
+%\ad{may be also some sort of software based attestation?} 
+%\dy{Perhaps we could also address client authentication if the peripheral is used as 2FA or password manager?}
+
+
+\iffalse
+\subsubsection{Side channel resiliency}
+
+The system should be resilient from the side channel attacks such as power analysis, timing analysis that may reveal sensitive input from the users.
+\fi
+

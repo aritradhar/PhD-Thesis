@@ -1,0 +1,43 @@
+\section{Attacks}
+\label{sec:attacks}
+ 
+Here we describe the attacks that our proposed system \toolname solves.
+
+\subsection{Compromised host system}
+
+Recent reports have shown that government authorities are increasingly able to compromise operating systems on both desktop and mobile platforms~\cite{}.
+We therefore assume an attacker who compromises the operating system and is able to passively eavesdrop all messages displayed to the user.
+These include messages the user inputs to the application. Moreover the attckacker can also compromised the hardware to get sensitive information from the peripheral devices. \usb devices assume that the \usb drivers i.e. the operating system and the host system is trusted. By using compromised operating system and the hardware the attacker can effectively plant a keylogger/screen readout which can transmit all the sensitive information the user provides/sees. Recent reports shows that there exists malwares which take screen shot of mobile devices in every fixed interval and send them to the attacker. Such can be effective against secure end-to-end encrypted messaging applications such as WhatsApp, Signal, Telegram etc.
+
+
+
+\subsection{Phishing attacks}
+\label{sec:attacks:phishing}
+
+\subsubsection{Remote phishing attack} 
+\label{sec:attacks:remotePhishing}
+
+This is the classical phishing attack which may involve social engineering. The attacker remains remote to the target host system and serves pages that looks identical to a legitimate website. One such example can be banking or social media sites that contains lots of sensitive information. There the attacker presents a link to the victim (via messages, emails etc). In plain sight, the link looks identical to most of the people except very few changes (such as \texttt{www.facebook.com} and \texttt{www1.facebook.com}). Moreover the attacker designs the web pages in such a way that it appears identical to the legitimate website. This attack tricks the users into entering sensitive information (such as login credentials or sensitive personal information).
+
+\subsubsection{Local phishing attack}
+\label{sec:attacks:localPhising}
+
+Local phishing attack is more sophisticated attack than the aforementioned attack (remote attack, refer Section~\ref{sec:attacks:remotePhishing}) where the attacker completely compromises the host system. The attacker can manipulate the display to show information which may appear legitimate. Such as the display drive renders \ssl\ lock logo on the browser so that the forged site appears to have an \https\ connection with the server. Apart from this the attacker can also manipulate input fields and/or modify the data in the input field. One such example is: the attacker changes the input field of an online banking site where the input field specifies how much money to send to the beneficiary. The attacker can change this value when sending it to the website. In this attack, the user can not detect such changes as the attacker does not show these changes on the display.
+
+
+
+\iffalse
+\subsection{Broad scale surveillance}
+
+This include attackers of very high computation power and networking capability to compromise  a wide array of host systems that includes personal computers and mobile devices. Recent reports shows that there exists malwares which take screen shot of mobile devices in every fixed interval and send them to the attacker. Such can be effective against secure end-to-end encrypted messaging applications such as WhatsApp, Signal, Telegram etc. The attacker can extract all the secret communication in plain text by infecting the mobile devices/PCs or compromising the entire host system.
+
+\myparagraph{keyloggers.} Key loggers can be both software and/or hardware backed. The hardware keylogger requires keylogger device to be installed between the peripheral device and the host system. This attack is realizable when the host system is untrusted. The software based keylogger is a n application with records and sends keyboard and mouse activities to the attacker. We can also assume a compromised operating system to execute this attack.
+
+\subsection{Traffic analysis}
+
+%\iffalse
+\subsection{Side channel attacks on host system}
+\subsubsection{Power analysis}
+\subsubsection{Timing leakage}
+\subsubsection{USB device cross-talk}
+\fi

@@ -1,0 +1,48 @@
+\input{preamble.tex}
+
+
+\newif\ifpaper
+\papertrue
+
+\newif\ifbold
+\boldtrue
+
+\newif\ifdesperatetime
+%\desperatetimetrue
+
+\graphicspath{{images/}}
+
+\begin{document}
+%\title{\name: Integrity Protection of User Input \\ for Remote Configuration of Safety-Critical Devices}
+\title{\name: Integrity Protection of Keyboard Input for Security-Critical Web Services \\ (Long Paper)}
+
+
+\maketitle
+\keywords{Input integrity \and Web application security \and Embedded systems}
+\begin{abstract}
+Many security-critical web services are used from hosts that are standard PCs. For example, industrial control systems, medical devices, and home automation systems are often configured through web interfaces. Similarly, online banking payments and cryptocurrency transactions are often executed through web interfaces. In such cases, the communication link from the host to the web server is typically easy to protect, but if the host platform gets compromised, the adversary can manipulate any user input with severe consequences, including safety violations and monetary loss.
+
+In this paper, we propose \name, a novel system for user input integrity protection in a compromised host. The user installs a simple plug-and-play device between the input peripheral and the host. This device observes user input events and sends a trace of them to the server that compares the trace to the application payload received from the untrusted host. To prevent subtle attacks where the adversary exchanges values from interchangeable input fields, we propose a labeling scheme where the user annotates input values.  We built a prototype of \name, using an embedded USB bridge, and our experiments show that such integrity protection adds only a minor delay. We also developed a UI analysis tool that helps developers to protect their services. We evaluated our solution using the commercially available safety-critical system and online Bitcoin wallets as case studies.
+\end{abstract}
+
+
+
+\input{section/Introduction}
+\input{section/ProblemStatement}
+\input{section/OurApproach}
+\input{section/NewSystemDesign}
+\input{section/ToolSystemDesign}
+\input{section/securityAnalysis}
+\input{section/Implementation}
+\input{section/Results}
+\input{section/Discussion}
+\input{section/RelatedWork}
+\input{section/Conclusion}
+
+\bibliographystyle{IEEEtranS}
+\bibliography{references}
+
+%\appendix
+%\input{section/Appendix}
+
+\end{document}

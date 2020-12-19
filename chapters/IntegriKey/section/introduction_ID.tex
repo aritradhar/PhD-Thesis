@@ -1,0 +1,30 @@
+\section{Introduction}
+\label{sec:introduction}
+
+We propose a system that provides input integrity and confidentiality to input data from the users to the web applications. We assume the attacker fully compromises the host system which includes the hardware and the software. The proposed solution uses a trusted embedded device with a small TCB (trusted computing base) that connects to the untrusted host system via \usb or \bluetooth interface.  
+
+\subsection{Problem Statement}
+
+Numerous revelations such as Snowden leaks show that the attackers as powerful as state nations are capable of compromising host systems such as personal computers, smartphones etc to gain control over the information stored on there or intercept inputs from the users. Such attacks can be orchestrated by compromising the operating system, planting hardware bugs in the system (such as the production line attacks), installing malwares etc. Simple attacks such as a hardware or software-based keylogger can intercept all the input from the keyboard or mouse, modify them. The web browsers is a complex application software and susceptible to a number zero-day attacks/exploits. Together these attacks can not only see user's input but also manipulate them. One such concrete example is the internet banking that runs on the browser. A banking transaction requires the beneficiary name, account number and the amount of money to send. A malicious host system or browser can change this information at the time of dispatching the web call to the remote server. Currently, there exists no way to authenticate and/or preserve the integrity of user input from peripheral devices. 
+
+\iffalse
+we extend this idea to detect and mitigate phishing attacks lunch by the attacker to steal user credential by imitating a legitimate looking website. there can be several ways the attacker can orchestrate the phishing attack; i) replicating a legitimate looking website and here the user failed to notice the security indicator such as the \ssl/\tls padlock indicating secure domain and the correct spelling of the website. ii) the host system is compromised and it renders legitimate looking website or directly steals sensitive information from user input.
+\fi
+we assume the attacker compromises the host system, therefore he can read out all the input and the display. the attacker can also manipulate all input and output to and from the host system, drop or delay or modify any network packets.
+
+
+\subsection{Research Objectives}
+
+Our goal is to prevent the attacker from altering or generating data that is given by the users through the input peripheral device. Additionally, we want to provide protection to the user from the malicious host that can manipulate the graphical elements on the browser (such as the swapping of the input fields).
+
+
+\subsection{Contributions.} The major contributions of this paper are as follows:
+
+
+ \mypara We design and develop a system that preserves the integrity and authenticity of the user input via \usb/\bluetooth based peripheral devices. This is achieved by employing a secure \usb device that extends the \tls endpoint by using the browser as an untrusted transport leveraging \webusb API. This dedicated \tls channel between the \usb device and the remote server. We assume that the host system is untrusted and can manipulate input data or generate false input data. Such system that preserves the input integrity and authenticity is completely new to our knowledge. We assume there exists a PKI to leverage for the server authentication. The detailed description is in Section~\ref{sec:inputPrivacy:integrityVerification}.
+
+\mypara Extending this idea we can not only provide protection against the manipulation of the input data by a untrusted host but also more sophisticated attacks where the attacker swaps the input fields. We propose solution to prevent these kind of attacks in Section~\ref{sec:inputPrivacy:formDetection}. 
+  
+\mypara We develop a working prototype of the system that works as a web authenticator to preserve input integrity and authenticity and provide protection against UI manipulation attacks such as input field swapping. The dedicated embedded system is built upon Arduino prototyping board. The prototype system we developed adds minimal delay (around $600$ milliseconds) at the time of loading the web page (the overhead is only at the time of first loading, the subsequent pages experience no delay). 
+
+

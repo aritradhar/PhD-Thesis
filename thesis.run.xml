@@ -85,6 +85,7 @@
     </requires>
     <requires type="editable">
       <file>ownpubs.bib</file>
+      <file>chapters/IntegriKey/references.bib</file>
       <file>chapters/ProtectIOn/references.bib</file>
       <file>chapters/ProximiTEE/paper.bib</file>
     </requires>

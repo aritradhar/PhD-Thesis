@@ -1,0 +1,87 @@
+\section{Security Analysis}
+\label{sec:securityAnalysis}
+
+\subsection{Trust assumption}
+\label{sec:securityAnalysis:trustAssumption}
+
+The trust assumption can be different based on different scenario.
+Table~\ref{table:trustAssumption} describes different trust assumption when
+different privacy properties are required. For example remote authentication
+and confidentiality is required for user credential for critical applications
+such as online banking. There also exists numerous scenarios where input
+integrity is critical such as the amount of money to be sent by internet banking
+application. Here one thing is to be noted that the combination of the
+properties: remote authentication and input confidentiality provides security
+against any type of phishing attack. These phishing attacks include both remote
+and local attack where the later assumes that the host system is malicious.
+
+
+\subsection{Detailed attacker model}
+\label{sec:securityAnalysis:attackerModel}
+
+We consider a global, adaptive and active attacker. The global aspect implies
+that the attacker has a full view of the system, i.e., he can compromise the
+user-side client (the host system) and the network (ISP level attacker). He is
+also adaptive in the sense that based on the user interaction he can modify his
+strategy and active means the attacker can listen, delay, modify and drop
+messages. In summary we consider a Dolev-Yao attacker model. The attacker's goal
+here is three-fold.
+
+\begin{enumerate}
+\item The attacker impersonates a legitimate website to make the user believe
+that the user is accessing the legitimate website. This allows the attacker to
+steal sensitive information (such as the voting preferences and other personal
+sensitive data). We consider this attack to be orchestrated in two ways:
+remotely and locally. The remote attack is the classical phishing attack where
+the attacker sits outside the host system and impersonates a legitimate website
+by either making a very small change in the website name or having compromised
+the browser (\ad{cite the attack here}). The local attack however is more
+sophisticated as the attacker compromises the host system which spoofs the
+security indicator, rendering a malicious website as a legitimate one.
+
+\item The attacker goal here is to extract as much sensitive information as
+possible from the user. This includes login credentials, second factor codes,
+other sensitive personal data etc. One can regard this attacker as the software
+or hardware key-logger that records all keyboard strokes and mouse clicks.
+
+\item We also assume that the attacker is capable of executing side
+channel attacks on the secure hub such as timing leakage and power analysis to
+extract additional information about the sensitive information the user
+provides.
+\end{enumerate}
+
+\ad{What the attacker is capable of doing?}
+
+We consider different levels of system compromise and list three active
+attackers with varying abilities to reflect different trust assumptions. We
+assume that the peripheral operated by the user is fully trusted. We classify
+the attacker in two broad classes:
+
+\subsubsection{Remote attacker}
+%\subsubsection{Compromised Network}
+Here we fully trust the host system. The network is fully compromised and the
+attacker here is remote. For example, it can mount a phishing attack to
+trick the user into entering login credentials. The attacker can also eavesdrop,
+insert, and delete messages in the channel between the website and browser.
+
+
+\subsubsection{Local attacker}
+
+The local attacker is more powerful compared to the remote attacker. Apart from
+possessing all the capabilities of the remote attacker the local attacker
+additionally can compromise part of the host system in the following ways:
+
+\begin{itemize}
+  \item \textbf{Compromised Browser.}
+Here we assume that the browser is compromised, while the underlying operating
+system is still trusted. As a result, the malicious browser observes all
+sensitive user input and can display arbitrary content to the user. For example,
+the browser may fake the security indicators to show that a phishing website is
+legitimate to the user.
+
+\item \textbf{Fully compromised host.}
+This is the strongest attacker model where the adversary fully compromises the
+host system (operating system and hardware). Any display rendered by the
+operating system can not be trusted.
+\end{itemize}
+
