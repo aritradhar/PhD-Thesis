@@ -2,10 +2,10 @@
 \label{sec:eval}
 
 
-We evaluate the performance of our prototype by measuring the overheads introduced by \name to the system and whether they influence the user's interaction. Initially, we measure the default latency introduced by \device when the user interacts with applications that do not require protection. Table~\ref{tab:performance} provides the relevant latencies \red{and the accuracy of the pointer detection}.
-The delay in forwarding keystrokes is $170\ \mu s$, and for frames is $21.76\ ms$. This allows the \device to achieve the maximum display frame rate of $47.69$ per second (e.g., most of the movies are shot and shown in  ~24-30 fps). However, an optimized implementation of the technique to encode information in the HDMI frame would reduce the processing time of a frame significantly and increase further the frame rate as a result. The B101 HDMI to CSI HDMI interceptor has a hardware limit of 25 frames at 1080p resolution. \red{We report 0.997 accuracy of the pointer detection mechanism that involves image analysis and pointer motion tracking. The accuracy is evaluated from 4196 captured frames.}
+We evaluate the performance of our prototype by measuring the overheads introduced by \name to the system and whether they influence the user's interaction. Initially, we measure the default latency introduced by \device when the user interacts with applications that do not require protection. Table~\ref{tab:performance} provides the relevant latencies and the accuracy of the pointer detection.
+The delay in forwarding keystrokes is $170\ \mu s$, and for frames is $21.76\ ms$. This allows the \device to achieve the maximum display frame rate of $47.69$ per second (e.g., most of the movies are shot and shown in  ~24-30 fps). However, an optimized implementation of the technique to encode information in the HDMI frame would reduce the processing time of a frame significantly and increase further the frame rate as a result. The B101 HDMI to CSI HDMI interceptor has a hardware limit of 25 frames at 1080p resolution. We report 0.997 accuracy of the pointer detection mechanism that involves image analysis and pointer motion tracking. The accuracy is evaluated from 4196 captured frames.
 %\blue{In an hour of usage on our test UIs (simple web forms), we observe that \device re-calibrates the mouse pointer only once.} Note that the accuracy may vary depending on the screen composition.} 
-\blue{We observe that the misdetection happens only when the pointer is not completely visible, i.e., the pointer is on the border of the screen and the OS displays it partially. Note that one could improve the logic of \device to run the adjustment phase (see Section~\ref{sec:systemDesign:analysis}) only when the pointer is within the screen completely.}
+We observe that the misdetection happens only when the pointer is not completely visible, i.e., the pointer is on the border of the screen and the OS displays it partially. Note that one could improve the logic of \device to run the adjustment phase (see Section~\ref{sec:systemDesign:analysis}) only when the pointer is within the screen completely.
 
 Our prototype of \name does not require the user to install any additional software in her machine to facilitate the communication between the remote server and the \device. Instead, the \device communicates with the remote server by using the host as an untrusted transporter. Therefore, we start by measuring the delay of sending data from the device to the host and vice versa:
 
@@ -45,13 +45,13 @@ Our prototype of \name does not require the user to install any additional softw
 \rowcolor{Gray}\multirow{-2}{*}{Browser} &Mozilla Firefox~\cite{mozilla_2019} & $20,928,358$\\
 \multirow{2}{*}{JS Engine}&Chrome V8~\cite{V8} & $2,009,183$\\
 &Firefox SpiderMonkey~\cite{spiderMonkey} & $2,908,550$\\
-\rowcolor{Gray}& Ubuntu 19.10 w/o kernel & \red{$600,712$}\\
-\rowcolor{Gray}& Arch Linux w/o kernel& \red{$71,188$}\\
-\rowcolor{Gray}\multirow{-3}{*}{OS}&Linux Kernel & \red{$36,680,915$}\\
+\rowcolor{Gray}& Ubuntu 19.10 w/o kernel & $600,712$\\
+\rowcolor{Gray}& Arch Linux w/o kernel & $71,188$\\
+\rowcolor{Gray}\multirow{-3}{*}{OS}&Linux Kernel & $36,680,915$\\
 \multirow{4}{*}{\textbf{\device}}&HDMI interceptor + overlay & $1,911$\\ 
 &USB stack & $893$\\
 &Crypto stack & $3,500$\\ 
-&RPi tiny core Linux & \red{$121,899$} \\\hline
+&RPi tiny core Linux & $121,899$ \\\hline
 \end{tabular} 
 \caption[\name code-base comparison]{\textbf{\name code-base comparison} with respect to some of the open-source browsers, JS engines and OSs.}
 %\spacesaveL

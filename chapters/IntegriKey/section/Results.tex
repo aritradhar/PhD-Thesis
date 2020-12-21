@@ -34,12 +34,12 @@ From bandwidth point of view, the overhead of the second TLS channel is also sma
 \subsection{\tool Evaluation} 
 \label{sec:results:framework}
 
-We evaluated our UI analysis tool implementation using two existing systems: PLC and home automation controller. The PLC system we used was ControlByWeb \emph{x600m}~\cite{controlbyweb} I/O server and we tested six separate configuration web pages for it. The home automation system we used is called home-assistant~\cite{ha} and we tested two different configuration pages for it. We wrote UI specifications these pages and the fed the specifications to our tool implementation. The tool produced groups of interchangeable user input fields that we the manually verified to be correct. Table~\ref{tab:evaluation} in Appendix provides the details of this evaluation, including specifications for tested UIs and reported swappable elements. Based on this evaluation, we make two conclusions. The first is that our tool is able to process configuration UIs of existing, commercially-available safety-critical systems. The second is that many such UIs have swappable user input fields that need protection provided by our labeling scheme.
+We evaluated our UI analysis tool implementation using two existing systems: PLC and home automation controller. The PLC system we used was ControlByWeb \emph{x600m}~\cite{controlbyweb} I/O server and we tested six separate configuration web pages for it. The home automation system we used is called home-assistant~\cite{ha} and we tested two different configuration pages for it. We wrote UI specifications these pages and the fed the specifications to our tool implementation. The tool produced groups of interchangeable user input fields that we the manually verified to be correct. Table~\ref{tab:evaluation} and~\ref{tab:evaluation2} provide the details of this evaluation, including specifications for tested UIs and reported swappable elements. Based on this evaluation, we make two conclusions. The first is that our tool is able to process configuration UIs of existing, commercially-available safety-critical systems. The second is that many such UIs have swappable user input fields that need protection provided by our labeling scheme.
 
 \begin{table}[t]
 \centering
-%\footnotesize
-\caption{\textbf{\tool user interface processing time.} We tested the processing time of our UI analysis tool on the web pages from the x600m PLC server, the home automation system and bitcoin wallets. All the measurements where conducted over 500K iterations.}
+\small
+\caption[\tool user interface processing time]{\textbf{\tool user interface processing time.} We tested the processing time of our UI analysis tool on the web pages from the x600m PLC server, the home automation system and bitcoin wallets. All the measurements where conducted over 500K iterations.}
 \begin{tabular}{lccc}
 \hline
 \textbf{Web page} & \textbf{\#Fields} &\textbf{Processing time (ms.)} & \textbf{SD}\\ \hline
@@ -67,11 +67,9 @@ Send Bitcoin & $4$ & $0.9$ & $0.024$\\
 
 Additionally, we tested our UI analysis tool on user interfaces of other PLC controllers, home automation systems, medical device control, personal data management and online banking. Again, we wrote specifications for these user interfaces and processed them through our tool that founds swappable input elements in many of the tested user interfaces. We mined around $35$ different text fields from $4$ different application types. We list our findings in Table~\ref{tab:inputFields}. We enumerate the user input fields in each page, their specifications that we manually created (including types and constraints) and the output of the tool that is grouping of swappable fields. We verified each output of the tool manually. We observe that in some cases the tool outputs as ``swappable'' input fields that can, in fact, be easily detected at the server. For example `start date' and `end date' are not swappable as the former has to be less than the later. This is an example of a case, where both fields are specified correctly, but their relationship imposes additional constraints that can be checked by the server. For such type of fields, the developers can exclude them from the input specification.
 
-\begin{table*}[!htpb]
+\begin{table}[!htpb]
 \centering
-\caption{\textbf{\tool evaluation.} We tested our implementation of the UI analysis tool on `ControlByWeb x600m' industrial I/O server and `home-assistant' home automation systems. Web pages column shows the configuration pages that we tested. We list types and formats for each user input field in the tested pages, and also list those input fields that are swappable.}
-%\footnotesize
-%\scriptsize
+\caption[\tool evaluation 1]{\textbf{\tool evaluation 1.} We tested our implementation of the UI analysis tool on `ControlByWeb x600m' industrial I/O server Web pages column shows the configuration pages that we tested. We list types and formats for each user input field in the tested pages, and also list those input fields that are swappable.}
 \resizebox{\textwidth}{!}{
 \begin{tabular}{l|lcc|p{2.4cm}}
 \hline
@@ -131,7 +129,21 @@ configuration & Start time & \Time &  $[min=00:00, max=23:59]$ & Stop time \\ \c
  & Repeat val & \integer & $[min=10, max=9999]$ &\\ 
  & Occurrences & \integer & $[min=0, max=999999]$ &\\ 
 \hline
+\end{tabular}
+}
+\label{tab:evaluation}
+\end{table}
 
+
+
+\begin{table}[!htpb]
+\centering
+\caption[\tool evaluation]{\textbf{\tool evaluation 2.} Similar to Table~\ref{tab:evaluation}, we tested our implementation of the UI analysis tool on `home-assistant' home automation systems.}
+\resizebox{\textwidth}{!}{
+\begin{tabular}{l|lcc|p{2.4cm}}
+\hline
+\textbf{Web pages} & \textbf{Fields} & \textbf{Type} & \textbf{Length/value constraint} &\textbf{Swappable fields} \\
+\hline
 \multicolumn{5}{c}{\bfseries Web Home automation configuration forms} \\
 \hline
 
@@ -149,12 +161,10 @@ configuration & Celling lights & \radio & &Celling lights \\
  & AC & \integer & $[min=16, max=25]$ &\\ 
  & Window shutter level & \integer & $[min=0, max=10]$ &\\
 \hline 
-%
 \end{tabular}
 }
-%\vspace{-15pt}
-\label{tab:evaluation}
-\end{table*}
+\label{tab:evaluation2}
+\end{table}
 
 
 \myparagraph{Example input fields}
@@ -169,7 +179,7 @@ We notice that some user input fields are strictly swappable only with another i
 \begin{table*}[!htpb]
 \centering
 %\footnotesize
-\caption{\textbf{Input field specifications.} This table lists specifications (type, regular expression, length/value constraints) that we mined by analyzing various web pages (banking, medical, PLC, home automation). The swappable column denotes that the group of input fields with $\checkmark$ mark can be swapped with each other. Such as the current can be swapped with the frequency field.}
+\caption[Input field specifications]{\textbf{Input field specifications.} This table lists specifications (type, regular expression, length/value constraints) that we mined by analyzing various web pages (banking, medical, PLC, home automation). The swappable column denotes that the group of input fields with $\checkmark$ mark can be swapped with each other. Such as the current can be swapped with the frequency field.}
 \resizebox{\textwidth}{!}{
 \begin{tabular}{lp{0.5cm}cp{5cm}p{1cm}}
 \cline{1-5}
@@ -301,7 +311,7 @@ Figure~\ref{fig:userStudyInstruction} shows the study UI and the information she
 \begin{figure*}[t]
  \centering
  \includegraphics[trim={0 8cm 0 2cm}, clip,width=\linewidth]{chapters/IntegriKey/images/userStudy.pdf}
- \caption{\textbf{User study instructions.} This figure shows the instruction sheet that was given to our user study participants.}
+ \caption[User study instructions]{\textbf{User study instructions.} This figure shows the instruction sheet that was given to our user study participants.}
  \label{fig:userStudyInstruction}
 \end{figure*}
 
