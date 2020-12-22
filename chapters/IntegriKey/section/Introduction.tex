@@ -1,7 +1,7 @@
 \section{Introduction}
 \label{sec:introduction}
 
-Many web user interfaces implement security-critical functionality. Examples include web-based configuration of safety-critical devices like Programmable Logic Controllers (PLCs) used in manufacturing plants, medical devices, and home automation systems~\cite{7306669,siemens,siemens2,schneider}. Payments in online banking and cryptocurrency transactions from online wallets are additional examples of security-critical user interfaces implemented as web services. Figure~\ref{fig:PLC} shows on the left a configuration web form for a commercial PLC system~\cite{controlbyweb} that we use as a running example throughout the paper and on the right a browser-based Bitcoin wallet provided by BitGo~\cite{bitgo}. The defining characteristics of such web services are that (i) they accept input from the user, (ii) the inputs are sensitive to minor changes, and (iii) after committing an input, the resulting action is difficult to reverse.
+Many web user interfaces implement security-critical functionality. Examples include web-based configuration of safety-critical devices like Programmable Logic Controllers (PLCs) used in manufacturing plants, medical devices, and home automation systems~\cite{7306669,siemens,siemens2,schneider}. Payments in online banking and cryptocurrency transactions from online wallets are additional examples of security-critical user interfaces implemented as web services. Figure~\ref{fig:PLC} shows on the left a configuration web form for a commercial PLC system~\cite{controlbyweb} that we use as a running example throughout this chapter and on the right a browser-based Bitcoin wallet provided by BitGo~\cite{bitgo}. The defining characteristics of such web services are that (i) they accept input from the user, (ii) the inputs are sensitive to minor changes, and (iii) after committing an input, the resulting action is difficult to reverse.
 
 %In such remote configuration, the communication between the host and the safety-critical device (or its programmer device) is easy to protect through standard means such as a TLS connection~\cite{dierks2008transport}. However, if the host platform gets compromised---as standard PC platforms so often do---the adversary can manipulate any user-provided configuration settings. Such \emph{user input manipulation attacks} are difficult to detect (before it is too late!) and can have serious consequences, including safety violations that can put human lives in danger.
 
@@ -22,13 +22,13 @@ More generally, trusted input through an untrusted host platform to a remote ser
 \begin{figure}[t]
   \centering
     \includegraphics[trim={0 4cm 10cm 0},clip,width=\linewidth]{chapters/IntegriKey/images/config_pages.pdf}
-    \caption[Example configuration page of a web-based PLC]{\textbf{Example configuration page of a web-based PLC.} Screenshot from the (a) ControlByWeb x600m~\cite{controlbyweb} I/O server configuration page, (b) web-based bitcoin wallet provide by BitGo~\cite{bitgo}. In rest of the paper, we use the PLC server as the running example for our proposed system.}
+    \caption[Example configuration page of a web-based PLC]{\textbf{Example configuration page of a web-based PLC.} Screenshot from the (a) ControlByWeb x600m~\cite{controlbyweb} I/O server configuration page, (b) web-based bitcoin wallet provide by BitGo~\cite{bitgo}. In rest of this chapter, we use the PLC server as the running example for our proposed system.}
 
     \label{fig:PLC}
 \end{figure}
 
 
-\myparagraph{Our goals and approach} In this paper, we address the \emph{integrity protection} of user input in security-critical web user interfaces. Our goal is to design a solution that provides strong protection (e.g., no risk of user habituation, small TCB) and easy adoption (e.g., minimal changes to the existing systems and user experience, low deployment cost). We use remote configuration of a commercial safety-critical device (see Figure~\ref{fig:PLC}, left) as a running example, but we emphasize that our solution is not limited to that application domain. In Section~\ref{sec:discussion} we discuss how the same approach can be applied to integrity protection of various other services including financial transactions, social media posts, and email.
+\myparagraph{Our goals and approach} In this chapter, we address the \emph{integrity protection} of user input in security-critical web user interfaces. Our goal is to design a solution that provides strong protection (e.g., no risk of user habituation, small TCB) and easy adoption (e.g., minimal changes to the existing systems and user experience, low deployment cost). We use remote configuration of a commercial safety-critical device (see Figure~\ref{fig:PLC}, left) as a running example, but we emphasize that our solution is not limited to that application domain. In Section~\ref{sec:discussion} we discuss how the same approach can be applied to integrity protection of various other services including financial transactions, social media posts, and email.
 
 The basic idea behind \name is straightforward and we call this approach \emph{input trace matching}.  When the user needs to perform a security-critical web operation like configuring a PLC device or performing a cryptocurrency payment, he installs a trusted embedded device between the user input peripheral and the host platform. This device intercepts user's input events, passes them through to the host, and sends a trace of them (over a secure channel) to an authenticated remote server that compares the trace to the user input received from the host to detect input manipulation. Once the user has completed the web transaction, he can remove the embedded device from the host to preserve the user's privacy and to prevent that any subsequent input events are sent to the same server unnecessarily.
 
@@ -48,7 +48,7 @@ We implemented a prototype of \device using an Arduino board and evaluated \tool
 We also conducted a preliminary user study where we simulated a swapping attack on $15$ study participants. Labeling prevented the attack in $14$ cases.
 
 
-\myparagraph{Contributions} To summarize, in this paper we make the following contributions:
+\myparagraph{Contributions} To summarize, in this chapter we make the following contributions:
 
 \begin{itemize}
     %\item \emph{New approach for integrity protection.} We propose input trace matching as a novel approach for integrity protection of user input on untrusted host platforms.
