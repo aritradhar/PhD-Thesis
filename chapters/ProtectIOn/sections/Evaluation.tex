@@ -2,6 +2,25 @@
 \label{sec:eval}
 
 
+
+\begin{table}[t]
+\small
+\centering
+\begin{tabular}{l | c}
+\textbf{Operation} & \textbf{Average time/accuracy} \\\hline
+Detecting mouse pointer $(A)$ & 1.76 ms \\
+Detection QR code $(B)$ & 14 ms\\
+Decoding QR code + Overlay $(C)$ & 6 ms\\
+Effective display latency $(A+B+C)$ & 21.76 ms \\
+Mouse latency & 250 $\mu$s\\
+Keyboard latency & 170 $\mu$s\\\hline
+Image analysis accuracy of mouse pointer & 0.997 \\\hline
+\end{tabular} 
+\caption[\device performance]{\textbf{\device performance}. The table shows the latency and accuracy corresponding to \name prototype operations.}
+%\spacesave
+\label{tab:performance}
+\end{table}
+
 We evaluate the performance of our prototype by measuring the overheads introduced by \name to the system and whether they influence the user's interaction. Initially, we measure the default latency introduced by \device when the user interacts with applications that do not require protection. Table~\ref{tab:performance} provides the relevant latencies and the accuracy of the pointer detection.
 The delay in forwarding keystrokes is $170\ \mu s$, and for frames is $21.76\ ms$. This allows the \device to achieve the maximum display frame rate of $47.69$ per second (e.g., most of the movies are shot and shown in  ~24-30 fps). However, an optimized implementation of the technique to encode information in the HDMI frame would reduce the processing time of a frame significantly and increase further the frame rate as a result. The B101 HDMI to CSI HDMI interceptor has a hardware limit of 25 frames at 1080p resolution. We report 0.997 accuracy of the pointer detection mechanism that involves image analysis and pointer motion tracking. The accuracy is evaluated from 4196 captured frames.
 %\blue{In an hour of usage on our test UIs (simple web forms), we observe that \device re-calibrates the mouse pointer only once.} Note that the accuracy may vary depending on the screen composition.} 

@@ -8,58 +8,58 @@ In this section, we will informally analyze the security of \name. We divide the
 
 First we look into the integrity property.
 
-\subsubsection{Modifying IO operations} As only the \device can interact with the overlaid UI, the attacker can not manipulate the IO operations with the overlaid UI. Moreover, the attacker cannot submit arbitrary data to the remote server because the latter accepts only inputs signed by the \device.
+\myparagraph{Modifying IO operations} As only the \device can interact with the overlaid UI, the attacker can not manipulate the IO operations with the overlaid UI. Moreover, the attacker cannot submit arbitrary data to the remote server because the latter accepts only inputs signed by the \device.
 
 
-\subsubsection{Early form submission} This attack is not possible as the input devices (both mouse and keyboard) are connected to the \device, and only the \device can interact with the overlaid UI. This makes it impossible for the attacker to emulate a click on the overlaid part of the screen.  
+\myparagraph{Early form submission} This attack is not possible as the input devices (both mouse and keyboard) are connected to the \device, and only the \device can interact with the overlaid UI. This makes it impossible for the attacker to emulate a click on the overlaid part of the screen.  
 
 
-\subsubsection{Attack on the mouse pointer tracking and overlay} 
+\myparagraph{Attack on the mouse pointer tracking and overlay} 
 The attacker may try to defeat the \name pointer tracking and overlay mechanism described in Section~\ref{sec:systemDesign:analysis} by introducing a malicious pointer that is visually more appealing to the user. Note that the \device overlaid mouse pointer is prominent and hard to miss. One can visualize it as an arms race between the attacker and the \device to grab the user's attention. We argue that this is a suboptimal strategy for the attacker as both of the pointers will be visible on the screen that causes suspicion to the user. Also, when the real mouse pointer enters the overlaid area, the untrusted part, including the malicious mouse pointer, will be hidden by the focusing mechanism. Hence, we can conclude that executing clickjacking-like attacks is not possible in \name.
 
 
-\subsubsection{Replay attack} The remote server adds a random identifier (\texttt{id}) in the form specification alongside the signature. With this identifier, the server keeps track of the user input. When the server receives a form submission data, it first checks if the user submitted with the same identifier sent by the server. Otherwise, the server rejects the data. 
+\myparagraph{Replay attack} The remote server adds a random identifier (\texttt{id}) in the form specification alongside the signature. With this identifier, the server keeps track of the user input. When the server receives a form submission data, it first checks if the user submitted with the same identifier sent by the server. Otherwise, the server rejects the data. 
 
 
-\subsubsection{Not rendering QR code} The host may deny sending the QR code over the HDMI channel. We consider this to be a denial of service and does not compromise the integrity of the IO data. 
+\myparagraph{Not rendering QR code} The host may deny sending the QR code over the HDMI channel. We consider this to be a denial of service and does not compromise the integrity of the IO data. 
 
 
-\subsubsection{Redirection} The attacker could redirect the user to a phishing website that renders visually identical UI to that of the legitimate website. A redirection attack cannot break the integrity of the input because a legitimate remote server always requires the signed input from the user. Without a valid signed specification, the \device never renders an overlay or sign any input. 
+\myparagraph{Redirection} The attacker could redirect the user to a phishing website that renders visually identical UI to that of the legitimate website. A redirection attack cannot break the integrity of the input because a legitimate remote server always requires the signed input from the user. Without a valid signed specification, the \device never renders an overlay or sign any input. 
 
-\subsubsection{Malicious instruction on the screen} The attacker may put a malicious instruction/label on the untrusted part of the screen to influence user inputs. However, when the user starts interacting with the overlaid UI, the default focusing mechanism (Lightbox) highlights only the secure UI and hides the rest of the screen. 
+\myparagraph{Malicious instruction on the screen} The attacker may put a malicious instruction/label on the untrusted part of the screen to influence user inputs. However, when the user starts interacting with the overlaid UI, the default focusing mechanism (Lightbox) highlights only the secure UI and hides the rest of the screen. 
 %The user attention focusing mechanisms enable the user to distinguish the trusted part of the screen from the untrusted part.
 
 
-\subsubsection{Replication of Lightbox} The attacker can replicate the lightbox on any part of the screen. However, this does not compromise the integrity of the input as the legitimate remote server only accepts signed input from the \device. 
+\myparagraph{Replication of Lightbox} The attacker can replicate the lightbox on any part of the screen. However, this does not compromise the integrity of the input as the legitimate remote server only accepts signed input from the \device. 
 
 
-\subsubsection{Multiple HIDs} The attacker can emulate multiple HIDs to avoid the tracking of the mouse pointer. However, this attack is ineffective as the \device only tracks the mouse pointer that is connected to it (over USB interface). 
+\myparagraph{Multiple HIDs} The attacker can emulate multiple HIDs to avoid the tracking of the mouse pointer. However, this attack is ineffective as the \device only tracks the mouse pointer that is connected to it (over USB interface). 
 
 
-\subsubsection{BadUSB} BadUSB~\cite{badUSB} is out-of-scope of this paper as in the attacker model (Section~\ref{sec:approach:systemAttackerModel}), we assume that all the IO devices that are connected to the \device are trusted.
+\myparagraph{BadUSB} BadUSB~\cite{badUSB} is out-of-scope of this paper as in the attacker model (Section~\ref{sec:approach:systemAttackerModel}), we assume that all the IO devices that are connected to the \device are trusted.
 
-\subsubsection{Mouse acceleration/updates} The attacker can change the mouse acceleration or provide erratic mouse updates on the screen. Such manipulations only cause the \device to lose track of the mouse pointer and stop relaying the mouse signal to the host altogether. The \device uses the acceleration parameters from the default \texttt{libUSB} driver to cope with the mouse acceleration. Hence, such manipulation does not affect security.
+\myparagraph{Mouse acceleration/updates} The attacker can change the mouse acceleration or provide erratic mouse updates on the screen. Such manipulations only cause the \device to lose track of the mouse pointer and stop relaying the mouse signal to the host altogether. The \device uses the acceleration parameters from the default \texttt{libUSB} driver to cope with the mouse acceleration. Hence, such manipulation does not affect security.
 
-\subsubsection{Malicious QR codes} The attacker may put fake QR codes on the webpage. Note that the \device verifies the signature from the HTML forms to check the integrity using the pre-configured or white-listed server certificate. This way, the \device does not render any overlays from malicious QR codes.
+\myparagraph{Malicious QR codes} The attacker may put fake QR codes on the webpage. Note that the \device verifies the signature from the HTML forms to check the integrity using the pre-configured or white-listed server certificate. This way, the \device does not render any overlays from malicious QR codes.
 
 
 \subsection{Confidentiality}
 \label{sec:securityAnalysis:confidentiality}
 
-\subsubsection{Redirection} The attacker could redirect the user to a phishing website that renders visually identical UI to that of the legitimate website. Redirection compromises the confidentiality of user inputs only when the user does not trigger the SAS mechanism. The \device is only activated when it detects specifications signed from the whitelisted (maintained in the memory) servers.
+\myparagraph{Redirection} The attacker could redirect the user to a phishing website that renders visually identical UI to that of the legitimate website. Redirection compromises the confidentiality of user inputs only when the user does not trigger the SAS mechanism. The \device is only activated when it detects specifications signed from the whitelisted (maintained in the memory) servers.
 %Note that the \device contains a whitelist of the remote server addresses and their corresponding certificates. The \device is only activated when it detects specifications signed from the whitelisted servers.
 %as the confidentiality of inputs requires the user to manually trigger the SAS to detect any sensitive UI elements that are overlaid by the \device.
 
 
-\subsubsection{Fake SAS instructions} The attacker may put fake instructions on the screen that attempt to trick the user into typing a false SAS sequence and then revealing her sensitive information to the attacker. This attack is not possible as long as the user follows the instructions it received from the issuer of the \device and only types in secrets after using the correct SAS value (such as \texttt{Ctr+Alt+Del}). Recall from Section~\ref{sec:confidentiality:SAS} that the SAS value is defined by the issuer of the \device and that the SAS keystrokes are always first intercepted by the \device. (The user is expected to trigger the SAS only when there exists a QR code on the screen that is correctly signed by the remote server. In case there is no QR code or a malformed QR code on the screen, the \device warns the user.)
+\myparagraph{Fake SAS instructions} The attacker may put fake instructions on the screen that attempt to trick the user into typing a false SAS sequence and then revealing her sensitive information to the attacker. This attack is not possible as long as the user follows the instructions it received from the issuer of the \device and only types in secrets after using the correct SAS value (such as \texttt{Ctr+Alt+Del}). Recall from Section~\ref{sec:confidentiality:SAS} that the SAS value is defined by the issuer of the \device and that the SAS keystrokes are always first intercepted by the \device. (The user is expected to trigger the SAS only when there exists a QR code on the screen that is correctly signed by the remote server. In case there is no QR code or a malformed QR code on the screen, the \device warns the user.)
 
 
-\subsubsection{Side-channel leakages} Even though, the \device ensures that no mouse or keyboard event arrives at the untrusted host when the user executes some operation over the overlaid UI, one can not rule out all side-channel leakages. Depending on the application, the amount of time that the user spends or the entry/exit position of the mouse pointer may reveal some information to the attacker. 
+\myparagraph{Side-channel leakages} Even though, the \device ensures that no mouse or keyboard event arrives at the untrusted host when the user executes some operation over the overlaid UI, one can not rule out all side-channel leakages. Depending on the application, the amount of time that the user spends or the entry/exit position of the mouse pointer may reveal some information to the attacker. 
 \device could allow the remote server to specify additional policies in the specification to prevent such side-channel attacks, e.g., a minimum amount of time that the device should not forward any event to the host after the user enters the overlay. We leave as future work defining such policies and integrating them on \name.
 %However, for fixed-length inputs such as the pin codes or credit card details, do not leak any information about the input.
 
 
-\subsubsection{Mode Switching} The host could remove the QR code when the user is typing confidential data in the sensitive form. The absence of the QR code makes the \device to assume that the secure session has ended, and the \device forwards the plaintext keystrokes and mouse movement to the host. To prevent the leakage of the input data, the \device continues to overlay and operate on the overlay until the user clicks submit or cancel (or any UI element that has a \texttt{trigger}  capability). This way, the \device locks the UI from the attacker until the user finishes her session.
+\myparagraph{Mode Switching} The host could remove the QR code when the user is typing confidential data in the sensitive form. The absence of the QR code makes the \device to assume that the secure session has ended, and the \device forwards the plaintext keystrokes and mouse movement to the host. To prevent the leakage of the input data, the \device continues to overlay and operate on the overlay until the user clicks submit or cancel (or any UI element that has a \texttt{trigger}  capability). This way, the \device locks the UI from the attacker until the user finishes her session.
 
 \subsection{Attacks toward \device} 
 \label{sec:securityAnalysis:device}
@@ -67,7 +67,7 @@ The attacker may try to defeat the \name pointer tracking and overlay mechanism 
 In \name trust model, we assume that the \device is trusted. However, in the real-world, embedded systems are often vulnerable to attacks as the attacker can use the connection interfaces to reprogram the \device. It is also possible to develop the \device using formally verified languages such as embedded Rust. However, we consider making a security-hardened \device is engineering intensive and out-of-scope of this paper. 
 
 
-\subsubsection{Downgrade attack} The host can block the initial QR code from the server to the \device. By doing so, the host forces the server to downgrade the security of the webpage, i.e., not serving the \name JS. For integrity, this is not a security threat as the server does not accept any input from the host that is not signed by the \device. Hence, the downgrade attack works as a denial of service, which is out-of-scope of this paper.
+\myparagraph{Downgrade attack} The host can block the initial QR code from the server to the \device. By doing so, the host forces the server to downgrade the security of the webpage, i.e., not serving the \name JS. For integrity, this is not a security threat as the server does not accept any input from the host that is not signed by the \device. Hence, the downgrade attack works as a denial of service, which is out-of-scope of this paper.
 %The fallback mechanism, i.e., the case where the user does not have the \device, is outside the scope of this work because it is specific to the policy of service providers. E.g., a bank could issue a new \device for the user, while an online shopping site could allow the user to enroll a new \device or allow access only to nonsensitive functionalities. 
 
 
@@ -80,7 +80,8 @@ In this section, we provide a formal proof of the following property: \emph{with
 %\subsection{Interaction Protocol} 
 %\label{appendix:security:protocol}
 
-\subsection{Interaction protocol}
+\myparagraph{Interaction protocol}
+
 To simplify the proof, we model the interaction between the user, the host, and the remote server as a finite state automaton (FSA).
 The interactions between the server (\server), the user (\user) and host (\host) are depicted in the FSA in Figure~\ref{fig:fsm}.
 
@@ -174,7 +175,7 @@ If \user does not send all the transformations till $[m']_i$ corresponding to th
 \end{lemma}
 
 \begin{proof}
-If \user does not attach all the transformation till $[m']_i$, i.e., $[m']_1, [m']_2, \ldots, [m']_{i-1}, [m']_i$  corresponding to inputs $I_1, I_2,\ldots, I_{i-1}, I_i$, then the server can not verify all the transformations corresponding to the input. \host could modify a specific $[m]_x$ to influence \user input.
+If \user does not attach all the transformation till $[m']_i$, i.e., $$[m']_1, [m']_2, \ldots, [m']_{i-1}, [m']_i$$  corresponding to inputs $I_1, I_2,\ldots, I_{i-1}, I_i$, then the server can not verify all the transformations corresponding to the input. \host could modify a specific $[m]_x$ to influence \user input.
 \end{proof}
 
 \begin{lemma}
