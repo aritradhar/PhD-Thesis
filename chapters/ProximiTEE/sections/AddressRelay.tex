@@ -28,14 +28,14 @@ Concerning the security of the \device device we employ the same adversary model
 
 Our solution is targeted to scenarios where the benefits of more secure attestation outweigh the deployment cost of a simple embedded device. Here, we outline three example cases.  
 
-\subsubsection{Data center} In our first example, we consider a cloud platform provider that attaches \device to a server in a specific data center and makes the public key of the connected device known to the users of the service. Our approach is particularly well suited to cloud computing models where customers rent dedicated computing resources like entire servers. In such a setting, our solution ensures that the cloud platform customer outsources data and computation to a server that resides in a specified location. Enforcing location may be desirable to meet increasing data protection regulation that defines how and where data can be stored, even if protected by TEEs such as SGX. Revocation (e.g., when a server is relocated to another data center or function) can be realized by merely detaching \device.
+\myparagraph{Data center} In our first example, we consider a cloud platform provider that attaches \device to a server in a specific data center and makes the public key of the connected device known to the users of the service. Our approach is particularly well suited to cloud computing models where customers rent dedicated computing resources like entire servers. In such a setting, our solution ensures that the cloud platform customer outsources data and computation to a server that resides in a specified location. Enforcing location may be desirable to meet increasing data protection regulation that defines how and where data can be stored, even if protected by TEEs such as SGX. Revocation (e.g., when a server is relocated to another data center or function) can be realized by merely detaching \device.
 
-\subsubsection{Permissioned blockchain} Our second case is a setting in which a trusted authority initializes a set of validator nodes for a permissioned and SGX-hardened blockchain. 
+\myparagraph{Permissioned blockchain} Our second case is a setting in which a trusted authority initializes a set of validator nodes for a permissioned and SGX-hardened blockchain. 
 The trusted authority issues one \device for each organization that operates one of the validator nodes which allows secure attestation of the validator platforms. Organizations are free to upgrade their computing platforms by attaching the \device to a new platform which automatically revokes the old platform without the need to interact with a trusted authority. Furthermore, since \device can only be active on one platform at the time, such a deployment enables the authority to control the identities used in (Byzantine) blockchain consensus process.
 
 
 
-\subsubsection{HSM-protected keys} Our last case is the management of HSM-protected keys from an attested enclave. Such deployment enables the secure and flexible realization of various access control policies, implemented as attested enclaves. \name guarantees that only an enclave in the proximity of the HSM can control its keys. Such solution provides a high level of protection because, at no point in time, the HSM keys are directly accessible by the enclave (which may be vulnerable to side-channel attacks) or by the untrusted OS.
+\myparagraph{HSM-protected keys} Our last case is the management of HSM-protected keys from an attested enclave. Such deployment enables the secure and flexible realization of various access control policies, implemented as attested enclaves. \name guarantees that only an enclave in the proximity of the HSM can control its keys. Such solution provides a high level of protection because, at no point in time, the HSM keys are directly accessible by the enclave (which may be vulnerable to side-channel attacks) or by the untrusted OS.
 
 
 \subsection{Solution Details}
@@ -45,7 +45,7 @@ The trusted authority issues one \device for each organization that operates one
 Now, we explain the \name attestation mechanism in detail.
 
 
-\subsubsection{Attestation protocol} 
+\myparagraph{Attestation protocol} 
 
 Figure~\ref{fig:systemSetUp} illustrates the attestation protocol that proceeds as follows:
 
@@ -81,7 +81,7 @@ Figure~\ref{fig:systemSetUp} illustrates the attestation protocol that proceeds 
 \end{enumerate}
 
 
-\subsubsection{Periodic proximity verification} 
+\myparagraph{Periodic proximity verification} 
 
 After the initial connection establishment, the \device device performs \emph{periodic} proximity verification on the attested enclave. \device sends a new random challenge $r$ at frequency $f$, verifies the correctness of the received response and measures its latency. The latest $w$ latencies are stored to a sliding window data structure, as shown in Figure~\ref{fig:slidingWindow}.
 

@@ -26,7 +26,7 @@ To demonstrate that \name prevents relay attacks (over the Internet) we performe
     \label{fig:setup}
 \end{figure}
 
-\subsubsection{Assumptions and optimizations.}
+\myparagraph{Assumptions and optimizations}
 To consider the best possible case for the adversary, we made several generous assumptions in his favor, when designing our experimental setup and post-processing of our measurement:
 
 \begin{enumerate}
@@ -39,7 +39,7 @@ To consider the best possible case for the adversary, we made several generous a
 	\item \emph{Infinitely fast network interface.} Since the adversary's platform might have a faster network interface hardware than the one used in our experiments, we chose to simulate an adversary that has infinitely fast network interface. In our experimental setup, both the target platform and the adversary's platform have identical network interfaces. We assume (in the favor of the adversary) that the transmission time spent on the wire is negligible and most the the round-trip latency is due to processing the in the network interface. This allows us to simulate an adversary with infinitely fast network interface by first performing latency measurements and then in a post-processing phase cutting down all the measured latencies by half. Note that the target platform's network interface cannot be replaced by the attacker has he does not have physical access to it.
 \end{enumerate}
 
-\subsubsection{Experiments.}
+\myparagraph{Experiments}
 We conducted our experiments on three SGX platforms: two Intel NUC NUC6i7KYK mini-PCs and one Dell Latitude laptop, all equipped with SGX-enabled Skylake core i7 processors and Ubuntu 16.04 LTS installed on them. To measure latencies we used FX-3's GPIO pins that provides 100 nanosecond level accuracy. We performed a total of $20$ million rounds of the protocol for normal attestations and simulated attacks and measured the challenge-response latencies for each. We measure all of them inside the EZ-USB FX3 code. For cross-validation, we tested the \device with the high precision oscilloscope and witnessed identical timing patterns.
 
 
@@ -79,10 +79,10 @@ There are five interlinked parameters that one needs to consider: (i) the legiti
 \newcommand{\mainResultCaption}{\textbf{Distinguishing relay attack.} The attacker's success probability $P_{adv}$ and the legitimate success probability $P_{legit}$ in proximity verification for different number of rounds ($n$) given a fixed $k=0.4$.}
 
 
-\subsubsection{Finding suitable threshold \connect.} Finding a suitable threshold \connect is a non-trivial task. A very low threshold requires a high number of the challenge-response rounds, since the protocol requires at least a fraction $k$ of the observed responses to be less or equal to \connect and a low threshold has very low cumulative probability value in the latency distribution (see Figure~\ref{fig:cdf}). Conversely, a very high threshold value enables some latencies measured during an attack to be classified as legitimate replies, hence increasing the chances of the attacker to break the proximity verification. To address this challenge, we perform a trial over multiple threshold candidates to evaluate their viability.
+\myparagraph{Finding suitable threshold \connect} Finding a suitable threshold \connect is a non-trivial task. A very low threshold requires a high number of the challenge-response rounds, since the protocol requires at least a fraction $k$ of the observed responses to be less or equal to \connect and a low threshold has very low cumulative probability value in the latency distribution (see Figure~\ref{fig:cdf}). Conversely, a very high threshold value enables some latencies measured during an attack to be classified as legitimate replies, hence increasing the chances of the attacker to break the proximity verification. To address this challenge, we perform a trial over multiple threshold candidates to evaluate their viability.
 
 
-Figure~\ref{graph:diffTh} shows the legitimate success probability $P_{legit}$ for different number of rounds ($n\in\{10,20,50,100\}$). We iterate through multiple threshold times (\connect$\in\{183\mu s,184\mu s,185\mu s, 186\mu s, 189\mu s\}$), and $186\mu s$ provides high success ratio for different values of $k$ ($P_{legit}=0.9\{7\}77$ $(n=50)$ and $P_{legit}=0.9\{15\}29\ (n=100)$), where $0.9\{n\}x$ denotes $0.n$-times $9$ followed by $x$.
+Figure~\ref{graph:diffTh} shows the legitimate success probability $P_{legit}$ for different number of rounds ($n\in\{10,20,50,100\}$). We iterate through multiple threshold times (\connect$\in\{183\mu s,184\mu s,185\mu s, 186\mu s, 189\mu s\}$), and $186\mu s$ provides high success ratio for different values of $k$ ($P_{legit}=0.(9)_7 77$ $(n=50)$ and $P_{legit}=0.(9)_15 29\ (n=100)$), where $0.(9)_n x$ denotes $n$ times $9$ after the decimal symbol followed by $x$ (e.g., $0.(9)_2 5=0.995$).
 
 We test \connect up until $186 \mu s$ because as can be observed in Figure~\ref{graph:instatAttackerHisto} for these values we observe extremely small occurrences ($1.33\times10^{-3}$) of latency responses during an attacking scenario. It is possible to increment the latency further to improve the success probability, but doing so will start increasing the probability for the attacker as well. 
 %
@@ -124,13 +124,13 @@ Now, for both cases (simulated attack and benign case) we can model the complete
 \end{figure}
 
 
-\subsubsection{Choosing a suitable fraction $k$.} The next step of the evaluation is to find a suitable fraction $k$ based on the threshold time \connect. Note that both the success probability of the attacker and the legitimate enclave is calculated as the cumulative probability from a binomial distribution (from $nk$ to $n$). Hence, we require to choose a suitable value of $k$ that maximizes $P_{legit}$ while minimizing $P_{adv}$.
+\myparagraph{Choosing a suitable fraction $k$} The next step of the evaluation is to find a suitable fraction $k$ based on the threshold time \connect. Note that both the success probability of the attacker and the legitimate enclave is calculated as the cumulative probability from a binomial distribution (from $nk$ to $n$). Hence, we require to choose a suitable value of $k$ that maximizes $P_{legit}$ while minimizing $P_{adv}$.
 
-We calculate two graphs that are depicted in Figure~\ref{graph:roundSuccess} where the x-axis denotes $k$, and the y-axis denotes attacker's success probability $P_{adv}$ and legitimate success probability $P_{legit}$, respectively, while using \connect$=186 \mu s$. We observe a sharp decrease in the legitimate success probability at $k=0.3$. Hence, fix $k=0.3$ to achieve the maximum $P_{legit}$. Additionally, in the graph of attacker's success probability, the red horizontal line is placed at $10^{-30} \approx 2^{-100}$. Hence we propose to choose any round configuration bellow this horizontal line, where $n \geq 40$. With number of rounds set to $n=50$ and $k=0.3$, we have $P_{legit}=0.99999997$ and $P_{adv}=3.55\times 10^{-34}$. Similar result could be also observed in Figure~\ref{graph:roundSuccess} where the success probability of the legitimate enclave decreases significantly after $k=0.55$ for \connect$=186\mu s$.
+We calculate two graphs that are depicted in Figure~\ref{graph:roundSuccess} where the x-axis denotes $k$, and the y-axis denotes attacker's success probability $P_{adv}$ and legitimate success probability $P_{legit}$, respectively, while using \connect$=186 \mu s$. We observe a sharp decrease in the legitimate success probability at $k=0.3$. Hence, fix $k=0.3$ to achieve the maximum $P_{legit}$. Additionally, in the graph of attacker's success probability, the red horizontal line is placed at $10^{-30} \approx 2^{-100}$. Hence we propose to choose any round configuration bellow this horizontal line, where $n \geq 40$. With number of rounds set to $n=50$ and $k=0.3$, we have $P_{legit}=0.(9)_7 7$ and $P_{adv}=3.55\times 10^{-34}$. Similar result could be also observed in Figure~\ref{graph:roundSuccess} where the success probability of the legitimate enclave decreases significantly after $k=0.55$ for \connect$=186\mu s$.
 
 
 
-\subsubsection{Generalizing the number of rounds $n$.} Figure~\ref{graph:instatAttackerHisto} extends this analysis to the general number of challenge-response rounds spanning from $n=2$ to $100$. Here we compute the probability of attacker returning the reply within $186 \mu s$ for at least $k=0.3$ fraction of challenges. The y-axis denotes the attacker's success probability which diminishes overwhelmingly with the increasing number of challenges (keeping the fraction constant at $k=0.3$). 
+\myparagraph{Generalizing the number of rounds $n$} Figure~\ref{graph:instatAttackerHisto} extends this analysis to the general number of challenge-response rounds spanning from $n=2$ to $100$. Here we compute the probability of attacker returning the reply within $186 \mu s$ for at least $k=0.3$ fraction of challenges. The y-axis denotes the attacker's success probability which diminishes overwhelmingly with the increasing number of challenges (keeping the fraction constant at $k=0.3$). 
 
 
 
@@ -143,7 +143,7 @@ We calculate two graphs that are depicted in Figure~\ref{graph:roundSuccess} whe
 \end{figure}
 
 
-\subsubsection{Main result.} Figure~\ref{graph:instantAttackerSuccess} shows the legitimate enclave's success probability $P_{legit}$ and the attacker's success probability $P_{adv}$ with different number of rounds. Based on our experiments we set \connect= 186$\mu s$ (see Figure~\ref{graph:instatAttackerHisto}), the threshold fraction $k=0.3$ and the number of rounds $n=50$ which yields a very high legitimate success probability $P_{legit}=0.999999977$ and a negligible attacker's success probability $P_{adv}=3.55\times 10^{-34}$.
+\myparagraph{Main result} Figure~\ref{graph:instantAttackerSuccess} shows the legitimate enclave's success probability $P_{legit}$ and the attacker's success probability $P_{adv}$ with different number of rounds. Based on our experiments we set \connect= 186$\mu s$ (see Figure~\ref{graph:instatAttackerHisto}), the threshold fraction $k=0.3$ and the number of rounds $n=50$ which yields a very high legitimate success probability $P_{legit}=0.999999977$ and a negligible attacker's success probability $P_{adv}=3.55\times 10^{-34}$.
 
 
 
@@ -161,7 +161,7 @@ For periodic proximity verification we have two main requirements. First, the at
   \item We fix a suitable frequency $f$ for the periodic challenges. A high $f$ value terminate the communication very fast, leaving very small attacking window.
 \end{enumerate}
 
-\subsubsection{Finding suitable threshold \detach.} We set the threshold \detach to $510\ \mu s$. We choose this value as we experience zero sample from the timing distribution (refer to the `yellow' distribution Figure~\ref{graph:instatAttackerHisto}) where no rerouting attack takes place. While in the attacker's distribution, the cumulative probability of the response occurring between \connect and \detach is $Pr[$\connect$\leq \mathcal{L}_{A} \leq$\detach$]=\sum_{i=451}^{510}\Pr[\mathcal{L}_{A}=i]=1.4\times10^{-2}$. 
+\myparagraph{Finding suitable threshold \detach} We set the threshold \detach to $510\ \mu s$. We choose this value as we experience zero sample from the timing distribution (refer to the `yellow' distribution Figure~\ref{graph:instatAttackerHisto}) where no rerouting attack takes place. While in the attacker's distribution, the cumulative probability of the response occurring between \connect and \detach is $Pr[$\connect$\leq \mathcal{L}_{A} \leq$\detach$]=\sum_{i=451}^{510}\Pr[\mathcal{L}_{A}=i]=1.4\times10^{-2}$. 
 %We account for the experimental error in our model using the standard error of the mean as  $p_e \approx 1.06\times10^{-4}$. The value $p_e$ signifies that a legitimate enclave running on the platform in proximity may take more than 649 $\mu s$ to respond. 
 Using \detach, we can now define the challenge response rounds in Figure~\ref{fig:slidingWindow} for a \emph{single round} as following:
 
@@ -175,7 +175,7 @@ Using \detach, we can now define the challenge response rounds in Figure~\ref{fi
 \end{align*} 
 
 
-\subsubsection{Finding suitable sliding window size $w$.} Sliding window size is analogous to that of the number of rounds $n$. We keep  the size of the sliding window as $w=n=50$ as it only requires the \device to remember the past $50$ interactions and achieve high probability for the legitimate enclave and negligible success probability for the attacker. Similar to the previous approach, only if $20$ out of $50$ ($k=0.4$) challenge-response round where responses are within $470\ \mu s$, \name yields success probabilities as the following:
+\myparagraph{Finding suitable sliding window size $w$} Sliding window size is analogous to that of the number of rounds $n$. We keep  the size of the sliding window as $w=n=50$ as it only requires the \device to remember the past $50$ interactions and achieve high probability for the legitimate enclave and negligible success probability for the attacker. Similar to the previous approach, only if $20$ out of $50$ ($k=0.4$) challenge-response round where responses are within $470\ \mu s$, \name yields success probabilities as the following:
 
 \begin{align*}
  \Pr[A \in \text{success window}]&=P'_{adv} = P'_{fn}= 2.71\times 10^{-67}\\
@@ -188,10 +188,10 @@ The probability that a halt window event occurs for a legitimate \app running on
 
 If two or more than two latencies $\geq 510\mu s$ (\detach) are received, the \device terminates the connection and revoke the platform. The downtime that can happen as a result of false positive during a connection of 10 years is around $2$ minutes.
 
-\subsubsection{Finding suitable frequency $f$.} The frequency $f$ determines how fast the connection is terminated in case the \device device is detached. Note that the \device takes around $12$ $ms$ on average to issue a new random challenge (by reading out the noise of the analog pins of the Arduino board) in the legitimate case. Hence, by performing a round of the protocol as soon as the previous is over, we achieve the maximum attainable average frequency of $\sim83$ rounds per second. We use this frequency as it consumes only $6.48$ KB (0.0011\% of the 
+\myparagraph{Finding suitable frequency $f$} The frequency $f$ determines how fast the connection is terminated in case the \device device is detached. Note that the \device takes around $12$ $ms$ on average to issue a new random challenge (by reading out the noise of the analog pins of the Arduino board) in the legitimate case. Hence, by performing a round of the protocol as soon as the previous is over, we achieve the maximum attainable average frequency of $\sim83$ rounds per second. We use this frequency as it consumes only $6.48$ KB (0.0011\% of the 
 channel capacity) and allows the communication channel to be halted on average after $12 ms$ of the start of a relay attack and terminated in $24 ms$.
 
-\subsubsection{Summarizing the result of \name periodic verification} 
+\myparagraph{Summarizing the periodic verification results} 
 Based on the above strategy, we set the periodic proximity verification parameters as follows: $\Pr[A \in \text{success window}]=P'_{adv} = P'_{fn}= 3.55\times 10^{-34}$, $\Pr[legit \in \text{success window}]=0.999999977$ and $\Pr[legit \in \text{failed window}]=P'_{fp}=\Pr[legit\in\text{red}]^2=1.6\times10^{-4}$ and \detach = $205 \mu s$ (see Figure~\ref{graph:instatAttackerHisto}). If at least two latencies above \detach are received, the \device terminates the connection and revokes the platform. The average downtime due to false positives occurring during a connection of 10 years is around $2$ minutes. 
 
 
@@ -244,7 +244,7 @@ We evaluated the consistency of measured latencies across different computing pl
     \label{graph:cpuPin}
 \end{figure}
 
-\subsubsection{Effects of core pinning.} We executes the \name enclave application pinning to specific CPU cores (using the command \texttt{taskset [COREMASK] [EXECUTABLE]}). Core pinning forces the operating system to use a specific set of CPU core(s) to execute a program. CPU pinning may significantly bring down execution time due to the elimination of core switching and ability to reuse L1 and L2 cache. Figure~\ref{graph:cpuPin} illustrates the effect of CPU core pinning vs. no pinning. We experience negligible effect by core pinning. Hence we conclude that the attacker won't gain any advantage by CPU core pinning.
+\myparagraph{Effects of core pinning} We executes the \name enclave application pinning to specific CPU cores (using the command \texttt{taskset [COREMASK] [EXECUTABLE]}). Core pinning forces the operating system to use a specific set of CPU core(s) to execute a program. CPU pinning may significantly bring down execution time due to the elimination of core switching and ability to reuse L1 and L2 cache. Figure~\ref{graph:cpuPin} illustrates the effect of CPU core pinning vs. no pinning. We experience negligible effect by core pinning. Hence we conclude that the attacker won't gain any advantage by CPU core pinning.
 
 \begin{figure}[t]
   \centering
@@ -254,7 +254,7 @@ We evaluated the consistency of measured latencies across different computing pl
 \end{figure}
 
 
-\subsubsection{Effects of CPU load.} Figure~~\ref{graph:cpuLoad_SGX} shows the enclave execution times with varying degree of CPU stress testing. We used \texttt{stress-ng} to stress different number of CPU cores. We experienced a minor slowdown with the increasing number of busy CPU cores. But the slowdown is insignificant. For example, as shown in the Figure~\ref{graph:cpuLoad_SGX}, we experienced a shift of $12\mu s$ when all the 8 CPU cores are busy executing the benchmark software. Also, note that the load introduced by the benchmark is a sustained load on all the CPU cores which is much more demanding for the CPUs compared to the CPU loads introduced by real-life applications. In that scenarios, the deviation would be even lesser. We conclude that proximity verification for SGX enclaves is reliable even under high system load. In rare cases of extreme system load, proximity verification might fail, but this is an availability concern, not a security threat.
+\myparagraph{Effects of CPU load} Figure~~\ref{graph:cpuLoad_SGX} shows the enclave execution times with varying degree of CPU stress testing. We used \texttt{stress-ng} to stress different number of CPU cores. We experienced a minor slowdown with the increasing number of busy CPU cores. But the slowdown is insignificant. For example, as shown in the Figure~\ref{graph:cpuLoad_SGX}, we experienced a shift of $12\mu s$ when all the 8 CPU cores are busy executing the benchmark software. Also, note that the load introduced by the benchmark is a sustained load on all the CPU cores which is much more demanding for the CPUs compared to the CPU loads introduced by real-life applications. In that scenarios, the deviation would be even lesser. We conclude that proximity verification for SGX enclaves is reliable even under high system load. In rare cases of extreme system load, proximity verification might fail, but this is an availability concern, not a security threat.
 
 
 \subsection{Preventing Relay to Co-Located Platform}

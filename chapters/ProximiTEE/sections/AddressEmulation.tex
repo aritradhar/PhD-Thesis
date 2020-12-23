@@ -6,14 +6,14 @@ We consider attestation key extraction from SGX processors difficult and rare, i
 
 \subsection{Addressing the Emulation Attack} 
 
-\subsubsection{Adversary model} 
+\myparagraph{Adversary model} 
 We consider an \emph{emulation attacker} has all the capabilities of the relay attacker (cf.\ Section~\ref{sec:problemStatement}) and additionally has obtained at least one valid (not yet revoked by Intel) attestation key from any SGX platforms but the target platform. The adversary might obtain an attestation key by attacking one of his processors or by purchasing an extracted key from another party. 
 
-\subsubsection{The emulation attack} 
+\myparagraph{The emulation attack} 
 In the attack, the adversary uses a leaked attestation key to emulate an SGX-processor on the target platform. Since the IAS (or any other attestation service) successfully attests the emulated enclave, it is impossible for the remote verifier to distinguish between the emulated enclave and the real one. 
 
 
-\subsubsection{Emulation attack implications} 
+\myparagraph{Emulation attack implications} 
 The emulation attack allows the adversary to fully control the attested execution environment and thus break the two fundamental security guarantees of SGX, enclave's data confidentiality and code integrity, and to access any secrets provisioned to the emulated enclave. Since the OS is also under the control of the attacker, any attempted communication with the real enclave will always be redirected to the emulated enclave.
 
 
@@ -31,7 +31,7 @@ The emulation attack allows the adversary to fully control the attested executio
 \begin{figure}[t]
  \centering
     \includegraphics[trim={0 7cm 19cm 0},clip,width=0.7\linewidth]{chapters/ProximiTEE/figures/boot_init.pdf}
- \caption[\name noot-time initialization]{\textbf{\name noot-time initialization.} The \device uses a minimal kernel Linux image to boot and load \nameclave on the target platform and seal a platform specific secret to the \device memory.}
+ \caption[\name noot-time initialization]{\textbf{\name boot-time initialization.} The \device uses a minimal kernel Linux image to boot and load \nameclave on the target platform and seal a platform specific secret to the \device{}'s memory.}
  \label{fig:boot-init}
 \end{figure}
 
@@ -44,15 +44,15 @@ Proximity verification alone cannot protect against the emulation attacker, as t
 Therefore, we describe a second hardened attestation mechanism that leverages secure boot-time initialization and is designed to prevent emulation attacks. This solution can be seen as a \emph{novel variant} of the well-known TOFU principle and the main benefits of our solution over previous variants is that it simplifies deployment and increases security. Additionally, when such attestation is used in combination with our previously described periodic proximity verification, our solution enables secure offline revocation.
 
 
-\subsubsection{Security assumptions}
+\myparagraph{Security assumptions}
 Our security assumptions regarding the target platform are as described in Section~\ref{sec:problemStatement}. The only difference is that in this case we assume that the UEFI (or BIOS) on the target platform is trusted.
 
 
-\subsubsection{Solution overview}
+\myparagraph{Solution overview}
 Figure~\ref{fig:boot-attest} illustrates an overview of this solution. During initialization, that is depicted in Figure~\ref{fig:boot-init}, the target platform is booted from the attached device that loads a minimal and single-purpose \name kernel on the target device. In particular, this kernel includes no network functionality. The kernel starts the \name enclave, which shares a secret with the device. This shared secret later bootstraps the secure communication between \device and the \name enclave. \emph{The security of the bootstrapping relies on the fact that the minimal kernel will not perform enclave emulation at boot time.} The \name enclave will later be used as a proxy to attest whether other (application-specific) enclaves in the system are real or emulated and on the same platform.
 
 
-\subsubsection{Boot-time initialization} The boot-time initialization process is performed only once.
+\myparagraph{Boot-time initialization} The boot-time initialization process is performed only once.
 This process is depicted in Figure~\ref{fig:boot-init} and it proceeds as follows:
 
 
@@ -66,7 +66,7 @@ This process is depicted in Figure~\ref{fig:boot-init} and it proceeds as follow
 \end{enumerate}
 
 
-\subsubsection{Attestation process.} After initialization the target platform runs a regular OS. The attestation process is depicted in Figure~\ref{fig:boot-attest} and proceeds as follows:
+\myparagraph{Attestation process} After initialization the target platform runs a regular OS. The attestation process is depicted in Figure~\ref{fig:boot-attest} and proceeds as follows:
 
 \begin{enumerate}
 
@@ -85,7 +85,7 @@ This process is depicted in Figure~\ref{fig:boot-init} and it proceeds as follow
 \end{enumerate}
 
 
-\subsubsection{Following communication.} 
+\myparagraph{Following communication} 
 Similar to our previous solution, after the initial attestation all the communication between a remote verifier and the enclave is mediated by the \device that periodically checks the proximity of the attested enclave and terminates the communication channel in case the embedded device is detached.
 
 
@@ -98,7 +98,7 @@ The second subtask is to establish a secure communication channel from \device t
 The third subtask is to establish a secure communication channel from the \nameclave to the \app. The security of this step relies on SGX's built-in local attestation. An adversary in possession of leaked sealing attestation keys from other SGX processors, cannot produce a local attestation report that the \name enclave would accept, and therefore the adversary cannot trick the remote verifier to establish a secure communication channel to a wrong enclave.
 
 
-\subsubsection{Comparison to TOFU.} Our second attestation mechanism is a novel variant of the well-known ``trust on first use'' principle. In this section we briefly explain the main benefits of our solution over common TOFU variants. 
+\myparagraph{Comparison to TOFU} Our second attestation mechanism is a novel variant of the well-known ``trust on first use'' principle. In this section we briefly explain the main benefits of our solution over common TOFU variants. 
 
 \begin{enumerate}
 \item \textbf{Smaller TCB size and attack surface.} 
@@ -112,4 +112,4 @@ In the TOFU solution, the standard and general-purpose OS needs to be trusted on
 
 \end{enumerate}
 
-\subsubsection{Implementation} We implemented a complete prototype of our second attestation mechanism. On top of our previous \name implementation (see Section~\ref{sec:evaluation:implementation}), the boot-time initialization solution requires the \name kernel. We have modified an image of Tiny Core Linux~\cite{tinyCore} and used it as the boot image for our boot-time initialization. The image size of our modified Linux distribution is 14 MB (in contrast to 2 GB standard 64 bit Linux images build on the standard kernel). Our image supports bare minimum functionality and includes \texttt{libusb}, \texttt{gcc}, Intel SGX SDK, Intel SGX platform software (PSW), and Intel SGX Linux driver. The \name enclave is a minimal enclave that uses a simple serial library to communicate with the \device and local attestation mechanism to attest any application-specific enclave.
+\myparagraph{Implementation} We implemented a complete prototype of our second attestation mechanism. On top of our previous \name implementation (refer to Section~\ref{sec:implementation}), the boot-time initialization solution requires the \name kernel. We have modified an image of Tiny Core Linux~\cite{tinyCore} and used it as the boot image for our boot-time initialization. The image size of our modified Linux distribution is 14 MB (in contrast to 2 GB standard 64 bit Linux images build on the standard kernel). Our image supports bare minimum functionality and includes \texttt{libusb}, \texttt{gcc}, Intel SGX SDK, Intel SGX platform software (PSW), and Intel SGX Linux driver. The \name enclave is a minimal enclave that uses a simple serial library to communicate with the \device and local attestation mechanism to attest any application-specific enclave.

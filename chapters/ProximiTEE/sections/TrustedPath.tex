@@ -79,7 +79,7 @@ Next, we describe how such trusted path can be extended to an enclave that resid
 \end{figure}
 
 
-\subsubsection{Implementation.} 
+\myparagraph{Implementation} 
 Figure~\ref{fig:trustedPathImplementation} shows our trusted path implementation that is based on a Arduino Due prototyping board. We implement a minimal prototype that handles keyboard communication using Ardubnio's native \texttt{keyboardcontroller} library that intercepts keyboard traffic. All the keystrokes are relayed to the application-specific enclave over the \tls channel. 
 %
 We additionally attach a LCD shield on the Arduino board that shows the enclave identity (name) with which it is currently communicating. This identity is obtained from a certificate that is embedded to the enclave.

@@ -14,7 +14,7 @@ Our embedded device prototype is based on Cypress EZ-USB FX3 SuperSpeed USB cont
 \begin{enumerate}
   \item \emph{None} In this mode, the communication is carried out in the plain text. This mode is primarily used for debugging and measuring the channel capacity.
   \item \emph{AES} This mode provides a minimal secure channel between the \device and the target platform. With this mode, Curve25519 Diffie-Hellman key exchange is performed. Relevant parts of messages, specifically the challenge-response packets are encrypted with AES-128-CTR. AES-HMAC is used for message authentication codes. SHA256 is used as a hashing function.
-  \item \emph{TLS} With this configuration, we use a \tls channel for the communication between the \device and the target platform. As the \device only has limited SRAM, we had to resort to \texttt{TLS\_PSK\_WITH\_AES\_128\_CCM\_8} as the cipher suite. However, this limitation due to the FX3 board. Note that the target platform is not restricted by this and supports more cipher suites. 
+  \item \emph{TLS} With this configuration, we use a \tls channel for the communication between the \device and the target platform. As the \device only has limited SRAM, \texttt{TLS\_PSK\_WITH\_AES\_128\_CCM\_8} was chosen as the cipher suite. However, this limitation due to the FX3 board. Note that the target platform is not restricted by this and supports more cipher suites. 
 \end{enumerate}
 
 
