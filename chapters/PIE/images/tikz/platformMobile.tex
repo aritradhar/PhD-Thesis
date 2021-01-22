@@ -1,0 +1,68 @@
+\documentclass[crop,tikz]{standalone}% 'crop' is the default for v1.0, before it was 'preview'
+\usepackage{amsthm}
+\usepackage{xspace}
+
+\usetikzlibrary{positioning,calc,arrows,decorations,shapes,decorations.pathreplacing,chains,fit,arrows.meta,intersections,positioning,automata,external}
+
+% \tikzexternalize % activate!
+% \makeatletter
+% \tikzset{
+%   beamer externalising/.style={%
+%     execute at end picture={%
+%       \tikzifexternalizing{%
+%         \ifbeamer@anotherslide
+%         \pgfexternalstorecommand{\string\global\string\beamer@anotherslidetrue}%
+%         \fi
+%       }{}%
+%     }%
+%   },
+%   external/optimize=false
+% }
+% \makeatother
+
+\tikzset{>=latex}
+
+\input{common.tex}
+
+\begin{document}
+\begin{tikzpicture}[
+    icon/.style={rectangle,draw=white!50,fill=white,align=center,minimum height=1cm,minimum width=1cm}
+]
+    \node[icon] (cpu) at (4,3) {\imgenclave};
+    \node[icon] (memory) at (4,0) {\imgmemory};
+    \draw[<->,very thick] (cpu) edge (memory);
+    \draw[<->,very thick] ([xshift=0.5em]cpu.south) -- ([xshift=0.5em]memory.north);
+    \draw[<->,very thick] ([xshift=-0.5em]cpu.south) -- ([xshift=-0.5em]memory.north);
+    \draw[<->,very thick] ([xshift=1em]cpu.south) -- ([xshift=1em]memory.north);
+    \draw[<->,very thick] ([xshift=-1em]cpu.south) -- ([xshift=-1em]memory.north);
+    % \pause
+    \node[icon] (keyboard) at (0,4) {\imgsim};
+    \node[icon] (mouse) at (0,2) {\imgsd};
+    % \draw[->,thick] (keyboard) -- (cpu)};
+    % \draw[<-,thick] (mouse) -- (cpu)};
+    % \pause
+    \draw[-,ultra thick] (cpu.west) -- ($(cpu)!0.5!(0,3)$);
+    \draw[-,ultra thick] (2, 1.5) -- (2, 4.5);
+    \draw[-,thick] (2,2.2) -- (1.8,2) -- (mouse.east);
+    \draw[-,thick] (2,3.8) -- (1.8,4) -- (keyboard.east);
+
+    % \pause
+    \node[icon] (nic) at (8,4) {\imgcamera};
+    \node[icon] (gpu) at (8,2) {\imgdisplay};
+
+    \draw[-,ultra thick] (cpu.east) -- ($(cpu)!0.5!(8,3)$);
+    \draw[-,ultra thick] (6, 1.5) -- (6, 4.5);
+    \draw[-,thick] (6,2.2) -- (6.2,2) -- (gpu.west);
+    \draw[-,thick] (6,3.8) -- (6.2,4) -- (nic.west);
+
+    \node[draw=none] at (6, 1.2) {};
+    \node[draw=none] at (2, 1.2) {};
+    \node[draw=none,above=0cm of cpu] {Processor};
+    \node[draw=none,above=0cm of keyboard] {SIM};
+    \node[draw=none,above=0cm of nic] {Camera};
+    \node[draw=none,below=0cm of memory] {DRAM};
+    \node[draw=none,below=0cm of mouse] {SD};
+    \node[draw=none,below=0cm of gpu] {Display};
+
+\end{tikzpicture}
+\end{document}

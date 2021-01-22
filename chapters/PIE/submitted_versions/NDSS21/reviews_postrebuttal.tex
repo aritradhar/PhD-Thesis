@@ -1,0 +1,371 @@
+NDSS'21 Fall Paper #295 Reviews and Comments
+===========================================================================
+Paper #295 PIE: A Dynamic TCB for Remote Systems with a Platform Isolation
+Environment
+
+
+Review #295A
+===========================================================================
+
+Overall Recommendation
+----------------------
+3. Major revision
+
+Writing Quality
+---------------
+2. Needs improvement
+
+Reviewer Confidence
+-------------------
+3. Sufficient confidence
+
+Paper Summary
+-------------
+The paper presents platform isolation environment (PIE), a system that provides dynamic hardware TCB. The idea is to integrate processor-local enclaves with enclaves on peripherals to form a dynamic TCB. PIE extends Keystone, so its security relies on trusted code in SM. The paper provides a holistic view of PIE. with respect to its key components, communication channels, attestation approaches, a unified programming model, implementation and evaluation.
+
+Strengths
+---------
+# PIE is a new security concept for trusted and confidential computing.
+
+# PIE is a rather complex system.
+
+Weaknesses
+----------
+# PIE is not designed for local physical attackers.
+
+# Very few research challenges, mostly system integration.
+
+# A portion of the work is only conceptual ideas.
+
+Detailed Comments for Authors
+-----------------------------
+Thanks for submitting your work to NDSS'21, very impressive work with interesting ideas. The concept of PIE is new. It took me a while to understand what the authors are trying to propose, but I still enjoy reading the paper. 
+
+I suggest the authors to improve the paper from the following aspects:
+
+# Motivation
+
+The concept of PIE sounds interesting, but the motivation needs to be strengthened. I could understand that you don't want "to reinvent the wheel", and "rely on the many existing TEEs on the processor [10], [11], [27] and on the rather new proposals to create fully blown TEEs on peripherals [40], [35], and combine them into a PIE." But it does not seem to relate well to "Intel SGX and the monotonic counters in the management engine [32] or various academic proposals for trusted path using ARM TrustZone [28], [29]".  
+
+One impression I had when reading the first half of the paper is that PIE is merely a new concept for techniques that are already known. If "fully blown TEEs on peripherals" are available, the only new techniques that are required for PIE is the attestation of a secure channel between the TEEs. For a "fully blown TEE"---with isolated memory and secure storage, e.g.---a secure channel between enclaves is straightforward, isn't it? A user could perform attestation with each enclave separately and provision shared secrets so that they could establish a secure channel with them. 
+
+I would try to rewrite a portion of the intro to sell the concept/motivation of PIE better. 
+
+# Enclaves on peripherals
+
+I don't understand how could "The firmware that runs on peripherals is also part of the platform-wide enclaves." If the OS is compromised, would you still trust your firmware? Updating firmware doesn't always require physical accesses to the machine. What's your threat model?
+
+I am also very confused when the two peripheral types were discussed: "simple sensors" and "accelerators".  Because these two types of enclaves are dramatically in their capabilities---simple sensor provides minimal attestation capability while accelerators offers isolated execution environments---what are you really assuming in the attack model?
+
+# DMA attacks
+
+The insufficient defenses against DMA attacks seem to me a big deal. Please discuss how Keystone/Sanctum defeat DMA attacks (or if they are similarly vulnerable). It would be difficult to sell the idea of PIE if the basic DMA attacks cannot be prevented. 
+
+# Technical novelty
+
+The paper leverages a trusted SM to address trusted path problems for TEEs. The problem is mostly trivial when you have privileged software in the TCB. It is not clear what technical innovation is brought forward by this paper. This is also why I feel the paper mainly proposes new concepts.
+
+
+In summary, the paper aims to sell a big idea, but its current form is not clear enough to make the concept appealing. I think the conceptual idea is reasonable, but without established peripheral TEEs, I don't see how PIE may advance the field. Maybe most of my misunderstanding is caused by the writing issues. Please clarify and improve the paper.
+
+
+
+Review #295B
+===========================================================================
+
+Overall Recommendation
+----------------------
+3. Major revision
+
+Writing Quality
+---------------
+3. Adequate
+
+Reviewer Confidence
+-------------------
+3. Sufficient confidence
+
+Paper Summary
+-------------
+The paper presents a security platform called PIE that supports dynamic
+loading/unloading of external peripherals into TEE. PIE assumes a trusted
+security monitor provided by Keystone (a RISC-V open source platform), and a
+remote attacker having access to the software stack. PIE extends Keystone and
+allows isolation of shared memory regions enforced by the security monitor with
+a one-to-one mapping. This shared memory allows for secure communication
+between three types of secure enclaves running the application, the controller,
+and the peripherals, respectively. A verifier can perform remote attestation of
+these secure enclaves, and each enclave is designed to know the state changes of
+the entire platform. The paper demonstrates a prototype of a PIE with Arduino
+emulated peripherals, which involves minimum modifications to Keystone TCB.
+
+Strengths
+---------
+- Supporting dynamic peripheral loading/unloading into the TEE is novel.
+
+- The design of the enclave life cycle and flow of attestation is clear and easy to understand.
+
+- The implementation is non-trivial.
+
+Weaknesses
+----------
+- The research contribution is not significant
+
+- The evaluation is insufficient.
+
+- Lack of discussion and comparison between PIE’s physical memory protection (PMP) based enclaves and existing non-PMP based enclaves.
+
+Detailed Comments for Authors
+-----------------------------
+PIE aims to enable TEE to include peripherals with enclaves to utilize a dynamic
+hardware TCB. PIE can support multiple TEEs to co-exist and use the same
+peripheral, although a simplified configuration only allows one active
+controller enclave per peripheral to exist at the same time. 
+
+The security analysis of PIE comprehensively discusses three of its security
+properties: an isolated communication, platform-wide attestation, and awareness.
+However, there is no comparison with existing static extensions of the hardware
+TCB, such as SGXIO, mentioned in the related work. Furthermore, the paper lacks
+a security comparison with the existing non-PMP-based secure enclaves.
+
+The paper only briefly evaluates the hardware overhead based on the number of
+PMP units. There are many questions left to be answered by a more thorough
+evaluation. For example, what is the performance overhead during the
+context switches and when the SM has to re-configure PMP entries? What can happen if
+the frequency of such context switches increases? A PMP with 16 entries can
+support up to 7 enclaves. How does the performance change as the number of
+enclaves increases in PIE? A comprehensive evaluation can guide future work to
+improve the peripheral scalability.
+
+Nits: Broken citation on page 11.
+
+
+
+Review #295C
+===========================================================================
+
+Overall Recommendation
+----------------------
+2. Leaning towards reject
+
+Writing Quality
+---------------
+3. Adequate
+
+Reviewer Confidence
+-------------------
+3. Sufficient confidence
+
+Paper Summary
+-------------
+This paper proposes PIE, Platform Isolation Environment, expanding a Trusted Execution Environment (TEE) from CPU to bus controllers and peripherals, and allowing a dynamic Trusted Computing Base (TCB) for attestation given then the interests of attestors. To achieve PIE, controller enclaves and peripheral enclaves are assumed, and hardware-enforced shared memory checking is used to implement inter-enclave communications. The so-called platform-wide attestation includes attestations for application enclaves, controller enclaves, and peripherals at the same time. The implementation is on RISC-V 64-bit core on an FPGA with Arduinos emulating peripherals. The security analysis discusses the limitations and possible extensions.
+
+Strengths
+---------
++ Interesting idea of extending TEE to include peripherals and platform-wide attestation
++ Implementation upon Keystone
+
+Weaknesses
+----------
+- Weaker threat model comparing to the traditional TEE
+- Unrealistic assumptions about bus controllers and peripherals
+- Limited implementation with simple Arduinos
+- Weak performance evaluation
+
+Detailed Comments for Authors
+-----------------------------
+I really like the idea of this paper expanding the CPU-centered TEE to include peripherals and building a platform-wide TCB and attestation. I do think this is a timely topic as we start to see the current limitation of commercial TEEs (e.g., Intel SGX) and what we need for modern confidential computation. I also enjoy backing up the whole idea with a concrete architecture (e.g., RISC-V) and talking about how to use PMP to achieve communication channels between different enclaves. The implementation using FPGA+Ardunio also adds an extra bonus for the paper for sure. Nevertheless, there are some fundamental issues within the paper preventing me from further promoting it.
+
+PIE assumes a remote attacker threat model and excludes a local physical attacker, which is part of some TEE threat models (e.g., Intel SGX). For instance, Intel SGX defends against memory bus snooping attacks through the usage of MEE. I personally think a platform-wide "TEE" should not be weaker than any of the individual TEE. Meanwhile, the security guarantee of a platform-wide "TEE" is as strong as the weakest individual TEE. It is good to see the possible threat model expansion in the discussion but I feel like a local physical attacker should be included from the initial design of a platform-wide "TEE".
+
+This paper assumes TEE/enclave-like support within bus controllers and peripherals and relies on the firmware of these devices to support all the functionalities needed such as remote attestations. Unfortunately, the reality is quite opposite, and the challenge of dealing with real-world commercial devices to include them into the platform-wide TEE is why we have a serious of literature on trusted paths, hypervisors, etc. Bypassing this hard problem makes the contribution of the paper limited in a way.
+
+The implementation is disappointing in different ways. First, connecting Ardunios to emulate simple HID devices only tackles the simplest peripherals, leaving DMA, interrupts, and high-end peripherals such as GPU uncovered. Second, it is not clear according to the paper if the current implementation supports the platform-wide attestation, and my feeling is not. Third, there is no implementation for the programming model either, which means there is no end-to-end implementation at all. Note that Keystore does provide its own SDKs as an E2E solution. I recommend authors providing a complete implementation rather than just some PMP and SM hacks. This paper also claims the isolation within the CE to support multiple application enclaves without any implementation.
+
+Since the implementation is not complete, the evaluation is really limited. Unlike what argued in the paper, I think comparison against Intel SGX and Keystone are needed, both of which provide an E2E solution. Once PIE is complete, I recommend including benchmarks for enclave creation, remote attestation, etc. Section B.2 mentioned equivalent performance to Keystone without giving any numbers. In fact, I don't think the only numbers there (B.3 and B.4) are useful to understand the performance overhead of PIE comparing to other TEEs without basing some concrete workloads.
+
+Minor:
+1. P2, "to the developer is comparable"
+2. P2, "Section IV and V presents... decribes..."
+3. P3, "a PIEs"
+4. Fig 3 is hard to see in BW
+5. "said peripheral" -> the said
+6. P5, "they are run"
+7. Fig 5, EPM? S?
+8. P9, "Forcing the peripheral to reset."
+9. P11, [?]
+
+
+
+Review #295D
+===========================================================================
+
+Overall Recommendation
+----------------------
+3. Major revision
+
+Writing Quality
+---------------
+3. Adequate
+
+Reviewer Confidence
+-------------------
+2. Passable confidence
+
+Paper Summary
+-------------
+This paper is on TEEs’ isolation to facilitate security applications through enclaves. The work advances in extending the concept to the case where enclaves can utilize a dynamic hardware TCB in addition to the CPU. The paper is proposing new security
+properties that are relevant for such systems, namely, platform-wide attestation and platform awareness. A prototype based on RISC-V’s Keystone demonstrates that 
+such systems are feasible with only around a few hundred lines of code added to
+the software TCB.
+
+Strengths
+---------
+A good effort in addressing a relevant problem supported with an actual implementation.
+
+Weaknesses
+----------
+Not all security threats were addressed so there is still some work to do before this paper can be accepted.
+
+Detailed Comments for Authors
+-----------------------------
+The paper claims the first TEE architecture, PIE, which allows a dynamic reconfiguration of the hardware TCB and that can be used for general-purpose platforms. However, the problem that they try to address is not new and there were relevant efforts already a decade ago that should be mentioned (see below).
+
+The effort put together for this paper is substantial and especially implementing a prototype system for PIE that is based on the Keystone enclave framework. Some more details on implementation would be nice, as the authors present only the number of GEs for specific libraries and especially power and energy numbers.
+
+The choice to not consider side-channel attacks is not properly justified as we see many of those threats being applicable to this kind of architecture. So, the fact that the authors consider a remote attacker that remotely controls the entire software stack, including
+the OS or hypervisor typically includes also various kinds of side-channel leakages.
+
+
+Minor:
+- page 10 mentions SHA2 and SHA-256 with respect to the implementation, so which one is it? 
+- p. 11 has a missing ref. i.e. [?]
+
+
+Some papers that might be relevant to mention:
+
+Wenjuan Xu, Gail-Joon Ahn, Hongxin Hu, Xinwen Zhang, Jean-Pierre Seifert:
+DR@FT: Efficient Remote Attestation Framework for Dynamic Systems. ESORICS 2010, 182-198.
+
+Jonathan M. McCune, Bryan Parno, Adrian Perrig, Michael K. Reiter, Arvind Seshadri:
+How low can you go?: recommendations for hardware-supported minimal TCB code execution. 14-25, ASPLOS
+
+
+
+Review #295E
+===========================================================================
+
+Overall Recommendation
+----------------------
+2. Leaning towards reject
+
+Writing Quality
+---------------
+3. Adequate
+
+Reviewer Confidence
+-------------------
+2. Passable confidence
+
+Paper Summary
+-------------
+This paper looks at situations where the TCB spans multiple hardware components – not just the CPU – to give trusted apps access to peripherals.
+
+Strengths
+---------
+- TEEs are of great practical importance on traditional and mobile computing devices ; topic is  a great fit for NDSS
+- Well written paper  with exceptionally high quality illustrations
+
+Weaknesses
+----------
+- TEEs can be trusted because they are small. This paper looks into substantially enlarging the TCB which goes against the fundamental idea – yet it does not provide much motivation for doing so.
+- Doesn't consider side-channel attacks
+
+Detailed Comments for Authors
+-----------------------------
+## General comments
+
+The paper is mostly focused on one concrete instantiation of your idea. As a result, the focus is on that particular implementation – and I think it will be hard for other people wanting to explore this idea to see what fundamental insights your paper brings to the community. Imagine someone reading this paper 5-10 years from now, i.e., the specific technologies will have changed, what are your takeaway for such readers?
+
+## Specific comments
+
+I'm not sure that's the case in every TEE implementation. AFAIK, TrustZone uses the secure/non-secure bit to make route accesses to different physical memory addresses instead of encrypting secure memory.
+> The extra encryption overhead for every off-core memory access comes with performance costs that TEE applications need to bear, but OS protected applications do not.
+
+The opposite of the trusted OS in the TEE is not  malicious, it is untrusted.
+> TEEs cannot communicate with any external device without going through the malicious operating system.
+
+Not sure what you mean by "application-class", do you mean what is used in an application processor as opposed to baseband processors on mobile SoCs?
+> application-class RISC-V core
+
+Lots of systems (e.g. Android) rely on trusted boot, not remote attestation. If you think otherwise, please provide good citations. 
+> Integrity of the enclave code at the time of deployment is ensured by remote attestation while the enclave data conﬁdentiality and integrity during runtime are provided by various hardware mechanisms.
+
+Given the problems we've seen with microarchitectural side-channels, I think this is wrong.
+> Similar to existing TEE proposals, side-channel attacks remain out of scope [10] in our adversary model.
+
+- Have you considered that GPUs have enormously complicated drivers? Is it even possible to operate a GPU with say 15K SLOC?
+> On the other hand, accelerators are very complex and require a wider set of modiﬁcations.
+
+This seems to be at odds with your intent to support remote inaccessible peripherals unless you have some sort of trusted remote DMA support in place.
+> We chose to facilitate this communication with shared memory regions.
+
+
+I'm not sure what you mean by this. Is is up to end users to verify the integrity of application enclaves? That sounds like a poor idea for mass-market devices.
+> The attacker-controlled OS can spawn malicious application enclaves and controller enclaves. However, users should remotely attest before providing any secret to the application enclave.
+
+How do you guarantee that disconnects are detected such that a trusted peripheral cannot be swapped with an untrusted one without detection?
+> The disconnect is split into a synchronous and asynchronous event. Asynchronous disconnects only occur when one entity surprisingly dies.
+
+### Nits
+
+fully blown TEEs -> full-blown TEEs
+
+I'm not sure "forfeit" is the right word here:
+> then any data on said peripheral is forfeit
+
+when one entity surprisingly dies. -> when one entity unexpectedly dies.
+
+In your references, some conference abbreviations have brackets around them (e.g. {OSDI}).
+
+
+
+Response by Moritz Schneider <moritz.schneider@inf.ethz.ch>
+---------------------------------------------------------------------------
+We thank the anonymous reviewers for their valuable feedback. We aggregate the issues raised in the reviews and address them below. 
+
+## Insufficient Implementation/Performance Evaluation (A, B, C, D)
+We fully agree with the reviewers. We have already begun to expand the performance evaluation, and we think we can reasonably add the following results in the timeframe of a major revision:
+- **Context switch overhead (B)**: We can easily perform this measurement and add the results.
+- **The number of PMP/enclaves (B)**: Increasing the number of enclaves does not affect their performance, it only affects the area overhead. Nevertheless, we can add more measurements and also measure 64 PMP entries. Besides, as soon as the hypervisor spec for RISC-V is available, PIE may be able to switch to MMU based isolation - making the number of enclaves virtually unlimited. 
+- **Only simple peripherals (A,C,D)**: We are in the process of evaluating a more complex peripheral: a large accelerator based on RISC-V [1]. We plan to extend the accelerator with hardware-based multi-tenant isolation, and we also plan to measure the overhead of the firmware changes.
+- **Isolation within a controller enclave (C): We plan to implement a concrete example scenario where multiple application enclaves connect to a single controller enclave to access a peripheral. The controller enclave isolates the sessions from those applications accessing the same peripheral concurrently.
+- **Full end-to-end implementation (C,D)**: Unlike keystone/SGX, a single SDK as an E2E solution is not possible for PIE due to the heterogeneity of our target platforms. Compared to Keystone, which only runs on a standard RISC-V core, our platform includes proprietary and intransparent peripherals. With this in mind, we try to emulate what we cannot control and provide an accurate estimation for real-world performance. In general, we believe that PIE can serve as a blueprint for how developers of different applications, drivers, and firmware could (minimally) modify their code in order to take advantage of platform-wide enclaves. As mentioned earlier, we will provide a concrete E2E example scenario (application enclaves, controller enclave, and peripheral). Additionally, we will add a list of minimal modifications that are required by a peripheral to enable platform-wide enclaves in that specific application scenario (e.g., adding key material).
+
+## Attacker Model and Side-channels
+Attacker model (A, C, D): In the paper, we primarily consider a remote adversary contrary to the stronger local physical attacker model of traditional TEEs. We will clarify the following points in the revised version:
+- First, to eliminate further confusion, we will classify peripherals into two categories, sensor-type, and non-sensor type, as they fit into two different attacker models. Sensor-type peripherals rely on the surrounding environment for data while the latter is independent of its surrounding. (Note that this classification is separate from the classification of simple and complex peripherals where the classification is solely based on the computational capability of the peripherals.)
+- We will clarify why the security assumption of traditional TEE cannot be applied directly to the sensor-type peripherals. As an example, consider a light sensor: a physical adversary can manipulate the sensor reading by pointing a light source at it.
+- On the other hand, non-sensor peripherals do not interact with their physical environment (e.g., GPU, storage, etc.), and they can tolerate local physical attackers. Incorporating well-established measures such as memory and bus encryption can ensure both integrity and confidentiality against a local physical attacker. Note that such mechanisms might not be trivial and there are several aspects that we plan to discuss (such as a replay attack on DMA). As an example, these measures will add some overhead, e.g., the memory encryption has measurable overhead in Intel SGX. 
+
+
+Side-channel attacks (D, E): We agree with the reviewers that side-channel attacks have become a serious threat to TEEs. Therefore, we will add a discussion about various side-channel protection measures and how to apply them to our architecture. We want to focus specifically on the changes that we have introduced and their accompanying side-channels. 
+
+## Novelty/Motivation (A,B,C)
+It may seem like PIE is similar to a strawman solution where the privileged software in the TCB, and thus the security properties are extended to the platform as a whole from the CPU. Just aggregating everything (firmware, driver, and application) into a static TCB, similar to SGXIO, is not a solution in the context of modern platforms that require a dynamic (hardware) TCB. E.g., the keyboard on a PC is accessed by multiple applications at the same time even though keystrokes may be sensitive. Moreover, peripherals may be disconnected, or they may be exclusively claimed by a single application for a certain time span (e.g., when the user is typing her credentials, the OS should not be able to see the keystrokes).
+
+
+In the presence of fully blown TEEs on peripherals, there may indeed be other solutions (A). However, while these systems provide excellent properties, they also pose challenges that are not trivially addressable, such as how to synchronize a peripheral’s enclave and an enclave on the CPU. For instance, naively encrypting the channel between them raises functional concerns as it is unclear how DMA would work on encrypted data with integrity requirements (e.g., what considerations need to be made to prevent replay attacks?). Besides, we note that PIE also works with simple peripherals that do not support fully-fledged TEEs. Moreover, PIE is able to achieve similar security properties without relying on the encryption capabilities of peripherals (which may be expensive).
+
+## Peripherals and Firmware
+We will clarify the role of firmware in the next version. We will also add an explicit example of firmware modifications to support PIE. We also point out that the firmware and the driver themselves could, of course, be optimized for a small TCB. However, if a certain peripheral must be used, one cannot get around trusting at least a minimal driver and the firmware on the peripheral. Note, however, that in contrast to traditional system architectures, in PIE there is **only one driver** in the TCB: the driver of the desired peripheral.
+
+## Minor
+- We will improve the comparison with related work such as SGXIO and non-PMP-based TEEs (B).
+- “Comparison to previous dynamic RA schemes is missing” (D): We will add a proper discussion to similar proposals in the field of RA.
+- Remote attestation of the peripherals (C): Unlike the standard remote attestation provided by KeyStone/SGX (through code measurement and signing), in PIE, we only assume that the manufacturer ships the peripherals with key material in tamper-resilient storage. This allows the processor core-enclaves to verify the legitimacy of the peripheral.
+- End-users to verify (E): This is always the case for remote attestation for TEEs such as SGX and Keystone. Otherwise, the malicious OS could simulate an enclave.
+- Trusted boot vs. remote attestation (E): Trusted boot has been used extensively in the past, but it usually fails in keeping the TCB small. We note that other proposals, such as dynamic-root-of-trust, could also be extended to full platforms while keeping the TCB minimal.
+
+
+[1]: Florian Zaruba et al. “Manticore: A 4096-core RISC-V Chiplet Architecture for Ultra-efficient Floating-point Computing”, HotChips 2020

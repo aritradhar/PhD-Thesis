@@ -1,0 +1,75 @@
+\documentclass[crop,tikz]{standalone}% 'crop' is the default for v1.0, before it was 'preview'
+\usepackage{amsthm}
+\usepackage{xspace}
+
+\usetikzlibrary{positioning,calc,arrows,decorations,shapes,decorations.pathreplacing,chains,fit,arrows.meta,intersections,positioning,automata,external,patterns}
+% \tikzexternalize % activate!
+% \makeatletter
+% \tikzset{
+%   beamer externalising/.style={%
+%     execute at end picture={%
+%       \tikzifexternalizing{%
+%         \ifbeamer@anotherslide
+%         \pgfexternalstorecommand{\string\global\string\beamer@anotherslidetrue}%
+%         \fi
+%       }{}%
+%     }%
+%   },
+%   external/optimize=false
+% }
+% \makeatother
+
+\tikzset{>=latex}
+
+\input{common.tex}
+
+\begin{document}
+\begin{tikzpicture}[anchor=south west, thick,
+        box/.style={rectangle,draw=black,align=center,minimum height=1cm,inner sep=0},
+        boxn/.style={rectangle,draw=none,align=center,minimum height=1cm,inner sep=0},
+        icon/.style={rectangle,draw=white!50,fill=white,align=center,minimum height=1cm,minimum width=1cm,inner sep=0}
+    ]
+    \def\len{10}
+    \node[box,minimum height=1cm,minimum width=\len cm] at (0,0) {};
+    % \draw (0,0) -- (\len,0) -- (\len,1) -- (0,1) -- cycle;
+    \node[draw=none,font=\footnotesize] at (0,-0.5) {0x0};
+    \node[draw=none,anchor=south east,font=\footnotesize] at (\len,-0.5) {0xFFFFFFFF};
+
+    \node[box,fill=col2,minimum width=0.8cm] (mem1) at (8.5,0) {};
+    \node[boxn,minimum width=1cm] (mem2) at (6,0) {};
+    \draw[-,fill=col1] (mem2.south west) -- (mem2.north west) -- (mem2.south east) -- cycle;
+    \draw[-,fill=col2] (mem2.south east) -- (mem2.north west) -- (mem2.north east) -- cycle;
+    \node[box,fill=col1,minimum width=0.7cm] (mem3) at (4.15,0) {};
+    \node[boxn,minimum width=1.5cm] (memp) at (1,0) {};
+
+    \draw[-,fill=col4] (memp.south west) -- (memp.north west) -- (memp.south east) -- cycle;
+    \draw[-,fill=col1] (memp.south east) -- (memp.north west) -- (memp.north east) -- cycle;
+
+    \node[icon] (e1) at (8.5, 2) {\imgenenclaveredsmall};
+    \node[icon] (e2) at (4, 2) {\imgenclavesmaller};
+    \node[icon] (per) at (0.5, 2) {\imggpusmall};
+
+    \node[draw=none,above=0.1cm of per] {Firmware enclave};
+    \node[draw=none,above=0.1cm of e1]  {CPU enclave 1};
+    \node[draw=none,above=0.1cm of e2]  {CPU enclave 2};
+
+    \draw[thick] (e1.south) -- (mem1.north east);
+    \draw[thick] (e1.south) -- (mem1.north west);
+
+    \draw[thick] (e2.south east) -- (mem2.north east);
+    \draw[thick] (e2.south east) -- (mem2.north west);
+
+    \draw[thick] (e2.south) -- (mem3.north east);
+    \draw[thick] (e2.south) -- (mem3.north west);
+
+    \draw[thick] (e2.south west) -- (memp.north east);
+    \draw[thick] (e2.south west) -- (memp.north west);
+
+    \draw[thick] (e1.south west) -- (mem2.north east);
+    \draw[thick] (e1.south west) -- (mem2.north west);
+
+    \draw[thick] (per.south east) -- (memp.north east);
+    \draw[thick] (per.south east) -- (memp.north west);
+
+\end{tikzpicture}
+\end{document}

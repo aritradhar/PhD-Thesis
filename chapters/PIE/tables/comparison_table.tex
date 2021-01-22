@@ -1,0 +1,27 @@
+
+\newcommand{\yes}{\CIRCLE}
+\newcommand{\no}{\Circle}
+\newcommand{\yesno}{\LEFTcircle}
+% \newcolumntype{Y}{>{\centering\arraybackslash}X}
+\begin{tabular}{@{}lcccccccccccccccc@{}}
+% \begin{tabularx}{\textwidth}{@{}lcclclYYYlYYYlYYY@{}}
+% \footnotesize
+% \begin{tabular}{@{}lcccccccccccccccc@{}}
+\toprule
+    & \multicolumn{4}{c}{Platform Awareness} &  & \multicolumn{11}{c}{Isolation between Partitions} \\ \cmidrule(lr){2-5} \cmidrule(l){7-17} 
+    & \multicolumn{2}{c}{Attestation} &  & \multirow[c]{2}{*}[-3pt]{\begin{tabular}[c]{@{}l@{}}Bidirectional\\ Awareness\end{tabular}} &  & \multicolumn{3}{c}{Spatial} &  & \multicolumn{3}{c}{Temporal} &  & \multicolumn{3}{c}{Fault} \\ \cmidrule(lr){2-3} \cmidrule(lr){7-9} \cmidrule(lr){11-13} \cmidrule(l){15-17} 
+    & Enclave & Platform &  &  &  & \multicolumn{3}{c}{Core/SoC/Platform} &  & \multicolumn{3}{c}{Core/SoC/Platform} &  & \multicolumn{3}{c}{Core/SoC/Platform} \\ \midrule
+SGX~\cite{costan2016intel} & \yes & \no &  & \no &  & \yes & \no & \no &  & \no & \no & \no &  & \yes & \yes & \no \\
+Sanctum~\cite{costan2016sanctum} & \yes & \no &  & \no &  & \yes & \no & \no &  & \yes & \yes & \no &  & \yes & \yes & \no \\
+Keystone~\cite{keystone} & \yes & \no &  & \no &  & \yes & \no & \no &  & \yesno & \yesno & \no &  & \yes & \yes & \no \\
+Sancus~\cite{noorman2013sancus} & \yes & \no &  & \no &  & \yes & ? & \no &  & \no & \no & \no &  & \yes & ? & \no \\
+TrustZone & ? & \no &  & \no &  & \yesno & \yesno & \no &  & \no & \no & \no &  & \no & \no & \no \\
+Samsung Knox & \yes & \no &  & \no &  & \yesno & \yesno & \no &  & \no & \no & \no &  & \no & \no & \no \\
+Sanctuary~\cite{brasser2019sanctuary} & \yes & \no &  & \no &  & \yes & \no & \no &  & \no & \no & \no &  & \yes & ? & \no \\
+TPM & ? & \no &  & \no &  & \no & \no & \no &  & \no & \no & \no &  & \no & \no & \no \\
+DRTM & \yes & \no &  & \no &  & \no & \no & \no &  & \no & \no & \no &  & \no & \no & \no \\
+XOM~\cite{lie2000xom} & \yes & \no &  & \no &  & \no & \no & \no &  & \no & \no & \no &  & \no & \no & \no \\
+Aegis~\cite{suh2003aegis} & \yes & \no &  & \no &  & \yes & \no & \no &  & ? & ? & \no &  & ? & ? & \no \\
+% Bastion & \yes & \no &  & \no &  & \yes & \no & \no &  & ? & ? & \no &  & ? & ? & \no \\ \bottomrule
+% \end{tabularx}
+\end{tabular}

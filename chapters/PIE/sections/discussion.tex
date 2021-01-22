@@ -1,0 +1,18 @@
+\section{Discussion}
+\label{sec:discussion}
+
+\setcounter{para}{0}
+
+
+\paragraph{Supporting local physical attacker} The platform requires two hardware modifications in both the CPU and the \sphw for this. First, the CPU needs to support memory encryption and integrity, a typical mechanism that many TEEs already employ. Second, the communication channel between \sphw and the CPU, i.e., the bus, must provide confidentiality and integrity. Existing proposals from industry and research~\cite{gueron2016memoryencrpytion,kaplan2016amdmemencryption,suh2003aegis} report high performance for memory and bus encryption. In some cases, encrypting the bus is not performance sensitive, e.g., simple sensors only send very little data over the bus. Thus it might be possible to perform the encryption purely in software without any hardware modifications. Other \sphw such as accelerators that require high throughput probably need hardware encryption engines to accelerate their encrypted communication.
+
+
+
+\paragraph{Limitation of the number of PMP entries} The number of PMP entries in the RISC-V privilege specification is limited to 16 (proposals for 64 entries are in discussion) due to the overhead of such entries on the CPU size. However, this limits the number of enclaves and shared memory regions that may coexist on a system. With one shared memory region per enclave, at most $(N-2)/2$ enclaves can exist at a time (16 entries support 7 enclaves). However, we stress that the isolation of enclaves can also be achieved using the memory management unit (MMU) in a similar fashion as Intel SGX~\cite{costan2016intel} or Sanctum~\cite{costan2016sanctum}\footnote{There are efforts towards the hypervisor extension in RISC-V that would allow MMU based isolation without non-standard modifications, but as these are not ratified, they are hard to evaluate.}. MMU-based isolation can also easily be extended to shared memory ranges and remove any limitation on the maximum number of enclaves. 
+
+
+\paragraph{Enhanced privacy mode} Using an end-to-end secure channel between \app and \sphw, we can enable an enhanced privacy mode into a \nameenclave. After the remote attestation of the \nameenclave, the remote verifier receives the attestation report of the individual components, including their public keys. Using these keys, the \app and the \sphw can establish a TLS session using the \ce as an untrusted transport layer. The developers need to enable this feature in the \sphw firmware. Moreover, cryptographic operations executed in software may result in lower performance. This enhanced privacy mode can work alongside the regular operation (trusted \ce). 
+
+% \subsection{General Case no-isolated CE}
+% \label{sec:discussion:no_isol_ce}
+% \moritz{TODO}

@@ -1,0 +1,67 @@
+\include{preamble}
+
+\graphicspath{{images/}}
+
+\begin{document}
+%\title{\name: Platform Execution Environment \\ Enclave to Exclave} 
+\title{\name: A Platform-wide TEE} 
+
+\iffalse
+\author{
+    \IEEEauthorblockN{Moritz Schneider\textsuperscript{*}, Aritra Dhar\textsuperscript{*}, Ivan Puddu, Kari Kostiainen, Srdjan \v{C}apkun}
+    \IEEEauthorblockA{Department of Computer Science\\
+    ETH Zurich}
+}
+\fi
+
+\iffalse
+\begingroup\renewcommand\thefootnote{*}
+\footnotetext{Equal contribution}
+\endgroup
+\fi
+
+%\acmConference[Submission]{}{}
+
+\begin{abstract}
+
+
+% \ad{Draft 1: Flow = traditionally CPU is the central part -- specialized hardware can do operations more efficiently than CPU e.g., GPU -- TEEs are great for CPU -- not so great for peripherals -- adding peripherals to the TEE can blow up the TCB size -- we need configurable TCB that enforce least privilege -- platform-wide enclaves -- provides platform-wide attestation -- ensures the integrity of the state of the platform -- prototype -- number}
+%Traditionally, the CPU is considered to be the primary execution unit of a computing platform. However, \sphw (such as a GPU) outperforms CPUs for specialized workloads by orders of magnitude. %Some other applications heavily depend on peripherals for their data source/sink (e.g., IO devices, sensors).
+%These advancements in \sphw shift the CPU's traditional role from the primary execution unit to a mere coordinator of \sphw.
+%Nevertheless, the security of such systems is not widely investigated and more focused on the traditional CPU-centric model by employing trusted execution environments (TEEs). %For most existing TEEs, the protection mechanisms only apply to the applications on the CPU by isolating them from the attacker-controlled OS, leaving \sphw devices unprotected.
+% Often, these external devices handle sensitive data, hence, the applications' correct operations rely on their integrity and authenticity. Protecting such applications running on the CPU cores can be achieved by leveraging existing mechanisms such as Trusted execution environments (TEE). However, for most of the existing TEEs, the protection is only applied to the applications on the CPU cores by isolating them from the attacker-controlled OS, leaving external hardware devices unprotected. Integration with TEEs and external devices is possible in specific platforms, but with the cost of increasing the TCB massively.
+
+While modern computing architectures rely on \sphw such as accelerators to provide performance and functionality, trusted execution environments (TEEs), one of the most promising recent developments in security, can only protect code confined in the CPU, limiting TEEs potential and applicability to a handful of applications. 
+We observe that the TEEs' hardware trusted computing base (TCB) is fixed at design time, forcing users to rely on (mostly untrustworthy) software to allow peripherals into the TEE. Based on this observation, we propose \name, a secure platform design with a configurable hardware and software TCB, which allows us to support \sphw while ensuring the least privilege principle.
+We introduce two new security properties relevant to such systems: \emph{platform-wide attestation} and \emph{platform awareness}. Platform-wide attestation allows to remotely verify the platform's current state, including the state of \sphw devices and how they are connected with each other, whereas platform awareness defines how the enclave reacts upon a change in connected devices. Together, these allow to attest to the hardware configuration of a system and check that only the trusted hardware with the right version of its firmware is part of the TCB (platform-wide attestation) and will stay part of the TCB for the whole execution (platform awareness). %, as \name makes its enclaves aware of any peripheral and configuration change.
+Finally, we present a prototype of \name based on RISC-V's Keystone to show that such systems are feasible with only around 600 lines added to the software TCB, without compromising performance.
+
+
+\end{abstract}
+\maketitle
+%\thispagestyle{empty}
+
+\input{sections/introduction}
+\input{sections/background}
+\input{sections/problemStatement}
+\input{sections/overview}
+\input{sections/approach_and_hw}
+% \input{sections/ourApproach}
+% \input{sections/systemDesign}
+\input{sections/programmingModel}
+\input{sections/securityAnalysis}
+\input{sections/evaluation}
+\input{sections/discussion}
+\input{sections/relatedWork}
+\input{sections/conclusion}
+
+
+%\bibliographystyle{IEEEtranS}
+\bibliographystyle{ACM-Reference-Format}
+\bibliography{bibliography} 
+
+%\appendix
+%\input{sections/appendix}
+
+\end{document}
+

@@ -1,0 +1,55 @@
+%3CmxGraphModel%3E%3Croot%3E%3CmxCell%20id%3D%220%22%2F%3E%3CmxCell%20id%3D%221%22%20parent%3D%220%22%2F%3E%3CmxCell%20id%3D%222%22%20value%3D%22Setup%22%20style%3D%22ellipse%3BwhiteSpace%3Dwrap%3Bhtml%3D1%3B%22%20vertex%3D%221%22%20parent%3D%221%22%3E%3CmxGeometry%20x%3D%22240%22%20y%3D%22226.66000000000003%22%20width%3D%2270%22%20height%3D%2246.67%22%20as%3D%22geometry%22%2F%3E%3C%2FmxCell%3E%3C%2Froot%3E%3C%2FmxGraphModel%3E\documentclass[crop,tikz]{standalone}% 'crop' is the default for v1.0, before it was 'preview'
+\usepackage{amsthm}
+\usepackage{xspace}
+
+\usetikzlibrary{positioning,calc,arrows,decorations,shapes,decorations.pathreplacing,chains,fit,arrows.meta,intersections,positioning,automata,external}
+
+\tikzset{>=latex}
+
+\input{common.tex}
+
+\begin{document}
+\begin{tikzpicture}[thick,anchor=south west,
+    icon/.style={rectangle,draw=white!50,fill=white,align=center,minimum height=1cm,minimum width=1cm},
+    box/.style={rectangle,draw=black,fill=white,align=center,minimum height=1cm,inner sep=0,node distance=0pt},
+]
+    % \draw[color=white] (0,0) -- (0,5) -- (10,5) -- (10,0) -- cycle;
+    \draw (2,0.25) -- (2,4.75) -- (7.5,4.75) -- (7.5,0.25) -- cycle;
+    \draw[col3,very thick] (8.,2.5) sin (8.25,3) cos (8.5,2.5) sin (8.75,2) cos (9,2.5);
+    \node[box,minimum height=1cm,minimum width=0.3cm,draw=black,fill=white,anchor=center] (sensor) at (7.5,2.5) {};
+    \node[box,minimum height=0.6cm,minimum width=4cm,draw=black,rotate=90] (adc) at (6.9,0.5) {ADC};
+    \draw[->] (sensor) -- (adc);
+    \draw[-,thick] (2,2.5) -- (0.5,2.5) -- (0,2);
+    \draw[-,ultra thick] (0,0.25) -- (0,4.75);
+
+    \node[box,draw=black,inner sep=2pt,minimum height=0.1cm,minimum width=0.3cm,anchor=center] (slave) at (2,2.5) {};
+    \node[draw=none] at (0.9,2.6) {Slave};
+
+
+    % \draw[visible on=<4->] (0.5,4) edge[->,color=col2] node[above] {Req} (1.5,4);
+    % \draw[visible on=<5->] (0.5,1) edge[<-,color=col2] node[above] {Data} (1.5,1);
+
+    \node[box,minimum height=0.3cm,minimum width=1.7cm] (mem1) at (4.25, 1.68) {};
+    \node[box,minimum height=0.3cm,minimum width=1.7cm,below=-1pt of mem1] (mem2) {};
+    \node[box,minimum height=0.3cm,minimum width=1.7cm,below=-1pt of mem2] (mem3) {};
+    \node[box,minimum height=0.3cm,minimum width=1.7cm,below=-1pt of mem3] (mem4) {};
+    \node[box,minimum height=0.3cm,minimum width=1.7cm,below=-1pt of mem4] (mem5) {};
+
+
+    % \node[box,anchor=south west,minimum height=0.3cm,minimum width=1.7cm,draw=black] (mem1) at (4.65,0.5){};
+    % \node[box,anchor=south west,minimum height=0.3cm,minimum width=1.7cm,draw=black] (mem2) at (4.65,0.8){};
+    % \node[box,anchor=south west,minimum height=0.3cm,minimum width=1.7cm,draw=black] (mem3) at (4.65,1.1){};
+    % \node[box,anchor=south west,minimum height=0.3cm,minimum width=1.7cm,draw=black] (mem4) at (4.65,1.4){};
+    % \node[box,anchor=south west,minimum height=0.3cm,minimum width=1.7cm,draw=black] (mem5) at (4.65,1.7){};
+    \node[draw=none,above=0cm of mem1] {Memory};
+
+    % \node[box,minimum height=1.5cm,minimum width=1.7cm,text width=1.5cm,draw=black] at (5.5,3.75) {Glue Logic};
+
+    \node[box,minimum height=1.5cm,minimum width=1.7cm,text width=1.5cm] at (2.25, 0.5) {Keys Certs};
+
+    % \node[box,minimum height=1.5cm,minimum width=1.7cm,text width=1.5cm,draw=col2,text=col2] at (3.25,3.75) {Crypto Core};
+
+    \node[box,minimum height=1.5cm,minimum width=1.7cm,text width=1.5cm,draw=black] at (3.25,2.75) {$\mu$Core};
+
+\end{tikzpicture}
+\end{document}

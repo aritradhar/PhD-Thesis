@@ -1,0 +1,104 @@
+\documentclass[crop,tikz]{standalone}% 'crop' is the default for v1.0, before it was 'preview'=
+\usepackage{amsthm}
+\usepackage{xspace}
+
+\usetikzlibrary{positioning,calc,arrows,decorations,shapes,decorations.pathreplacing,chains,fit,arrows.meta,intersections,positioning,automata,external,backgrounds}
+
+% \tikzexternalize % activate!
+% \makeatletter
+% \tikzset{
+%   beamer externalising/.style={%
+%     execute at end picture={%
+%       \tikzifexternalizing{%
+%         \ifbeamer@anotherslide
+%         \pgfexternalstorecommand{\string\global\string\beamer@anotherslidetrue}%
+%         \fi
+%       }{}%
+%     }%
+%   },
+%   external/optimize=false
+% }
+% \makeatother
+
+\tikzset{>=latex}
+
+\input{common.tex}
+
+\begin{document}
+\begin{tikzpicture}[
+    icon/.style={rectangle,draw=white!50,fill=white,align=center,minimum height=1.8cm,minimum width=1.8cm},node distance=4cm
+]
+    \node[icon] (cpu) {\imgenclave};
+    \node[icon] (keyboard) [left of=cpu] {\imgkeyboard};
+
+    \coordinate (bus1) at ($(cpu.west)!0.5!(keyboard.east)$);
+    \draw[-,thick] (cpu.west) -- ($(bus1)-(-0.2,0)$) -- ($(bus1)-(0,0.2)$);
+    \draw[-,thick] (cpu.west) -- ($(bus1)-(-0.28,0)$) -- ($(bus1)-(0,0.28)$);
+    \draw[-,ultra thick] ($(bus1)-(0,1.1)$) -- ($(bus1)+(0,1.1)$);
+    \draw[-,thick] (keyboard.east) -- ($(bus1)-(0.2,0)$) -- ($(bus1)-(0,0.2)$);
+    \draw[-,thick] (keyboard.east) -- ($(bus1)-(0.28,0)$) -- ($(bus1)-(0,0.28)$);
+
+    % \pause
+    \node[icon] (gpu) [right of=cpu] {\imggpu};
+
+    \coordinate (bus2) at ($(cpu.east)!0.5!(gpu.west)$);
+    \draw[-,thick] (cpu.east) -- ($(bus2)-(0.2,0)$) -- ($(bus2)-(0,0.2)$);
+    \draw[-,thick] (cpu.east) -- ($(bus2)-(0.28,0)$) -- ($(bus2)-(0,0.28)$);
+    \draw[-,ultra thick] ($(bus2)-(0,1.1)$) -- ($(bus2)+(0,1.1)$);
+    \draw[-,thick] (gpu.west) -- ($(bus2)-(-0.2,0)$) -- ($(bus2)-(0,0.2)$);
+    \draw[-,thick] (gpu.west) -- ($(bus2)-(-0.28,0)$) -- ($(bus2)-(0,0.28)$);
+
+    \node[draw=none,below=0cm of cpu]  (textcpu) (botcpu) {Processor};
+    \node[draw=none] (textkey) at (botcpu -| keyboard) {Keyboard};
+    \node[draw=none] (textgpu) at (botcpu -| gpu) {GPU};
+
+    \coordinate (botbus1) at ($(cpu.west)!0.5!(keyboard.east)$);
+    \node[draw=none] (textbus1) at (botcpu -| botbus1) {Bus};
+    \coordinate (botbus2) at ($(cpu.east)!0.5!(gpu.west)$);
+    \node[draw=none] (textbus2) at (botcpu -| botbus2) {Bus};
+    
+    \coordinate (trust1) at ($(cpu.north)+(0,0.3)$); 
+    \coordinate (trust2) at ($(cpu.north)+(0,0.7)$); 
+    % \draw[fill=red,opacity=0.3] (trust1 -| keyboard.east) -- (trust1 -| cpu.west) -- (trust2 -| cpu.west) -- (trust2 -| keyboard.east) -- cycle;
+
+    \coordinate[above=0.7cm of cpu] (sep);
+    \draw[-,dashed,thick] (sep -| keyboard.west) -- ++(5.9,0) -- node[below,align=right,text width=4cm] {Hardware Components} node[above,align=right,text width=4cm] {Logical Entities} (sep -| gpu.east) ; 
+
+
+    \coordinate[above=1.1cm of sep] (log1);
+    \coordinate[above=1.2cm of log1] (log2);
+    \node[draw,minimum height=0.6cm,fill=col4!60] (app1) at ($(log2)-(0.7,0)$) {Encl};
+    \node[draw,minimum height=0.6cm,fill=col4!60] (app2) at ($(log2)+(0.7,0)$) {Encl};
+    \node[draw,minimum height=0.6cm,minimum width=2.3cm,fill=col2!60] (os) at ($(log1)$) {OS};
+    \node[draw,minimum height=0.6cm,fill=col4!60] (per1) at (log1 -| keyboard) {Firmware};
+    \node[draw,minimum height=0.6cm,fill=col4!60] (per2) at (log1 -| gpu) {Firmware};
+
+    % \draw[<->,thick] (app1) -- (os.north -| app1);
+    % \draw[<->,thick] (app2) -- (os.north -| app2);
+
+    % \draw[<->,thick] (per1) -- (os);
+    % \draw[<->,thick] (per2) -- (os);
+
+    \draw[<->,thick] (per1) -- (app1);
+    \draw[<->,thick] (per2) -- (app2);
+
+    % \def\x{0.13};
+    % \draw[thick] ($(app1.north east)+(\x,\x)$) -- ($(app1.south east)+(\x,-\x)$) -- ($(per1.south west)+(-\x,-\x)$) -- ($(per1.north west)+(-\x,\x)$) -- cycle node[above,midway] {Platform-wide enclave};
+    % \draw[thick] ($(app2.north west)+(-\x,\x)$) -- ($(app2.south west)+(-\x,-\x)$) -- ($(per2.south east)+(\x,-\x)$) -- ($(per2.north east)+(\x,\x)$) -- cycle node[above,midway] {Platform-wide enclave};
+
+    \node[draw=none] at ($(app1.south east)$) {\imglocklarge};
+    \node[draw=none] at ($(app2.south east)$) {\imglocklarge};
+    \node[draw=none] at ($(per1.south east)$) {\imglocklarge};
+    \node[draw=none] at ($(per2.south east)$) {\imglocklarge};
+
+    % \begin{scope}[on background layer]
+    %     \draw[draw=none,fill=red!30] (textkey.south west -| keyboard.west) -- (per1.north west -| keyboard.west) -- (app1.north -| textbus1.south east) -- (textbus1.south east) -- cycle;
+    %     \draw[draw=none,fill=red!30] (textgpu.south east -| gpu.east) -- (per2.north east -| gpu.east) -- (app2.north -| textbus2.south west) -- (textbus2.south west) -- cycle;
+    % \end{scope}
+
+    % \node[draw=none] at ($(per1.south east)-(0,0.1)$) {\imgdevil};
+
+    % \node[draw=none] at ($(keyboard.north east)+(0.4,-0.1)$) {\imgdevil};
+    % \node[draw=none] at ($(keyboard.north east)+(0.4,1.5)$) {\imgdevil};
+\end{tikzpicture}
+\end{document}

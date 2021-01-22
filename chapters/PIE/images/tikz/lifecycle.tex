@@ -1,0 +1,51 @@
+\documentclass[crop,tikz]{standalone}% 'crop' is the default for v1.0, before it was 'preview'=
+\usepackage{amsthm}
+\usepackage{xspace}
+
+\usetikzlibrary{positioning,calc,arrows,decorations,shapes,decorations.pathreplacing,chains,fit,arrows.meta,intersections,positioning,automata,external,backgrounds}
+
+% \tikzexternalize % activate!
+% \makeatletter
+% \tikzset{
+%   beamer externalising/.style={%
+%     execute at end picture={%
+%       \tikzifexternalizing{%
+%         \ifbeamer@anotherslide
+%         \pgfexternalstorecommand{\string\global\string\beamer@anotherslidetrue}%
+%         \fi
+%       }{}%
+%     }%
+%   },
+%   external/optimize=false
+% }
+% \makeatother
+
+\tikzset{>=latex}
+
+\input{common.tex}
+
+\begin{document}
+
+\begin{tikzpicture}[->, >=stealth', thick, node distance=4cm, every state/.style={thick, fill=gray!10,minimum width=1.7cm,text width=1.7cm,align=center,shape=circle}, initial text=setup,every text node part/.style={align=center}]
+    \node[state,initial] (idle) {Idle};
+    \node[state,right of=idle] (running) {Running};
+    \node[state,right of=running] (paused) {Paused};
+    
+    \draw[->] (idle) edge[bend left] node[above] {start} (running);
+    \draw[->] (running) edge[bend left] node[below] {stop} (idle);
+    \draw[->] (running) edge[bend left] node[above] {interrupt} (paused);
+    \draw[->] (paused) edge[bend left] node[below] {resume} (running);
+
+    \draw[color=col4,->] (idle) edge[loop above] node[above]{connect\\disconnect} (idle);
+    % \draw[color=col4,->] (paused) edge[loop above] node[above]{connect\\disconnect} (paused);
+
+    % \draw[->] (running) edge[loop above] (running);
+
+    \coordinate (bolt1) at ($(paused)+(-3.75,1.5)$);
+    \coordinate (bolt2) at ($(paused)+(-4.75,3)$);
+    \coordinate (bolt12) at ($(bolt1)!0.5!(bolt2)$);
+    \draw[color=col4] (bolt2) -- ($(bolt12)+(0.25,-0.1)$) -- ($(bolt12)+(-0.25,0.1)$) node[left] {async.\\disconnect} -- (bolt1);
+
+\end{tikzpicture}
+
+\end{document}
