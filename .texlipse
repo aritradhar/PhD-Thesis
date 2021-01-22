@@ -1,14 +1,14 @@
 #TeXlipse project settings
-#Mon Oct 26 07:59:27 CET 2020
-markTmpDer=true
-builderNum=2
+#Fri Jan 22 10:57:12 CET 2021
 outputDir=
-makeIndSty=
-bibrefDir=
-outputFormat=pdf
-tempDir=tmp
-mainTexFile=thesis.tex
-outputFile=thesis.pdf
-langSpell=en
 markDer=true
+mainTexFile=thesis.tex
+bibrefDir=
+builderNum=2
+outputFile=thesis.pdf
+makeIndSty=
 srcDir=
+markTmpDer=true
+tempDir=tmp
+outputFormat=pdf
+langSpell=en

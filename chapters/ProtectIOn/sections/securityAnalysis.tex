@@ -171,7 +171,7 @@ Assume that \server handed a message $m$ to \host where the proper message trans
 Assume that \server handed a message $m$ to \host where the proper message transformation is $[m]$. Output integrity defines that in all circumstances, \user receives the correct message transformation $[m]$ from \host.
 \end{definition}
 
-\myparagraph{Verification process} After receiving all the traces, \server checks $\forall i=1\ldots n$ $$[m']_i =^? \texttt{Transform}(m_{i-1}, I_{i-1})$$ where $I_0=\phi$.
+\myparagraph{Verification process} After receiving all the traces, \server checks $\forall i=1\ldots n$, if $$[m']_i =^? \texttt{Transform}(m_{i-1}, I_{i-1})$$ where $I_0=\phi$.
 
 \begin{lemma}
 \label{theorem:th1}
