@@ -20,7 +20,7 @@ Apart from the relay attack, TEEs' potential use cases are also limited.  TEEs c
 The static system architecture of TEEs limits their potential applications to trusted computing use cases, where a user possesses some secret data and wants to outsource the computation to a remote system. Many TEEs actually rely on some external peripherals already, e.g., Intel SGX and the monotonic counters in the management engine~\cite{matetic2017rote} or various academic proposals for trusted path using ARM TrustZone~\cite{SeCloak,VButton}. However, all of these systems are custom-tailored for a single use case and do not allow for any flexibility as they must be configured statically at boot time.
 
 
-In this dissertation, we address the three following research questions concerning the trusted path and trusted execution in modern platforms 
+In this dissertation, we address the three following research questions concerning the trusted path and trusted execution in mode rn platforms 
 \begin{enumerate}
     \item[\textbf{Q1}] Why existing solutions failed to provide a trusted path that provides integrity and confidentiality guarantees to the user interactions? What are the necessary steps in order to build one?
     
