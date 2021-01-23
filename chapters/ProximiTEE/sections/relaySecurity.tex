@@ -1,6 +1,8 @@
 \section{Security Analysis}
 
-\subsection{Attestation security.}
+
+In this section, we will informally discuss \name{}'s attestation and revocation security. 
+\subsection{Attestation security}
 
 To analyze the security of our hardened attestation mechanism, we must first define successful attestation. We say that the attestation is successful when the remote verifier establishes a connection to the correct enclave that i) has the expected code measurement and ii) runs on the computing platform to which the \device device is attached.
 
@@ -17,7 +19,7 @@ We evaluate the second aspect experimentally. In particular, we simulate a power
 
 
 
-\subsection{Revocation security.}
+\subsection{Revocation security}
 To analyze the security of the periodic proximity verification which we use for platform revocation, we must first define what it means for the attacker to break the periodic proximity verification. The purpose of the periodic proximity verification is to prevent cases where the user detaches the \device device from the attested target platform and attaches it to another SGX platform before the previously established connection is terminated. Since we consider an adversary who does not have physical access to the target platform (recall Section~\ref{sec:problemStatement:systemAttackerModel}), we focus on benign users and exclude scenarios where the \device would be connected to multiple SGX platforms with custom wiring or rapidly and repeatedly plugged in and out of two SGX platforms.
 
 
