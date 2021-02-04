@@ -23,7 +23,7 @@ Apart from the relay attack, TEEs' potential use cases are also limited.  TEEs c
 The static system architecture of TEEs limits their potential applications to trusted computing use cases, where a user possesses some secret data and wants to outsource the computation to a remote system. Many TEEs actually rely on some external peripherals already, e.g., Intel SGX and the monotonic counters in the management engine~\cite{matetic2017rote} or various academic proposals for trusted path using ARM TrustZone~\cite{SeCloak,VButton}. However, all of these systems are custom-tailored for a single use case and do not allow for any flexibility as they must be configured statically at boot time.
 
 
-In this dissertation, we address the three following research questions concerning the trusted path and trusted execution in modern platforms 
+In this dissertation,a we address the three following research questions concerning the trusted path and trusted execution in modern platforms 
 \begin{enumerate}
   
   	\item[\textbf{Q1}] How to build a trusted path systems that provide integrity (and possibly confidentiality) guarantees without the users rely on the cognitive-heavy solutions such as transaction confirmation devices while maintaining a small TCB? Are these systems truly secure?
@@ -43,24 +43,29 @@ The shortcomings of the existing literature provide the groundwork of our system
 
 Parno~\cite{parno2008bootstrapping} identified distance bounding as a candidate solution to TPM relay attacks already ten years ago, but concluded that it could not be realized securely as the slow TPM identification operations (signatures) make a local and relayed attestation indistinguishable. However, the implication if the relay attack was never well-studied. In this dissertation, we investigate the implication of the relay attack and show that it could have an adverse consequence. To answer the second research question, \textbf{Q3},  We propose a new solution, called \proximitee, that prevents relay attacks by leveraging a simple embedded device that we call \deviceproximitee that is attached to the attested target platform. The \deviceproximitee executes a challenge-response protocol between itself and the platform, and based on the latency of the protocol, the \deviceproximitee determines if it is connected to the target platform physically or not. Our solution is best suited to scenarios where i) the deployment cost of such an embedded device is minor compared to the benefit of more secure attestation, and ii) TOFU solutions are not acceptable. Attestation of servers at cloud computing platforms and setup of SGX-based permissioned blockchains are two such examples. 
 
+Finally, to answer \textbf{Q4}, the last research question, We propose a TEE with a \emph{configurable} software and hardware TCB including arbitrary external peripheral devices, a concept that we name \emph{platform isolation environment} (\pie). \pie executes applications in \emph{platform-wide enclaves}, which are analogous to the enclaves provided by TEEs, except that they span several hardware components. For example, a \nameenclave{} can be composed of a output device such as a display, input devices such as keyboard and mouse, and the CPU, and the custom code running on them. Like in traditional enclaves, a \nameenclave{} can be remotely attested. However, the \pie attestation not only reports a measurement of the software TCB but also of the hardware components that are part of the \nameenclave{}.
 
-Finally, to answer the last question, \textbf{Q4}, we investigate systems where the TCB can be dynamically configured across multiple hardware components. We call such a system \emph{Platform Isolation Environment} or \pie.  The shift towards dynamic TCBs has wide-ranging implications concerning isolation, attestation, and integrity --- some of the typical security properties of traditional TEEs. In order not to reinvent the wheel, we rely on the many existing TEEs on the processor~\cite{costan2016intel,costan2016sanctum, keystone} and on the rather new proposals to create fully blown TEEs on peripherals~\cite{volos2018graviton,visor}, and combine them into a \pie{}. To achieve that, isolation must be expanded to the communication with other components such as other enclave or the peripherals. Similarly, the attestation must span the entire platform. The attestation includes not only the individual measurements of the enclaves or peripherals, but also the communication links between them. To guarantee integrity for \pie{}, we rely on integrity properties in traditional TEEs where the enclave will halt execution upon a malicious manipulation. However, in \pie{}, the processor must be aware of the integrity of the connected peripherals as well. It needs awareness of the state of surrounding peripherals, a property we call \emph{platform awareness}. This allows an enclave on the processor to be aware of the state of connected peripherals and react upon changes in them.
+The shift towards configurable hardware and software TCBs has wide-ranging implications concerning integrity, confidentiality, and attestation of a \nameenclave{}. 
+Attestation, for one, should cover all individual components of a \nameenclave{} atomically to defend against an attacker that changes the configuration in between attestations to separate components. 
+Moreover, the untrusted OS may remap the peripheral devices at runtime with an untrustworthy device, which should not receive access to sensitive data. We carefully design \pie to not be vulnerable to such attacks and present an in-depth security analysis.
 
+We mitigate the above-mentioned attacks with two new properties of \nameenclave{}s: \emph{platform-wide attestation} and \emph{platform awareness}. Platform-wide attestation expands the attestation to cover all components within a \nameenclave, and platform awareness enables enclaves to react to changes in their ecosystem, i.e., remapping by the OS.
+We achieve this by introducing two new events into the enclave lifecycle, \textit{connect} and \textit{disconnect}, which allow to track the liveliness of one enclave from another.
 
 
 
 
 \section{Thesis contribution} 
 
-This thesis has three primary aspect related to trusted interaction and trusted computing. Under each of these aspects, the major contributions are listed.
+The contributions of this thesis is divided into four parts as the following:
 
 \begin{enumerate}
   \item \textbf{\integrikey: integrity protection of keyboard input for security-critical web services}
 \begin{itemize}
     \item \emph{New attack.} We identify swapping attacks as a novel form of user input manipulation against simple user input matching strategies.
-    \item \interikey. We design and implement a user input integrity protection system that is tailored for keyboard input, prevents swapping attacks, and is easy to deploy.
-    \item \interikey{} tool. We develop a user interface analysis and webpage annotation tool that helps developers to protect their web services and minimizes user effort.
-    \item \emph{Evaluation.} We verified that our tool can process UIs of existing safety-critical systems and cryptocurrency wallets correctly. Our experiments show that the performance delay of \interikey user input integrity protection is low. Our preliminary user study indicates that user input labeling prevents swapping attacks in most cases.
+    \item \integrikey. We design and implement a user input integrity protection system that is tailored for keyboard input, prevents swapping attacks, and is easy to deploy.
+    \item \integrikey{} tool. We develop a user interface analysis and webpage annotation tool that helps developers to protect their web services and minimizes user effort.
+    \item \emph{Evaluation.} We verified that our tool can process UIs of existing safety-critical systems and cryptocurrency wallets correctly. Our experiments show that the performance delay of \integrikey user input integrity protection is low. Our preliminary user study indicates that user input labeling prevents swapping attacks in most cases.
    %, and our preliminary user study indicates that user can perform the needed labeling.
 \end{itemize}
 
