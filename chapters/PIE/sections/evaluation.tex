@@ -6,7 +6,7 @@ In this section, we describe our prototype of \name and its evaluation.
 \begin{figure}[t]
 \centering
 \includegraphics[trim={0 8cm 19cm 0}, clip, width=0.9\linewidth]{chapters/PIE/images/prototype.pdf}
-\caption{The figure shows different components of our prototype: \one Digilent Genesys 2 FPGA board, \two Arduino Due as the peripheral simulator, and \three a seven-segment display unit as an example peripheral.} %\vspace{-2em}
+\caption[\name prototype]{The figure shows different components of our prototype: \one Digilent Genesys 2 FPGA board, \two Arduino Due as the peripheral simulator, and \three a seven-segment display unit as an example peripheral.} %\vspace{-2em}
 \label{fig:prototype}
 \end{figure}
 
@@ -56,7 +56,7 @@ Since \name{} supports shared memory to communicate, its communication speed is 
     \centering
     \includegraphics[width=\linewidth]{chapters/PIE/images/graphs/ctxswitch.png}
     \vspace{-3em}
-    \caption{Context switch performance for varying sizes of a shared memory region compared to stock Keystone performance on the left (equivalent to no shared memory).}
+    \caption[Context switch performance]{Context switch performance for varying sizes of a shared memory region compared to stock Keystone performance on the left (equivalent to no shared memory).}
     \label{fig:ctxswitches}
 \end{figure}
 
@@ -95,7 +95,7 @@ Our modification of the accelerator cores increases size by around 15\% and slow
     \centering
     \includegraphics[width=0.9\linewidth]{chapters/PIE/images/graphs/areasnitch.png}
     \vspace{-1em}
-    \caption{The post-synthesis area of a core complex of our accelerators, with four and zero PMP entries respectively. Note that the design was synthesized with 750MHz clock for 0 PMP entries and 666MHz with 4 entries. The size of the core increases due to the increased pressure by the PMPs, while the FPU gets smaller with the lower clock as its critical path is not affected by the PMP entries.}
+    \caption[The post-synthesis area of a core complex of our accelerators]{The post-synthesis area of a core complex of our accelerators, with four and zero PMP entries respectively. Note that the design was synthesized with 750MHz clock for 0 PMP entries and 666MHz with 4 entries. The size of the core increases due to the increased pressure by the PMPs, while the FPU gets smaller with the lower clock as its critical path is not affected by the PMP entries.}
     \label{fig:areasnitch}
 \end{figure}
 

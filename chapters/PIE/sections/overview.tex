@@ -8,10 +8,10 @@ In this section, we provide an overview of our approach \name and introduce \emp
     \centering
     %Source:
     %https://drive.google.com/file/d/1K8Jg0eXF1W2dpIVLmvP8D0k-qK-dHq4P/view?usp=sharing
-    \includegraphics[width=\linewidth]{chapters/PIE/images/cpu_bus_peripheral-Page-4.pdf}
+    \includegraphics[width=0.7\linewidth]{chapters/PIE/images/cpu_bus_peripheral-Page-4.pdf}
         %   \includestandalone[width=\linewidth]{images/tikz/new_system}
-    \vspace{-2em}
-    \caption{Two \nameenclave{}s are highlighted by blue and yellow outlines. One consists of \texttt{Encl1} and the keyboard that is connected over the memory-mapped SPI bus. The second consists of \texttt{Encl2} and a GPU connected over PCI through DMA.}
+
+    \caption[\Nameenclave{}s consists of different applications and \sphw]{Two \nameenclave{}s are highlighted by blue and yellow outlines. One consists of \texttt{Encl1} and the keyboard that is connected over the memory-mapped SPI bus. The second consists of \texttt{Encl2} and a GPU connected over PCI through DMA.}
     \label{fig:new_system}
 \end{figure}
 
@@ -22,7 +22,7 @@ In this section, we provide an overview of our approach \name and introduce \emp
 
 A \nameenclave{} consists of multiple enclaves that run on different hardware components and securely communicate with each other. A \nameenclave{} typically contains several interconnected processor-local enclaves and \sphw enclaves. In the following, we describe the two main enclave types that form a \nameenclave{}.
 
-\paragraph{Processor-local enclaves}
+\myparagraph{Processor-local enclaves}
 \label{sec:overview:enclaves:processorEnclave}
 
 Processor-local enclaves are equivalent to traditional enclaves and their runtime memory must be isolated from the OS and should only be accessible to the enclave itself. To achieve that, we use physical memory protection (PMP) from the RISC-V privilege standard~\cite{riscv2019privspec} as introduced by Keystone.
@@ -30,7 +30,7 @@ Processor-local enclaves are equivalent to traditional enclaves and their runtim
 We further differentiate two types of processor-local enclaves: \app{}s, and \ce{}s which encapsulate the application-specific, and driver logic, respectively. As seen in Figure~\ref{fig:sharedMemory}, $AE_1$, and $CE_1$ are the \app, and \ce in the blue-outlined \nameenclave of Figure~\ref{fig:new_system}. The \ce also provides isolation between the \apps in a scenario where multiple \apps want to access a certain \sphw. Therefore, \ce enforces access control on the connected \apps in terms of how a certain \sphw can be accessed, e.g., exclusive access to a keyboard or shared concurrent access to a GPU. 
 % $AE_1$ uses $CE_1$ to communicate with $P_1$ that is a \sphw enclave which we discuss in the following. 
 
-\paragraph{Enclaves on \sphw}
+\myparagraph{Enclaves on \sphw}
 \label{sec:overview:enclaves:peripheralEnclave}
 Most \sphw run some firmware or even some custom code (e.g., graphic shaders) which has to be included in the TCB of a \nameenclave.
 E.g., the GPU and its firmware in Figure~\ref{fig:new_system} is part of the yellow \nameenclave. Since a remote verifier also wants to attest to the \sphw, they have to be modified to support attestation. However, we stress that these modifications  remain rather small (c.f. \Cref{sec:eval:accel}) and usually only involve small changes in the device firmware. %Essentially, one only has to add a certificate from the manufacturer for a secret key stored in the \sphw.
@@ -40,10 +40,10 @@ E.g., the GPU and its firmware in Figure~\ref{fig:new_system} is part of the yel
      %\includestandalone[width=0.9\linewidth]{images/tikz/approach}
      %\includegraphics[trim={0 15cm 28cm 0}, clip, width=0.5\linewidth]{approach.pdf}
     %  \includegraphics[trim={0 12cm 27cm 0}, clip, width=0.5\linewidth]{approach_combined.pdf}
-     \includegraphics[width=0.6\linewidth]{chapters/PIE/images/softwaredesign.pdf}
-     \vspace{-1em}
+     \includegraphics[width=0.4\linewidth]{chapters/PIE/images/softwaredesign.pdf}
+     
      %\caption{Example configuration where a red CPU enclave shares some memory with a blue CPU enclave and another shared buffer with a GPU. The solid color memory cells correspond to the private enclave memory regions, and the cells with mixed color denote shared memory regions.}
-     \caption{Three example \nameenclave{}s in \name{}'s software design with \app{}s (AE), \ce{}s (CE), a GPU, and a keyboard. Note that the red \nameenclave{} is spanning over two external devices and \ce{}s isolate the data from the different \app{}s.}
+     \caption[Three example \nameenclave{}s in \name{}'s software design]{Three example \nameenclave{}s in \name{}'s software design with \app{}s (AE), \ce{}s (CE), a GPU, and a keyboard. Note that the red \nameenclave{} is spanning over two external devices and \ce{}s isolate the data from the different \app{}s.}
      \label{fig:sharedMemory}
 \end{figure}
 
@@ -78,8 +78,8 @@ We show that individual attestations provide more flexibility for the verifier a
 
 \begin{figure}[tbp]
     \centering
-    \includegraphics[width=0.9\linewidth]{chapters/PIE/images/cpu_bus_peripheral-Page-5.pdf}
-    \caption{An example scenario that illustrates interaction between \nameenclave components.}
+    \includegraphics[width=0.8\linewidth]{chapters/PIE/images/cpu_bus_peripheral-Page-5.pdf}
+    \caption[Interactions between \nameenclave's components]{An example scenario that illustrates interaction between \nameenclave components.}
     \label{fig:overviewtime}
     % \vspace{-1em}
 \end{figure}

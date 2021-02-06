@@ -1,13 +1,13 @@
 \section{Background}
 \label{sec:background}
 
-\paragraph*{Keystone}
+\myparagraph{Keystone}
 Keystone~\cite{keystone} is a TEE framework based on RISC-V that utilizes physical memory protection or PMP to provide isolation. PMP is part of the RISC-V privilege standard~\cite{riscv2019privspec} and it allows to specify access policies that can individually allow or deny reading, writing, and executing for a certain memory range. E.g., PMP can be used to restrict the operating system (OS) from accessing the memory of the bootloader. Every access request to a prohibited range gets trapped precisely in the core and results in a hardware exception. Keystone relies on a low-level firmware with the highest privilege, called security monitor (SM), to manage the PMP. 
 
 The SM maintains its own memory separate from the OS and protected by a PMP entry. It also facilitates all enclave calls, e.g., it creates, runs, and destroys enclaves. The SM configures the PMP so that the OS can no longer access the enclave's private memory. Upon a context switch, the SM re-configures the PMP to allow or block access to the enclave. E.g., during a context switch from an enclave to the OS, the SM changes the PMP configuration such that access to the enclave memory is prohibited. Conversely, on a context switch back to the enclave, the PMP gets reconfigured to allow accesses to enclave memory. 
 Because the SM is critical for the security of any enclave and the whole system, it aims to be very minimal and lean. As such, the SM is orders of magnitudes smaller than hypervisors and operating systems (15k LoC vs millions LoC~\cite{torvalds2020linux,barham2003xen}). There are also efforts to create formal proofs for such a SM~\cite{lebedev2019sanctorum}. Keystone also provides extensions for cache side-channel protections using page coloring or dynamic enclave memory. 
 
-\paragraph*{Device Tree}
+\myparagraph{Device Tree}
 The device tree is a list that accurately describes the physical memory mappings of a platform. It describes the central processor, i.e., its speed, its ISA, and at what address its cache starts. It also includes the DRAM base address and various other components on the die, such as various internal and external buses. It is usually used by the bootloader and the OS to bootstrap the system. As some peripherals cannot be detected automatically, they must be present in the device tree, as otherwise they will not get recognized by the OS. The device tree is usually burnt into ROM and available to the bootloader and the OS. It can therefore be considered trusted.
 
 % \subsection{Hardware Background}
