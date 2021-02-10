@@ -94,6 +94,9 @@ The contributions of this thesis is divided into four parts as the following:
 
     \item \textbf{\protection: Understanding trusted path and building secure trusted path systems}
     \begin{enumerate}
+      
+      	\item \textbf{Identification of new attacks:} We identify two new attacks on the existing trusted path systems. The first one is \emph{input addition/reduction} attack on trusted path systems that uses input signing. \integrikey is susceptible to this attack. The another attack is \emph{early form submission} attack that targets target path systems that do not consider all modalities of input.
+      	 
         \item  \textbf{Identification of IO security requirements:} We identify new requirements for trusted path based on the drawbacks of the existing literature: i) unless both output and input integrity are secured simultaneously, it is impossible to achieve any of the two, and ii) without protecting the integrity of all the modalities of inputs, none could be achieved.
         
         \item \textbf{System for IO integrity:} We describe the design of \protection, a system that provides a remote trusted path from the server to the user, in an attacker-controlled environment. The design of \protection leverages a small, low-TCB auxiliary device that acts as a \emph{root-of-trust} for the IO. \protection ensures the integrity of the UI, specifically the integrity of mouse pointer and keyboard input. \protection is further designed to avoid user habituation.

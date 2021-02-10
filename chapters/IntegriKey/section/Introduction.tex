@@ -50,14 +50,14 @@ We also conducted a preliminary user study where we simulated a swapping attack 
 
 \myparagraph{Contributions} To summarize, in this chapter we make the following contributions:
 
-\begin{itemize}
+\begin{enumerate}
     %\item \emph{New approach for integrity protection.} We propose input trace matching as a novel approach for integrity protection of user input on untrusted host platforms.
     \item \emph{New attack.} We identify swapping attacks as a novel form of user input manipulation against simple user input matching strategies.
     \item \name. We design and implement a user input integrity protection system that is tailored for keyboard input, prevents swapping attacks, and is easy to deploy.
     \item \tool. We develop a user interface analysis and webpage annotation tool that helps developers to protect their web services and minimizes user effort.
     \item \emph{Evaluation.} We verified that our tool can process UIs of existing safety-critical systems and cryptocurrency wallets correctly. Our experiments show that the performance delay of \name user input integrity protection is low. Our preliminary user study indicates that user input labeling prevents swapping attacks in most cases.
    %, and our preliminary user study indicates that user can perform the needed labeling. 
-\end{itemize}
+\end{enumerate}
 
 
 \myparagraph{Outline} The rest of the chapter is organized as follows. We explain our problem in Section~\ref{sec:problemStatement_IK}. Section~\ref{sec:ourApproach} introduces our approach, Section~\ref{sec:integriKey} describes our system and Section~\ref{sec:integriTool} the UI analysis tool. We provide security analysis in Section~\ref{sec:securityAnalysis_IK}. Sections~\ref{sec:implementation_IK} and~\ref{sec:results} explain our implementation and evaluation. In Section~\ref{sec:discussion_IK} we discuss other applications for our solution. Section~\ref{sec:relatedWork} reviews related work and Section~\ref{sec:conclusion_IK} concludes this chapter.
