@@ -22,8 +22,7 @@ Besides input integrity protection, user authentication to the remote server wit
 %
 \begin{figure*}[t]
  \centering
-  %\includegraphics[trim={0 11cm 4.5cm 0},clip,width=0.9\linewidth]{SystemDesign_forms_revised_3.pdf}
-  \includegraphics[trim={0 11cm 4cm 0},clip,width=0.95\linewidth]{chapters/IntegriKey/images/SystemDesign_forms_revised_5.pdf}
+  \includegraphics[trim={0 11cm 4cm 0},clip,width=\linewidth]{chapters/IntegriKey/images/SystemDesign_forms.pdf} 
  \caption[\name operation]{\textbf{\name operation}. The browser on the host opens a standard TLS connection ($TLS_1$) to the server which replies with a web page and JavaScript code. Using the WebUSB API, the JavaScript code invokes the \device that will establish another TLS connection ($TLS_2$) to the server. The \device forwards received keystroke events to the host and periodically sends a trace of them to the server that performs matching between the traces and the received application payload.}
  \label{fig:systemDesignForms}
 \end{figure*}
@@ -31,26 +30,26 @@ Besides input integrity protection, user authentication to the remote server wit
 Next, we describe the operation of the \name system that is illustrated in Figure~\ref{fig:systemDesignForms}. 
 
 \begin{enumerate}
-    \item The user attaches the \device device between the host and the keyboard. The user starts the browser on the host and opens the web page for remote configuration of the target safety-critical device. 
+    \item[\one] The user attaches the \device device between the host and the keyboard. The user starts the browser on the host and opens the web page for remote configuration of the target safety-critical device. 
 
-    \item The browser establishes a server-authenticated TLS connection ($TLS_1$) to the server. 
+    \item[\two] The browser establishes a server-authenticated TLS connection ($TLS_1$) to the server. 
     %\todo{User authentication discussed elsewhere separately?}
 
-    \item The server sends the web configuration form to the browser together with JavaScript code. The web form includes instructions for user labeling, as described below in Section~\ref{sec:integriKey:labeling}.
+    \item[\three] The server sends the web configuration form to the browser together with JavaScript code. The web form includes instructions for user labeling, as described below in Section~\ref{sec:integriKey:labeling}.
     
-    \item The browser shows the web form to the user and runs the received JavaScript code that invokes the \webusb API to communicate with \device. The browser passes the server URL to \device.
+    \item[\four] The browser shows the web form to the user and runs the received JavaScript code that invokes the \webusb API to communicate with \device. The browser passes the server URL to \device.
 
-    \item Based on the received URL and the pre-configured trust root and client certificate, \device establishes a mutually-authenticated \tls connection ($TLS_2$) to the server through the host using the WebUSB API. Mutually-authenticated TLS 
+    \item[\five] Based on the received URL and the pre-configured trust root and client certificate, \device establishes a mutually-authenticated \tls connection ($TLS_2$) to the server through the host using the WebUSB API. Mutually-authenticated TLS 
 
-    \item The user completes the web form, as explained in Section~\ref{sec:integriKey:labeling}.
+    \item[\six] The user completes the web form, as explained in Section~\ref{sec:integriKey:labeling}.
     
-    \item \device captures keystrokes and forwards them to the browser.
+    \item[\seven] \device captures keystrokes and forwards them to the browser.
     
-    \item Once the user has completed the web form, the browser constructs a payload (HTTP response) and sends this to the server over the $TLS_1$ connection.
+    \item[\eight] Once the user has completed the web form, the browser constructs a payload (HTTP response) and sends this to the server over the $TLS_1$ connection.
     
-    \item \device collects intercepted keystrokes and periodically (e.g., when receiving a tab or return key press, or on every keyboard event) sends a trace of them to the server through the $TLS_2$ connection. 
+    \item[\nine] \device collects intercepted keystrokes and periodically (e.g., when receiving a tab or return key press, or on every keyboard event) sends a trace of them to the server through the $TLS_2$ connection. 
 
-    \item The server compares the received application payload and traces (input trace matching), as explained in Section~\ref{sec:integriKey:server}. If no mismatch is detected, the server accepts the received user input. The user can remove \device from the host.
+    \item[\ten] The server compares the received application payload and traces (input trace matching), as explained in Section~\ref{sec:integriKey:server}. If no mismatch is detected, the server accepts the received user input. The user can remove \device from the host.
 \end{enumerate}
 
 \myparagraph{Handling multiple sessions/tabs} The \webusb driver only allows one browser window to communicate with a \usb device at a time. This restricts the \device to operate on multiple browser tabs or session at the same time. As \name is targeted towards protection of specific security-critical web-based transactions (PLC configuration, payment) as opposed to generic input protection for all web browsing, we do not consider this a problem in practice.
@@ -103,7 +102,7 @@ To verify the integrity of the received user input, the server performs a matchi
 
 \begin{figure}[t]
  \centering
- \includegraphics[trim={0 8cm 15cm 0},clip,width=0.8\linewidth]{chapters/IntegriKey/images/FieldPayload_revised_1.pdf}
+ \includegraphics[trim={0 8cm 15cm 0},clip,width=0.8\linewidth]{chapters/IntegriKey/images/FieldPayload.pdf}
  \caption[Input trace matching]{\textbf{Input trace matching.} The server compares user input values (and their labels) in the application payload (e.g., HTTP POST data) against the user input in the received traces.} \vspace{-10pt}
  \label{fig:payload}
 \end{figure}
