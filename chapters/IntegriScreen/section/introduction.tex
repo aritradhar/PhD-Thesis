@@ -1,0 +1,20 @@
+\section{Introduction}
+\label{integriscreen:sec:intro}
+
+In the previous chapter (Chapter \ref{ch:integrikey}) we describe \integrikey that provides second factor for the integrity of the user input coming from keyboard. However, this integrity guarantee is purely limited the keyboard input and does not take account of what the user is seeing on the screen. In other wards, \integrikey is oblivious to the the user's \emph{intent}. We use the term intent to establish the connection between what the user is seeing on the display and what the user is typing in response to that. Similar, to \integrikey, we assume an attacker that control the software stack including the OS and hypervisor of the host that the user has. A large class of web-based services and applications (e.g., online banking or remote database access) uses modern user interfaces (UIs) displayed on the browser to interact with the user. In all of these UIs, the user's intended input is displayed on the client's screen. Despite what a compromised client might attempt to do in the background, users communicate their intention by entering and modifying the values shown on the screen until they are satisfied with what they see or abort if they are prevented from doing so.
+
+This general idea of supervising user input on an untrusted client to extract user intention has been researched before. However, previous work relied on the assumption that the client is only partially compromised by assuming the existence of either a trusted virtual machine~\cite{gyrus}, an operating system~\cite{binder}, or an \emph{attester} application~\cite{nab} that captures the user's input and relays them to the server. 
+
+Motivated by the increase in computer vision capabilities of various camera-enabled devices (e.g., augmented reality headsets~\cite{TimCookAR, HoloLens2}, smart home camera assistants~\cite{fleck2008smart, lenovoSmartHome} and smartphones~\cite{wald2018real, smartphonesCV}), we propose the concept of \emph{visual supervision of user's intent}: by extracting the contents of the client's screen during normal user input, a camera-equipped device can infer the values that the legitimate user intends to submit. If these extracted values are independently sent to the remote service and compared with each request received from the client, the adversary that controls the client is prevented from either generating arbitrary user input or from modifying the input provided by the user.
+
+
+In summary, this chapter makes the following main contributions:
+\begin{enumerate}
+	\item \textbf{System design.}
+	We propose and describe \sysname, a system that protects the integrity of the user's input to a remote server by using a device equipped with a camera to visually supervise the user's interaction with an untrusted client thus preventing various advanced UI attacks that the adversary might attempt.
+
+
+	\item \textbf{Prototype \& experimental evaluation.}
+	To evaluate the feasibility of the approach on recent smartphones, we build a fully functional prototype of the \sysname system and test it with three different devices against a range of automated attacks.
+
+\end{enumerate}
