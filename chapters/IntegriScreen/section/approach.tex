@@ -13,7 +13,7 @@ We start by providing the general idea of visual supervision of user input; then
 	\includegraphics[trim={0 7cm 17cm 0},clip,width=0.75\linewidth]{chapters/IntegriScreen/img/systemModel.pdf}
 	\caption[\sysname overview.]{\textbf{\sysname overview.}
 	    \one The user inputs data into a web form on an untrusted client, \two while the smartphone's camera captures the interaction.
-	    \three Data is submitted both from the client, and \four from the \app.
+	    \three Data is submitted both from the client and \four from the \app.
 		\five The server checks authenticity of the received data by comparing the two channels.}
 	\label{integriscreen:fig:systemModel}
 \end{figure}
@@ -26,7 +26,7 @@ The general flow of the user's interaction with \sysname is shown in Figure~\ref
 \begin{enumerate} %[leftmargin=*]
   \item[\one] The user inputs the data through the form running in the untrusted client's browser.
 
-  \item[\two] The \app extracts the data that is input by the user by performing optical character recognition (OCR) of the client screen in order to generate a visual \POI.
+  \item[\two] The \app extracts the data input by the user by performing optical character recognition (OCR) of the client screen to generate a visual \POI.
 
   \item[\three] The browser transfers the user's input over a \https channel to the remote server.
 
@@ -51,8 +51,8 @@ The general flow of the user's interaction with \sysname is shown in Figure~\ref
 
 % \myparagraph{Security of the approach}
 The design of \sysname protects against the majority of attacks discussed in Section~\ref{sec:intro}.
-Even after compromising the client and obtaining the victim's authentication credentials, the adversary can neither generate new requests, nor covertly modify the data before submitting.
-This is prevented by the server, which would reject the requests due to not having received a matching \POI.
+Even after compromising the client and obtaining the victim's authentication credentials, the adversary can neither generate new requests nor covertly modify the data before submitting.
+This is prevented by the server, which would reject the requests due to not receiving a matching \POI.
 
 
 \subsection{Challenges}
@@ -66,18 +66,18 @@ However, he fully controls the client device operations, including loading and p
 For example, in case of remote configuration of medical devices, changing a single text label in the user interface (or even only its relative position!) can result in an anesthesiologist entering a value using a wrong measurement unit, e.g. ml instead of dl, and seriously harming the patient due to a tenfold increase in the drug dosage.
 These attacks would be successful even if the user re-types his inputs into a special device that generates a TAN (transaction authorization number) code.
 
-As we discuss in Section~\ref{sec:hardenUI}, \sysname prevents such attacks by requiring that the remote server provides a specification of the user interface (UI) and by ensuring that the UI loaded on the client's screen matches its specification during all stages of user input.
+As we discuss in Section~\ref{sec:hardenUI}, \sysname prevents such attacks by requiring that the remote server provides a specification of the user interface (UI) and by ensuring that the UI is loaded on the client's screen matches its specification during all stages of user input.
 
 
 \myparagraph{Preventing on-screen data modification attacks}
-So far, there was no explicit discussion of the moment at which mobile app captures the data shown on the screen.
-Even if the data shown on the client's screen is truthfully sent to the remote server, the integrity of user input is not necessarily guaranteed if data extraction happens only before the form is submitted from the client.
-Despite the user entering the intended data, the adversary can subsequently modify the content of the screen in such a way that the user does not notice the change, the \app records it, and the server thus receives the same maliciously modified data from both channels.
+So far, there was no explicit discussion of the moment at which the mobile app captures the data shown on the screen.
+Even if the data shown on the client's screen is truthfully sent to the remote server, user input integrity is not necessarily guaranteed if data extraction happens only before the form is submitted from the client.
+Despite the user entering the intended data, the adversary can subsequently modify the screen's content so that the user does not notice the change, the \app records it, and the server thus receives the same maliciously modified data from both channels.
 
-For example, in the web form shown in Figure~\ref{fig:traceMatching}, while the user is focused on entering the payment amount or execution date, the adversary could modify the IBAN field, without the user noticing.
-Furthermore, the adversary could aim to modify the values shown on the screen while the user is absent, not focused on the screen, or a malicious window temporarily overlays the browser form to shift the victim's attention.
+For example, in the web form shown in Figure~\ref{fig:traceMatching}, while the user is focused on entering the payment amount or execution date, the adversary could modify the IBAN field without the user noticing.
+Furthermore, the adversary could modify the values shown on the screen. At the same time, the user is absent, not focused on the screen, or a malicious window temporarily overlays the browser form to shift the victim's attention.
 
-As we discuss in Section~\ref{sec:hardenUI}, a crucial step to generate \PsOI\ is real-time, continuous supervision of the screen content, with  specific expectations about the design and behavior of the user interface, and only allowing the mobile app's \POI to be submitted if the data has been generated in accordance to these rules.
+As we discuss in Section~\ref{sec:hardenUI}, a crucial step to generate \PsOI\ is real-time, continuous supervision of the screen content, with specific expectations about the design and behavior of the user interface, and only allowing the mobile app's \POI to be submitted if the data has been generated in accordance to these rules.
 
 
 
@@ -97,7 +97,7 @@ This, however, means that the supervised screen is captured from different posit
 \subsection{Design Goals}
 Successful user input supervision to extract user intent should:
 
-\begin{enumerate}[leftmargin=*]
+\begin{enumerate}
 	\item Authenticate remote requests that users make through compromised clients, i.e., ensure that the adversary can neither generate nor modify existing remote requests successfully.
 
 	\item Ensure that users are not being manipulated into entering and submitting data that they would not submit in the absence of the adversary.
