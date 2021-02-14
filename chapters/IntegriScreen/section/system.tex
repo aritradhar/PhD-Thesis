@@ -1,7 +1,7 @@
 \section{\sysname Architecture} \label{sec:hardenUI}
 % Protecting User Input Integrity by Visual Supervision}
 
-We now describe in detail how \sysname addresses the remaining challenges discussed in the previous section to ensure that all remote requests truly correspond to a legitimate user's intended input.
+We now describe in detail how \sysname addresses the remaining challenges discussed in the previous section to ensure that all remote requests truly correspond to a legitimate user's intended input. \sysname design consists of two parts. First, the server-side requires two sets of modifications: i) in the web forms to make them suitable for UI analysis and input data extraction, and ii) a server-side program that compares the data from the host browser and the smartphone app. Second, the smartphone application captures the host display and analyze the UI, and extract input data.
 
 
 \subsection{Verifying the Integrity of the User Interface}
@@ -28,7 +28,7 @@ We show an example of such guidelines in Figure~\ref{fig:runningExample}, and it
 \begin{figure}[t]
 	\centering
 \includegraphics[width=0.55\linewidth]{chapters/IntegriScreen/img/runningExample.png}
-	\caption{\textbf{\name{} web form features:} \one form boundary, \two form identifier, \three precise positioning of elements, \four the element in focus, \five submit button.
+	\caption[\name{} web form features]{\textbf{\name{} web form features:} \one form boundary, \two form identifier, \three precise positioning of elements, \four the element in focus, \five submit button.
 % 		The green rectangle \one supports the form localization and perspective realignment.
 % 		The form is defined by its title \two and its precise specification of each UI element's relative position \three.
 % 		The currently focused element is clearly emphasized by a blue rectangle \four, and the form is submitted upon a button press \five.
