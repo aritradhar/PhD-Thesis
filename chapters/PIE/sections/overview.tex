@@ -6,10 +6,6 @@ In this section, we provide an overview of our approach \name and introduce \emp
 
 \begin{figure}[tbp]
     \centering
-    %Source:
-    %https://drive.google.com/file/d/1K8Jg0eXF1W2dpIVLmvP8D0k-qK-dHq4P/view?usp=sharing
-    %\includegraphics[width=0.7\linewidth]{chapters/PIE/images/cpu_bus_peripheral-Page-4.pdf}
-        %   \includestandalone[width=\linewidth]{images/tikz/new_system}
 	\includegraphics[trim={0 8cm 15cm 0}, clip, width=\linewidth]{chapters/PIE/images/pwe_idea.pdf}
     \caption[\Nameenclave{}s consists of different applications and \sphw]{Two \nameenclave{}s are highlighted by blue and yellow outlines. The blue one consists of \texttt{Encl1}, a keyboard that is connected over the memory-mapped SPI bus and a GPU connected over PCI through DMA. This case represents a trusted path scenario where user requires both input and output. The second consists of \texttt{Encl2} and a GPU connected over PCI through DMA. The second one represents a usecase such as executing machine learning workload in the GPU cores.}
     \label{fig:new_system}

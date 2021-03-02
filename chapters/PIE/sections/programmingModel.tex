@@ -1,4 +1,4 @@
-\subsection{Software design}
+\section{\name Software design}
 \label{sec:programmingModel}
 
 % \ad{Attestation and platform awareness part is revised. Continue with the motivation}
@@ -14,30 +14,30 @@ In this section, we introduce \name{}'s software design which is one possible wa
 % \label{fig:programmingModelComponents}
 % \end{figure}
 
-\subsubsection{Software components}
+\subsection{Software components}
 \label{sec:programmingModel:systemComponents}
 
 \name's software design consists of three entities: \app{}s, \ce{}s, and \sphw firmware as shown in Figure~\ref{fig:sharedMemory}. \app{}s and \ce{}s are processor-local enclaves. \sphw are the components that are connected to the platform over buses. Contrary to a monolithic design where the application and driver is in one big enclave, our modular approach aims to provide high flexibility and increase code reuse.
 
-\setcounter{para}{0}
 
-\mypara{Application enclaves} \App{}s are similar to the traditional enclaves in Intel SGX or Keystone. In such TEEs, the enclaves cannot access \sphw without using the OS as a mediator, as the OS handles all drivers. In \name, \app{}s also cannot communicate with a \sphw directly. The \app{}s use shared memory to communicate with a \ce that is a \sphw-specific enclave containing the driver logic. The rationale of separating the driver from the application logic is two-fold, i) to avoid requiring the developers to ship driver code with their application, and ii) one \ce per \sphw allows multiple \app{}s to communicate with that specific \sphw in parallel. %Note the processor may employ memory encryption to encrypt all shared memory regions to protect against a local physical attacker. However, the developer could also add an additional encryption layer on top in order to make the data accessible only between the application enclave and the \sphw (where the \ce works as the untrusted transport layer between the \app and the \sphw). 
-
-
-\mypara{Controller enclave} The \ce contains the driver that facilitate communication with a \sphw. Note that \app{}s, standard non-enclave applications, and the OS cannot access the \sphw directly. The only way to communicate with a \sphw is through a device-specific \ce. Such a design choice isolates the \sphw drivers: one compromised driver does not affect other \sphw. The \ce maintains an isolated communication channel over shared memory (e.g., in RISC-V, the PMP entry corresponding to a shared memory ensures that only participating enclaves have access to that shared memory) to \app{}s and the \sphw. To simplify the configuration, we assume that only one active \ce per \sphw exists at a time. However, any \ce can be replaced at the user's request. %Note that \ce is the only way to access a specific peripheral. All the other non-enclave applications running on the OS need to connect the \ce (in contrast to the standard OS device driver) to access a peripheral.  
-
-\subsubsection{Isolation of multi-\app session}\label{sec:programmingModel:systemComponents:multiApp} In \name, multiple \app{}s could connect to a single \ce to have simultaneous access to a \sphw. In such a scenario, the \ce keeps separate states corresponding to each of the \app{}s. Note that this is primarily a functional and then a security requirement as operations in one \app could affect the state of computation of another \app in case there is no isolation. For some \sphw, the \ce may need to reset the state of the \sphw when it switches to a session with a different \app (temporal separation). However, for \sphw such as GPU that support multiple isolated workloads in parallel, the state does not have to be reset.
+\myparagraph{Application enclaves} \App{}s are similar to the traditional enclaves in Intel SGX or Keystone. In such TEEs, the enclaves cannot access \sphw without using the OS as a mediator, as the OS handles all drivers. In \name, \app{}s also cannot communicate with a \sphw directly. The \app{}s use shared memory to communicate with a \ce that is a \sphw-specific enclave containing the driver logic. The rationale of separating the driver from the application logic is two-fold, i) to avoid requiring the developers to ship driver code with their application, and ii) one \ce per \sphw allows multiple \app{}s to communicate with that specific \sphw in parallel. %Note the processor may employ memory encryption to encrypt all shared memory regions to protect against a local physical attacker. However, the developer could also add an additional encryption layer on top in order to make the data accessible only between the application enclave and the \sphw (where the \ce works as the untrusted transport layer between the \app and the \sphw). 
 
 
-\subsubsection{Platform-wide attestation in the software design}
+\myparagraph{Controller enclave} The \ce contains the driver that facilitate communication with a \sphw. Note that \app{}s, standard non-enclave applications, and the OS cannot access the \sphw directly. The only way to communicate with a \sphw is through a device-specific \ce. Such a design choice isolates the \sphw drivers: one compromised driver does not affect other \sphw. The \ce maintains an isolated communication channel over shared memory (e.g., in RISC-V, the PMP entry corresponding to a shared memory ensures that only participating enclaves have access to that shared memory) to \app{}s and the \sphw. To simplify the configuration, we assume that only one active \ce per \sphw exists at a time. However, any \ce can be replaced at the user's request. %Note that \ce is the only way to access a specific peripheral. All the other non-enclave applications running on the OS need to connect the \ce (in contrast to the standard OS device driver) to access a peripheral.  
+
+\myparagraph{Isolation of multi-\app session}\label{sec:programmingModel:systemComponents:multiApp} In \name, multiple \app{}s could connect to a single \ce to have simultaneous access to a \sphw. In such a scenario, the \ce keeps separate states corresponding to each of the \app{}s. Note that this is primarily a functional and then a security requirement as operations in one \app could affect the state of computation of another \app in case there is no isolation. For some \sphw, the \ce may need to reset the state of the \sphw when it switches to a session with a different \app (temporal separation). However, for \sphw such as GPU that support multiple isolated workloads in parallel, the state does not have to be reset.
+
+
+\subsection{Platform-wide attestation in the software design}
 
 The platform-wide attestation enables a remote verifier to verify the state of the all \nameenclave components. The attestation proceeds as the following:
 
-\setcounter{para}{0}
-\mypara{Remote attestation of the \app} This is the first step of the  platform-wide attestation to ensure that the platform is running the intended version of the \app. The \app attestation report includes the list of identifiers of the \ce{}s that have shared memory channels with that \app.
+
+\myparagraph{Remote attestation of the \app} This is the first step of the  platform-wide attestation to ensure that the platform is running the intended version of the \app. The \app attestation report includes the list of identifiers of the \ce{}s that have shared memory channels with that \app.
     
-\mypara{Remote attestation of the connected \ce{}s} The user then executes a series of individual remote attestation for the \ce{}s. The \ce{}s send the attestation report of themselves along with the certificate that is received from the connected \sphw. These reports are signed by the same platform key as of the \app attestation report. This proves that the \app and the connected \ce{}s are running on the same physical platform. Additionally, the \ce also states that the initiating \app has a shared memory channel with it.
-\setcounter{para}{0}
+\myparagraph{Remote attestation of the connected \ce{}s} The user then executes a series of individual remote attestation for the \ce{}s. The \ce{}s send the attestation report of themselves along with the certificate that is received from the connected \sphw. These reports are signed by the same platform key as of the \app attestation report. This proves that the \app and the connected \ce{}s are running on the same physical platform. Additionally, the \ce also states that the initiating \app has a shared memory channel with it.
+
+ For each remote verifier, the TCB is constrained to only the specific \nameenclave that she is verifying. Hence a remote verifier does not need to trust any \app, \ce or peripheral that she is not using/attesting
 
 %===========================================================================================================
 % \paragraph{Remote attestation of the \app} The platform-wide attestation process starts with the verifier who wants to attest the deployed \app. The purpose of the remote attestation of the \app is to ensure that the platform is running the intended version of the \app. The \app attestation report includes the list of identifiers of the \ce{}s that have shared memory channels with that \app. This report is signed by the platform's private key. 
