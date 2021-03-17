@@ -1,4 +1,4 @@
-Interaction between human and software systems is an important aspect of modern computing platforms in providing inputs to them and interpreting the output of a computation. Over the last half a century, researchers in academia and industry spent a significant effort to make this interaction as effortless as possible. IO peripherals and complex user interfaces (UI) are the keys to felicitate this interaction between the user and the end-systems. User interaction through such intuitive UIs was quintessential to the wide-spread deployment of computing devices around us and the rapid adoption of remote applications and services. 
+Interaction between human and complex software and cyber-physical systems is an important aspect of modern computing platforms. This interactions enable the users to provide inputs to the software systems and services and interpreting the output of a computation. Over the last half a century, researchers in academia and industry spent a significant effort to make this interaction as effortless as possible. IO peripherals and complex user interfaces (UI) are the keys to felicitate this interaction between the user and the end-systems. User interaction through such intuitive UIs was quintessential to the wide-spread deployment of computing devices around us and the rapid adoption of remote applications and services. 
 
 Security and safety-critical remote applications such as e-voting, online banking, industrial control systems (such as remote PLCs~\cite{controlbyweb}) and medical devices~\cite{medicalDevice} rely upon user interaction that is typically performed through a \emph{host} system that generally is a standard PC (specifically $x86$ architecture), which gives the host access to the raw IO data that is exchanged between the user and the remote server. The host consists of large and complex system software such as the operating system, device drivers, applications such as a browser, and a diverse set of hardware components that expose the host to a large attack surface. Due to cost and convenience, general-purpose PCs are prevalent in many safety-critical application domains such as industrial plants and hospitals. For example, the WannaCry ransomware incident showed that NHS hospitals relied on Windows XP platforms~\cite{berry_2017,field_wannacry_2018}. 
 
@@ -54,25 +54,25 @@ We achieve this by introducing two new events into the enclave lifecycle, \texti
 
 \begin{figure}[t]
   \centering
-    \includegraphics[trim={0 12cm 11cm 0},clip,width=\linewidth]{chapters/introduction/images/works.pdf}
+    %\includegraphics[trim={0 12cm 11cm 0},clip,width=\linewidth]{chapters/introduction/images/works.pdf}
+    \includegraphics[trim={0 2.2cm 0 0},clip,width=\linewidth]{chapters/introduction/images/works_1.pdf}
     \caption[Summary of the works in this thesis]{\textbf{Summary of the works in this thesis.} In this figure, we summarize the works that are in the thesis in a context of a modern computing platform. \one represents the works that are focused on securing the trusted path applications: \integrikey, \integriscreen, and \protection, \two represents \proximitee that brings additional security property to the physical communication link between the peripheral and the trusted path application running in an SGX enclave. Finally, \three represents \pie that takes the platform as a whole: application enclave, driver enclave running on the CPU cores, and firmware running on the peripheral, and combine them in a single attestable domain - platform-wide enclave.}
     \label{fig:works}
 \end{figure}
 
 In summary, Figure~\ref{fig:works} provides an overview of all the works included in this thesis.
-s for geeks
 
 \section{Thesis contribution} 
 
 The contributions of this thesis are divided into four parts as the following:
 
 \begin{enumerate}
-  \item \textbf{\integrikey, an ad-hoc approaches to provide the second factor for integrity in user input through input signing}
+  \item \textbf{\integrikey, an ad-hoc approaches to provide the second factor for integrity in user input through input signing}\footnote{Note that this work presents a negative results and shows how a input signing method is not secure. However, the paper also explore a new input manipulation attack - label swapping attack,}
 
 \begin{enumerate}
     \item \emph{New attack.} In \integrikey, we identify swapping attacks as a novel form of user input manipulation against simple user input matching strategies.
     \item \integrikey. We design and implement a user input integrity protection system that is tailored for keyboard input, prevents swapping attacks, and is easy to deploy.
-    \item \integrikey{} tool. We develop a user interface analysis and webpage annotation tool that helps developers to protect their web services and minimizes user effort.
+    \item \integrikey{} tool. We develop a user interface analysis and webpage annotation tool that helps developers to protect their web services and minimizes user effort. However, later analysis shows that the input signing is insecure. This is not due to the implementation of input signing method, rather the fundamental pitfall of the method.
     \item \emph{Evaluation.} We verified that our tool could process UIs of existing safety-critical systems and cryptocurrency wallets correctly. Our experiments show that the performance delay of \integrikey user input integrity protection is low. Our preliminary user study indicates that user input labeling prevents swapping attacks in most cases.
    %, and our preliminary user study indicates that user can perform the needed labeling.
 \end{enumerate}
@@ -131,6 +131,8 @@ The contributions of this thesis are divided into four parts as the following:
 \end{enumerate}
 
 \section{Thesis Organization}
+
+The organization of rest if this thesis is as the following. Chapter~\ref{ch:integrikey} and~\ref{ch:integriscreen} provide details of the two ad-hoc trusted path systems based on two different second factor methods:\integrikey and \integriscreen. \integrikey is based on input signing and \integriscreen is based on the visual verification of user intent. In Chapter~\ref{ch:protectIOn}, we discussed \protection that explores fundamental security properties of remote trusted path and shows attacks on existing trusted path solution. Next, in Chapter~\ref{ch:proximitee}, we discuss the challenges with relay attacks when we try to port an existing trusted path application to a TEE like Intel SGX and we address this by introducing a new system based on distance-bounding mechanism: \proximitee. \proximitee shows that how one can compromise a trusted path application without even compromising any security properties of the trusted path itself, but only by compromising underlying TEE properties - remote attestation. Chapter~\ref{ch:pie} describes \pie, where we address the new challenges that arise from the disaggregated computing model where the trusted execution is not only bounded to the CPU cores, rather distributed among different hardware components of the platform such as a GPU, TPU, NIC etc. Finally, Chapter~\ref{ch:summary} provides summary and concluding remarks.
 
 \section{Publication}
 
