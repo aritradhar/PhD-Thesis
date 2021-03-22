@@ -121,7 +121,7 @@ The contributions of this thesis are divided into four parts as the following:
     
     \begin{enumerate}
         \item \textbf{Security properties for platform-wide integrity} We extend traditional TEEs by introducing a dynamic hardware TCB. We call these new systems platform isolation environment (\pie{}). We identify key security properties for \pie{}, namely \emph{platform-wide attestation} and \emph{platform awareness}.
-        
+        template
         \item \textbf{Programming model} We propose a programming model that provides flexibility to the developers is comparable to the modern operating systems for developing enclaves that communicate with peripherals. The programming model abstracts the underlying hardware layer. 
         
         \item \textbf{Prototype and experimental evaluation} We demonstrate a prototype of a \pie{} based on Keystone~\cite{keystone} on an open-source RISC-V processor~\cite{ariane}. The prototype includes a simplified model of the entire platform, including external peripherals emulated by multiple Arduino microcontrollers. In total, our modifications to the software TCB of Keystone only amount to around 350 LoC.

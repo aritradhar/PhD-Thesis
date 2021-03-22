@@ -21,8 +21,6 @@ If the client is compromised, the adversary fully controls the web form shown to
 \name prevents such attacks by ensuring that the web form shown to the user directly corresponds to the specification: all labels must show the correct text, all default values of input elements must be present (as their modification could also misguide the user), and no unexpected text is allowed in the rendered web form.
 
 If any of those requirements are not met, the \app clearly shows the offending UI element to the user and does not accept any new input.
-We experimentally measure the performance of this UI verification in Section~\ref{ssec:UIVerificationEvaluation} and discuss the potential extension to non-textual elements in Section~\ref{sec:discussion}.
-
 
 \myparagraph{Modifying the form header}
 Since the \app relies on optical recognition of the form title to detect which form specification to load, the adversary can cause the \app to load a form specification that he fully controls by changing the title name.
@@ -48,16 +46,14 @@ The adversary could wait for users to load the form, start the application, and 
 During this time, the adversary has an opportunity to change any values on the screen, and thus trick the user into submitting modified data.
 \sysname, however, prevents such attacks by mandating for user's presence and hand activity during any detected screen changes and raises an alarm if they are absent.
 The adversary must thus attempt an attack concurrently with user's interaction with the client.
-We discuss other ways to implement this step in Section~\ref{sec:discussion}.
+
 
 \myparagraph{Concurrent Data Modification}
 The application raises an alarm and refuses any change if two elements are shown to be in focus, or if an unfocused element ever changes.
 If the user is present and entering data into some element $X$, the adversary is unable to concurrently change any other element $Y$ because $Y$ would also have to be in focus.
-We experimentally evaluate the performance against such attacks in Section~\ref{ssec:inputSupervisionEvaluation} and in the user study (Section~\ref{sec:userStudy}).
+
 
 In case of concurrent modification of the active input element by both the adversary and the user, we assume that the user detects such changes (which are similar to autocorrect not behaving according to user's expectation) and will not move the focus to the next input element until they are satisfied with its content.
-We evaluate this assumption in Section~\ref{ssec:userStudyAttackEvaluation} and discuss further measures to reduce this assumption about user behavior in Section~\ref{sec:discussion}.
-
 
 
 \myparagraph{Rapid change of focus}
