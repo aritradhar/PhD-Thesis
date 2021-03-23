@@ -1,5 +1,5 @@
 from __future__ import print_function, division
-import scribus
+import pyscribus as scribus
 
 page_width = scribus.valueDialog('Cover Assistant', 'Page width (mm)', '148')
 page_height = scribus.valueDialog('Cover Assistant', 'Page height (mm)', '210')
