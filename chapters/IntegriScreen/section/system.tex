@@ -144,8 +144,8 @@ After being loaded by the user, the \sysname mobile app performs the following s
 \begin{enumerate}%[leftmargin=*]
     \item \textbf{Locates} the border of the web form shown on the client's display, realigns the captured video feed to a flat perspective, and extracts the form's unique title.
     \item \textbf{Loads} the corresponding UI specification file from the server.
-    \item \textbf{[Continuously] verifies that the UI} of the web form shown on the client device matches its specification, i.e., that all UI elements are present and that none have been modified or added.
-    \item \textbf{[Continuously] supervises user input}, allowing only the element in focus to change, only when the user is present and active.
+    \item \textbf{Continuously verifies that the UI} of the web form shown on the client device matches its specification, i.e., that all UI elements are present and that none have been modified or added.
+    \item \textbf{Continuously supervises user input}, allowing only the element in focus to change, only when the user is present and active.
 	\item \textbf{Submits} the generated \POI to the server.
     \item \textbf{Notifies} the user about the result of server's data comparison: either success (if client and \md -submitted data match) or failure (in case of data mismatch).
     In the latter case, the user is allowed to confirm which of the two versions of submitted data he wants to use (or a combination thereof).
