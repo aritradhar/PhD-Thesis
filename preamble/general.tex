@@ -13,7 +13,7 @@
   %dottedtoc,%
   eulerchapternumbers,
   %listings,%
-  %parts,%
+  parts,%
   floatperchapter, pdfspacing,%
   beramono,%
   %minionprospacing,
@@ -225,6 +225,13 @@
 % TOC
 \renewcommand{\cftpartfont}{\color{chapter-color}\normalfont}%
 \renewcommand{\cftpartpagefont}{\normalfont}%
+
+
+
+  \titleformat{\part}[display]
+         {\normalfont\centering\large}%
+         {\thispagestyle{empty}\partname~\MakeTextUppercase{\thepart}}{1em}%
+         {\color{chapter-color}\spacedallcaps}[\bigskip\normalfont\normalsize\color{Black}]
 
 % Chapter number on inside
 \titleformat{\chapter}[display]%
