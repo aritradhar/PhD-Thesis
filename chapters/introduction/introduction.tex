@@ -29,16 +29,16 @@ The static system architecture of TEEs limits their potential applications to tr
 
 \section{Research Questions}
 
-In this dissertation, we address the three following research questions concerning the trusted path and trusted execution in modern platforms 
+In this dissertation, we address the four following research questions (RQ) concerning the trusted path and trusted execution in modern platforms 
 \begin{enumerate}
   
-  	\item[\textbf{Q1}] How to build trusted path systems that provide integrity (and possibly confidentiality) guarantees without the users rely on cognitive-heavy solutions such as transaction confirmation devices while maintaining a small TCB? Are these systems truly secure?
+  	\item[\textbf{RQ1}] How to build trusted path systems that provide integrity (and possibly confidentiality) guarantees without the users rely on cognitive-heavy solutions such as transaction confirmation devices while maintaining a small TCB? Are these systems truly secure?
   	
-    \item[\textbf{Q2}] Why existing solutions failed to provide a trusted path that provides integrity and confidentiality guarantees to the user interactions? What are the necessary steps in order to build one?
+    \item[\textbf{RQ2}] Why existing solutions failed to provide a trusted path that provides integrity and confidentiality guarantees to the user interactions? What are the necessary steps in order to build one?
     
-    \item[\textbf{Q3}] Relay attack from a local platform to a remote attacker-controlled platform is a real threat to the remote attestation of TEEs like Intel SGX. How to ensure that the attacker cannot relay the attestation to an attacker-controlled platform that exposes all the sensitive IO data?
+    \item[\textbf{RQ3}] Relay attack from a local platform to a remote attacker-controlled platform is a real threat to the remote attestation of TEEs like Intel SGX. How to ensure that the attacker cannot relay the attestation to an attacker-controlled platform that exposes all the sensitive IO data?
     
-    \item[\textbf{Q4}] How to extend the trusted path mechanism to a modern platform that is interconnected with a number of heterogeneous peripheral devices? How to extend this trusted path into other complex hardware devices such as GPU or accelerator that can execute programs outside the CPU cores? How to ensure the platform-wide integrity guarantee (configuration and interaction of the TEE enclaves and external peripherals) is preserved without relying on a purpose-built system?  
+    \item[\textbf{RQ4}] How to extend the trusted path mechanism to a modern platform that is interconnected with a number of heterogeneous peripheral devices? How to extend this trusted path into other complex hardware devices such as GPU or accelerator that can execute programs outside the CPU cores? How to ensure the platform-wide integrity guarantee (configuration and interaction of the TEE enclaves and external peripherals) is preserved without relying on a purpose-built system?  
 \end{enumerate}
 
 
