@@ -29,12 +29,12 @@ The static system architecture of TEEs limits their potential applications to tr
 
 \section{Research Questions}
 
-In this dissertation, we address the four following research questions (RQ) concerning the trusted path and trusted execution in modern platforms 
+Given the problem space discussed above, this thesis address the four following research questions (RQ) concerning the trusted path and trusted execution in modern platforms: 
 \begin{enumerate}
   
   	\item[\textbf{RQ1}] How to build trusted path systems that provide integrity (and possibly confidentiality) guarantees without the users rely on cognitive-heavy solutions such as transaction confirmation devices while maintaining a small TCB? Are these systems truly secure?
   	
-    \item[\textbf{RQ2}] Why existing solutions failed to provide a trusted path that provides integrity and confidentiality guarantees to the user interactions? What are the necessary steps in order to build one?
+    \item[\textbf{RQ2}] Why existing solutions failed to provide a trusted path that provides integrity and confidentiality guarantees to the user interactions? What are the fundamental security properties required for a secure trusted path?
     
     \item[\textbf{RQ3}] Relay attack from a local platform to a remote attacker-controlled platform is a real threat to the remote attestation of TEEs like Intel SGX. How to ensure that the attacker cannot relay the attestation to an attacker-controlled platform that exposes all the sensitive IO data?
     
@@ -168,7 +168,7 @@ The contributions of this thesis are divided into four parts as the following:
 
 The organization of the rest of this thesis is as the following. Part 1 consists of Chapter~\ref{ch:integrikey} and~\ref{ch:integriscreen} that provide details of the two ad-hoc trusted path systems based on two different second-factor methods:\integrikey and \integriscreen. \integrikey is based on input signing, and \integriscreen is based on the visual verification of user intent. In Part 2, Chapter~\ref{ch:protectIOn}, we discussed \protection that explores fundamental security properties of the remote trusted path and shows attacks on existing trusted path solutions. Next, in Chapter~\ref{ch:proximitee}, we discuss the challenges with relay attacks when we try to port an existing trusted path application to a TEE like Intel SGX, and we address this by introducing a new system based on distance-bounding mechanism: \proximitee. \proximitee shows how one can compromise a trusted path application without even compromising any security properties of the trusted path itself, but only by compromising underlying TEE properties - remote attestation. Chapter~\ref{ch:pie} in Part 3 describes \pie, where we address the new challenges that arise from the disaggregated computing model where the trusted execution is not only bounded to the CPU cores, rather distributed among different hardware components of the platform such as a GPU, TPU, NIC, etc. Finally, Chapter~\ref{ch:summary} provides summary and concluding remarks.
 
-\section{Publication}
+\section{Publications}
 
 Parts of this thesis are based on the following articles I have co-authored.
 
