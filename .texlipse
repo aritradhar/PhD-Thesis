@@ -1,5 +1,5 @@
 #TeXlipse project settings
-#Fri Jan 22 10:57:12 CET 2021
+#Wed Mar 31 13:34:38 CEST 2021
 outputDir=
 markDer=true
 mainTexFile=thesis.tex
@@ -9,6 +9,6 @@ outputFile=thesis.pdf
 makeIndSty=
 srcDir=
 markTmpDer=true
-tempDir=tmp
+tempDir=
 outputFormat=pdf
 langSpell=en

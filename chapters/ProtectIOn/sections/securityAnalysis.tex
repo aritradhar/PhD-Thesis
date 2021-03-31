@@ -74,7 +74,7 @@ In \name trust model, we assume that the \device is trusted. However, in the rea
 \subsection{Proof for IO Integrity}
 \label{sec:securityAnalysis:proof}
 
-In this section, we provide a formal proof of the following property: \emph{without protecting both input and output integrity, none of them can be achieved}. 
+In this section, first, we provide a formal proof of the following property: \emph{without protecting both input and output integrity, none of them can be achieved}. 
 
 
 %\subsection{Interaction Protocol} 
@@ -223,3 +223,18 @@ This proof is also trivial. As we describe in the Definition~\ref{def:inputInteg
 \end{proof}
 
 
+Similarly, we can also prove the following property: \emph{If not all the modalities of inputs are secured simultaneously, none of them can be fully secured.}
+
+This is a general case for the proof that is described previously. We can modify the \texttt{Input} and \texttt{Transform} function to handle multiple modalities of input. 
+
+\begin{align*}
+\texttt{Input()}&:[m]\rightarrow I^1, I^2, \ldots, I^T (I^{1,\ldots,T}\text{T modalities of input}) \\
+\texttt{Transform()}&:m,I^1,\ldots, I^T \rightarrow [m'],\ \exists i^t\in I^T, \forall t \in T :i=\phi
+\end{align*}
+
+Hence the verification process at the server side will be changed as the following:
+
+\myparagraph{Verification process} After receiving all the traces (of input and message renders), \server checks $\forall i=1\ldots n$, if 
+$$[m']_i =^? \texttt{Transform}(m_{i-1}, I^1_{i-1},\ldots, I^T_{i-1})$$ 
+
+where $I_0=\phi$. If any of the input modality is missing from the trace, the server cannot verify the input integrity. 
