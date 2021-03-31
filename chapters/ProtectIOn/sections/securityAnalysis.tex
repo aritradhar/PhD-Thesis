@@ -87,34 +87,55 @@ The interactions between the server (\server), the user (\user) and host (\host)
 
 \begin{figure}[h!]
 \begin{center}
-\begin{tikzpicture}[scale=0.15]
-\tikzstyle{every node}+=[inner sep=0pt]
-\draw [black] (66,-23.1) circle (3);
-\draw (66,-23.1) node {\server};
-\draw [black] (66,-23.1) circle (2.4);
-\draw [black] (45.2,-23.1) circle (3);
-\draw (45.2,-23.1) node {\host};
-\draw [black] (26.9,-23.1) circle (3);
-\draw (26.9,-23.1) node {\user};
-\draw [black] (47.743,-21.516) arc (116.95563:63.04437:17.332);
-\fill [black] (47.74,-21.52) -- (48.68,-21.6) -- (48.23,-20.71);
-\draw (55.6,-19.13) node [above] {$m$};
-\draw [black] (29.352,-21.382) arc (118.8302:61.1698:13.89);
-\fill [black] (29.35,-21.38) -- (30.29,-21.43) -- (29.81,-20.56);
-\draw (36.05,-19.16) node [above] {$[m']$};
-\draw [black] (42.565,-24.526) arc (-66.78269:-113.21731:16.527);
-\fill [black] (42.57,-24.53) -- (41.63,-24.38) -- (42.03,-25.3);
-\draw (36.05,-26.36) node [below] {$(I,[m'])$};
-\draw [black] (63.369,-24.535) arc (-65.91058:-114.08942:19.034);
-\fill [black] (63.37,-24.53) -- (62.43,-24.4) -- (62.84,-25.32);
-\draw (55.6,-26.69) node [below] {$(I,[m'])$};
+\begin{tikzpicture}[shorten >=1pt,node distance=3cm,on grid,auto]
+  \tikzstyle{every state}=[fill={rgb:black,1;white,10}]
+
+    \node[state,initial]   (q_1)                    {\user};
+    \node[state] (q_2)  [right of=q_1]    			{\host};
+    \node[state,accepting]           (q_3)  [right of=q_2]    {\server};
+
+    \path[->]
+    (q_2) edge [bend left]  node {$[m']$}    (q_1)
+    (q_1) edge [bend left]  node {$(I,[m'])$}    (q_2)
+    (q_2) edge [bend left]  node {$(I,[m'])$}    (q_3)
+    (q_3) edge [bend left]  node {$m$}    (q_2);
 \end{tikzpicture}
 \end{center}
 \caption[\name protocol FSM]{Finite state machine that depicts the interaction between the user (\user), host (\host) and the server (\server).}
 \label{fig:fsm}
 \end{figure}
 
-The server \server sends a message $m$ to the host \host. As we consider a setting where the user \user interacts with \server over browser through web UI. Hence we assume $m$ to be the HTML, JavaScript, and other data send from \server as HTTP payloads. We denote $[m]$ to be the render of $m$ by the \host. As \host is malicious, it can transform $m$ to $m'$. Note that this transformation from the message to render to the user's display is a public knowledge and is deterministic. Hence, for a message $m'$, where $m\neq m'$, then given the corresponding renders $[m']$ and $[m]$, \server can determine that $[m]\neq [m']$. We denote the user input to be $I$, which corresponds to a specific $[m]$. 
+
+% \begin{figure}[h!]
+% \begin{center}
+% \begin{tikzpicture}[scale=0.15]
+% \tikzstyle{every node}+=[inner sep=0pt]
+% \draw [black] (66,-23.1) circle (3);
+% \draw (66,-23.1) node {\server};
+% \draw [black] (66,-23.1) circle (2.4);
+% \draw [black] (45.2,-23.1) circle (3);
+% \draw (45.2,-23.1) node {\host};
+% \draw [black] (26.9,-23.1) circle (3);
+% \draw (26.9,-23.1) node {\user};
+% \draw [black] (47.743,-21.516) arc (116.95563:63.04437:17.332);
+% \fill [black] (47.74,-21.52) -- (48.68,-21.6) -- (48.23,-20.71);
+% \draw (55.6,-19.13) node [above] {$m$};
+% \draw [black] (29.352,-21.382) arc (118.8302:61.1698:13.89);
+% \fill [black] (29.35,-21.38) -- (30.29,-21.43) -- (29.81,-20.56);
+% \draw (36.05,-19.16) node [above] {$[m']$};
+% \draw [black] (42.565,-24.526) arc (-66.78269:-113.21731:16.527);
+% \fill [black] (42.57,-24.53) -- (41.63,-24.38) -- (42.03,-25.3);
+% \draw (36.05,-26.36) node [below] {$(I,[m'])$};
+% \draw [black] (63.369,-24.535) arc (-65.91058:-114.08942:19.034);
+% \fill [black] (63.37,-24.53) -- (62.43,-24.4) -- (62.84,-25.32);
+% \draw (55.6,-26.69) node [below] {$(I,[m'])$};
+% \end{tikzpicture}
+% \end{center}
+% \caption[\name protocol FSM]{Finite state machine that depicts the interaction between the user (\user), host (\host) and the server (\server).}
+% \label{fig:fsm}
+% \end{figure}
+
+We consider a setting where the user \user interacts with \server over browser through web UI. Hence we assume that all the messages ($m$ or $m'$) exchanged between the user \user, host \host and server \server is HTTP request and response payload. The HTTP response payloads (originating from \server) contains HTML, JavaScript, CSS and other data to construct the webpage at the host's browser. The protocol starts with \user sending an initial request to \server that is delivered through \host. We denote $[m]$ to be the render of $m$ by the \host, i.e, graphical render of the webpage ($m$) on the host's display. In this initial stage consider $[m'] = \phi$. Upon receiving the initial request, the server \server replies with a message $m$ to \host. As \host is malicious, it can transform $m$ to $m'$. Note that this transformation from the message to render to the user's display is a public knowledge and is deterministic. Hence, for a message $m'$, where $m\neq m'$, then given the corresponding renders $[m']$ and $[m]$, \server can determine that $[m]\neq [m']$. We denote the user input to be $I$, which corresponds to a specific $[m]$. 
 %Note that the communication channel between \server to \user is neither authenticated, neither confidential. But the communication channel from \user and \server is authenticated. 
 In this model, we simplify the user input by assuming that the \user only provides an input $I$ only after observing a message transformation $[m]$. The user provides both her input $I$ and transformation $[m']$ observed by her to \host. The interaction loop between \host and \user can continue until \user finishes her input. After every input \host hands over new message transformation to \user (either result of the input or new message from \server or both). This simulates the changes in the web UI when the user starts interact with it e.g., input feedback. Once the user provides all her inputs, \host send the sequence of pairs $(I, [m'])$ to \server.
 
@@ -162,7 +183,6 @@ Given the interaction protocol, we can now formally define the definitions in th
 
 \begin{definition}{\textbf{Input integrity}}
 \label{def:inputIntegrity}
-
 Assume that \server handed a message $m$ to \host where the proper message transformation is $[m]$. The host changes the message transformation to $[m']$ where $[m']\neq [m]$. We also define correct \user input to be $I$ when \host sends a correct message transformation $[m]$ to \user. We define input integrity as the property where the \server does not accept input $I'$ where $I'\neq I$from \user if the \host changes the message transformation.
 \end{definition}
 
