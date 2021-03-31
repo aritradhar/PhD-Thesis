@@ -12,9 +12,11 @@ Our embedded device prototype is based on Cypress EZ-USB FX3 SuperSpeed USB cont
 \myparagraph{Channel encryption} The implementation supports three modes of channel encryption between the \device and the target platform. Mode selection is controlled by a combination of a run-time parameter and flags set at compile-time.
 
 \begin{enumerate}
-  \item \emph{None} In this mode, the communication is carried out in the plain text. This mode is primarily used for debugging and measuring the channel capacity.
-  \item \emph{AES} This mode provides a minimal secure channel between the \device and the target platform. With this mode, Curve25519 Diffie-Hellman key exchange is performed. Relevant parts of messages, specifically the challenge-response packets are encrypted with AES-128-CTR. AES-HMAC is used for message authentication codes. SHA256 is used as a hashing function.
-  \item \emph{TLS} With this configuration, we use a \tls channel for the communication between the \device and the target platform. As the \device only has limited SRAM, \texttt{TLS\_PSK\_WITH\_AES\_128\_CCM\_8} was chosen as the cipher suite. However, this limitation due to the FX3 board. Note that the target platform is not restricted by this and supports more cipher suites. 
+  \item \emph{None.} In this mode, the communication is carried out in the plain text. This mode is primarily used for debugging, measuring the channel capacity and to evaluate the overhead of the encryption over the distance bounding measurement.
+  
+  \item \emph{AES-ECDH-HMAC.} This mode provides a minimal secure channel between the \device and the target platform. With this mode, Curve25519 Diffie-Hellman key exchange is performed. Relevant parts of messages, specifically the challenge-response packets are encrypted with AES-128-CTR. AES-HMAC is used for message authentication codes. SHA256 is used as a hashing function.
+  
+  \item \emph{TLS.} With this configuration, we use a \tls channel for the communication between the \device and the target platform. As the \device only has limited SRAM, \texttt{TLS\_PSK\_WITH\_AES\_128\_CCM\_8} was chosen as the cipher suite as this provides the best trade-off between the code size and the security. However, note that, the limitation of the cipher suite is purely due to the restricted hardware resources of the FX3 board. The target platform is not restricted by this and supports more cipher suites. 
 \end{enumerate}
 
 
@@ -34,7 +36,7 @@ The \name enclave API consists of two parts: i) the untrusted application that f
 
 \begin{figure}[t]
   \centering
-    \includegraphics[width=\linewidth]{chapters/ProximiTEE/images/hotcalls.pdf}
+    \includegraphics[trim={0 9cm 15cm 0}, clip, width=\linewidth]{chapters/ProximiTEE/images_new/hotcalls.pdf}
     \caption[Program flow control for Intel SGX SDK vs HotCalls]{\textbf{Program flow control for (a) Intel SGX SDK vs (b) HotCalls.} }
     \label{fig:hotcalls}
 \end{figure}

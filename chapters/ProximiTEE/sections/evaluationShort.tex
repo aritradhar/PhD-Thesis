@@ -82,7 +82,7 @@ There are five interlinked parameters that one needs to consider: (i) the legiti
 \myparagraph{Finding suitable threshold \connect} Finding a suitable threshold \connect is a non-trivial task. A very low threshold requires a high number of the challenge-response rounds, since the protocol requires at least a fraction $k$ of the observed responses to be less or equal to \connect and a low threshold has very low cumulative probability value in the latency distribution (see Figure~\ref{fig:cdf}). Conversely, a very high threshold value enables some latencies measured during an attack to be classified as legitimate replies, hence increasing the chances of the attacker to break the proximity verification. To address this challenge, we perform a trial over multiple threshold candidates to evaluate their viability.
 
 
-Figure~\ref{graph:diffTh} shows the legitimate success probability $P_{legit}$ for different number of rounds ($n\in\{10,20,50,100\}$). We iterate through multiple threshold times (\connect$\in\{183\mu s,184\mu s,185\mu s, 186\mu s, 189\mu s\}$), and $186\mu s$ provides high success ratio for different values of $k$ ($P_{legit}=0.(9)_7 77$ $(n=50)$ and $P_{legit}=0.(9)_15 29\ (n=100)$), where $0.(9)_n x$ denotes $n$ times $9$ after the decimal symbol followed by $x$ (e.g., $0.(9)_2 5=0.995$).
+Figure~\ref{graph:diffTh} shows the legitimate success probability $P_{legit}$ for different number of rounds ($n\in\{10,20,50,100\}$). We iterate through multiple threshold times (\connect$\in\{183\mu s,184\mu s,185\mu s, 186\mu s, 189\mu s\}$), and $186\mu s$ provides high success ratio for different values of $k$. $P_{legit}=0.(9)_7 77$ for rounds $(n=50)$, and $P_{legit}=0.(9)_15 29\ for rounds (n=100)$)\footnote{$0.(9)_n x$ denotes $n$ times $9$ after the decimal symbol followed by $x$ (e.g., $0.(9)_2 5=0.995$)}
 
 We test \connect up until $186 \mu s$ because as can be observed in Figure~\ref{graph:instatAttackerHisto} for these values we observe extremely small occurrences ($1.33\times10^{-3}$) of latency responses during an attacking scenario. It is possible to increment the latency further to improve the success probability, but doing so will start increasing the probability for the attacker as well. 
 %
@@ -180,7 +180,7 @@ Using \detach, we can now define the challenge response rounds in Figure~\ref{fi
 \begin{align*}
  \Pr[A \in \text{success window}]&=P'_{adv} = P'_{fn}= 2.71\times 10^{-67}\\
  \Pr[A \in \text{failed window}]&=\Pr[A\in\text{red}]^2=0.970\\
- \Pr[legit \in \text{success window}]&=0.999999965\\
+ \Pr[legit \in \text{success window}]&=0.(9)_765\\
  \Pr[legit \in \text{failed window}]&=P'_{fp}=\Pr[legit\in\text{red}]^2=5\times10^{-5}
 \end{align*}
 
@@ -192,7 +192,7 @@ If two or more than two latencies $\geq 510\mu s$ (\detach) are received, the \d
 channel capacity) and allows the communication channel to be halted on average after $12 ms$ of the start of a relay attack and terminated in $24 ms$.
 
 \myparagraph{Summarizing the periodic verification results} 
-Based on the above strategy, we set the periodic proximity verification parameters as follows: $\Pr[A \in \text{success window}]=P'_{adv} = P'_{fn}= 3.55\times 10^{-34}$, $\Pr[legit \in \text{success window}]=0.999999977$ and $\Pr[legit \in \text{failed window}]=P'_{fp}=\Pr[legit\in\text{red}]^2=1.6\times10^{-4}$ and \detach = $205 \mu s$ (see Figure~\ref{graph:instatAttackerHisto}). If at least two latencies above \detach are received, the \device terminates the connection and revokes the platform. The average downtime due to false positives occurring during a connection of 10 years is around $2$ minutes. 
+Based on the above strategy, we set the periodic proximity verification parameters as follows: $\Pr[A \in \text{success window}]=P'_{adv} = P'_{fn}= 3.55\times 10^{-34}$, $\Pr[legit \in \text{success window}]=0.(9)_777$ and $\Pr[legit \in \text{failed window}]=P'_{fp}=\Pr[legit\in\text{red}]^2=1.6\times10^{-4}$ and \detach = $205 \mu s$ (see Figure~\ref{graph:instatAttackerHisto}). If at least two latencies above \detach are received, the \device terminates the connection and revokes the platform. The average downtime due to false positives occurring during a connection of 10 years is around $2$ minutes. 
 
 
 
@@ -240,7 +240,6 @@ We evaluated the consistency of measured latencies across different computing pl
   \centering
     \includegraphics[trim={0 18cm 1.8cm 0}, clip, width=0.75\linewidth]{chapters/ProximiTEE/data/CPU_stress/plot_pin_1.pdf}
     \caption[Effect of CPU core pinning on the enclave application]{\textbf{Effect of CPU core pinning on the enclave application.} Restricting the enclave application to a specific core has a very minor effect on the observed latency.}
-
     \label{graph:cpuPin}
 \end{figure}
 
@@ -248,7 +247,7 @@ We evaluated the consistency of measured latencies across different computing pl
 
 \begin{figure}[t]
   \centering
-    \includegraphics[trim={0 12cm 0 0}, clip, width=0.8\linewidth]{chapters/ProximiTEE/data/CPU_stress/allCore_SGX_1.pdf}
+    \includegraphics[trim={0 12cm 0 0}, clip, width=\linewidth]{chapters/ProximiTEE/data/CPU_stress/allCore_SGX_1.pdf}
     \caption[Effect on latency experienced by the \device with different number of stressed CPU cores]{\textbf{Effect on latency experienced by the \device with different number of stressed CPU cores.} We evaluated latencies while running CPU intensive benchmark on different number of cores. Note that with higher number of busy cores, the means of the  distributions start to shift towards right but stayed within \connect $= 186\mu s$. We used \texttt{stress-ng} Linux stress-testing application.}
     \label{graph:cpuLoad_SGX}
 \end{figure}
