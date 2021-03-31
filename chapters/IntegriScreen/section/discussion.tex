@@ -5,14 +5,14 @@
 % We now discuss open questions, limitations, and possible extensions.
 
 \myparagraph{Detecting user attention and non-repudiation}
-In this paper, the system uses hand movement to detect user's presence and activity.
+In this chapter, the system uses hand movement to detect user's presence and activity.
 However, when the mobile device is placed between the client and the user, its front facing camera is well positioned to capture the user's face.
 Given the face tracking capabilities available in recent iOS and Android mobile phones, as well as recent advances in mobile camera-based eye tracking~\cite{krafka2016eye}, the system could be extended to precisely track user's attention on the screen and require that gaze is present for certain data modification.
 Furthermore, if the mobile device used face recognition to continuously authenticate the user, the system could also provide non-repudiation guarantees.
 
 
 \myparagraph{Non-textual UI elements}
-As the first of the proposed \textit{visual supervision} paradigm, in this paper, we focused on textual input.
+As the first of the proposed \textit{visual supervision} paradigm, in this chapter, we focused on textual input.
 However, our approach can be extended to support non-textual UI elements -- as long as their final state is shown on the screen -- such as checkboxes, sliders, or calendar widgets.
 Furthermore, while we focused on text extraction, this step could be implemented by a more literal comparison of the client's screen with a screenshot of the web form, as rendered by the server with same aspect ratio and element position.
 

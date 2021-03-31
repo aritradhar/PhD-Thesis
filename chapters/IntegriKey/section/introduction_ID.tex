@@ -18,7 +18,7 @@ we assume the attacker compromises the host system, therefore he can read out al
 Our goal is to prevent the attacker from altering or generating data that is given by the users through the input peripheral device. Additionally, we want to provide protection to the user from the malicious host that can manipulate the graphical elements on the browser (such as the swapping of the input fields).
 
 
-\subsection{Contributions.} The major contributions of this paper are as follows:
+\subsection{Contributions.} The major contributions of this chapter are as follows:
 
 
  \mypara We design and develop a system that preserves the integrity and authenticity of the user input via \usb/\bluetooth based peripheral devices. This is achieved by employing a secure \usb device that extends the \tls endpoint by using the browser as an untrusted transport leveraging \webusb API. This dedicated \tls channel between the \usb device and the remote server. We assume that the host system is untrusted and can manipulate input data or generate false input data. Such system that preserves the input integrity and authenticity is completely new to our knowledge. We assume there exists a PKI to leverage for the server authentication. The detailed description is in Section~\ref{sec:inputPrivacy:integrityVerification}.
