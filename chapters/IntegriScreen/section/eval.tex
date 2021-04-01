@@ -25,7 +25,7 @@ We use three Android devices: Samsung Galaxy S9+, Google Pixel 2XL, and Samsung 
   \renewcommand{\arraystretch}{1.2}
   \centering
   \small
-\caption{Success rates of UI Verification on 100 randomly generated forms displayed for 5 seconds, and overall percentage of correctly detected UI elements.}
+\caption[Success rates of UI Verification]{Success rates of UI Verification on 100 randomly generated forms displayed for 5 seconds, and overall percentage of correctly detected UI elements.}
   \begin{tabularx}{\linewidth}{@{}p{0.1\linewidth}lXX@{}}
 		& \textbf{Mobile Device}		& \textbf{Forms}	& \textbf{Elements} \\
   	\toprule
@@ -44,7 +44,7 @@ We use three Android devices: Samsung Galaxy S9+, Google Pixel 2XL, and Samsung 
 
 
 \myparagraph{Results}
-Table~\ref{table:UIVerificationResults} shows the results of verifying the UI for all randomly generated forms. The highest recognition rate was achieved by Samsung Galaxy S9+, which was successful in detecting, loading the specification, and \textbf{verifying the text values of 98\%} of the forms in less than 5 seconds.
+Table~\ref{table:UIVerificationResults} shows the results of verifying the UI for all randomly generated forms. The highest recognition rate was achieved by Samsung Galaxy S9+, which was successful in detecting, loading the specification, and \emph{verifying the text values of 98\%} of the forms in less than 5 seconds.
 This translates to 99.75\% of the UI elements being correctly detected and recognized on the screen.
 
 All three devices achieved stable performance, with average processing rates of \updatelater{2.6} (Samsung S6), \updatelater{3.3} (Google 2XL) and \updatelater{4.7} (Samsung S9+) frames per second.
@@ -55,7 +55,7 @@ Note that the errors in this experiment, on randomly generated forms that often 
 
 \myparagraph{Positioning and verification time}
 Table~\ref{table:UIVerificationResults} also shows the performance of the UI verification procedure when the mobile device is on the right side of the client's keyboard (inclined setup), resulting in a significant angle between the camera and the client's screen.
-Our evaluation shows that realigning and then detecting elements with such large angle is successful at \textbf{correctly verifying 93\%} of the forms from the dataset, resulting in an overall per-element detection rate of 99.12\%.
+Our evaluation shows that realigning and then detecting elements with such large angle is successful at \emph{correctly verifying 93\%} of the forms from the dataset, resulting in an overall per-element detection rate of 99.12\%.
 
 Finally, when the total time allowed for the application to verify a single form is reduced to 3~seconds, the application maintains a high detection rate: the form verification rate for this short duration remains at a high 93\%, with a per-element detection rate of 98.97\%.
 
