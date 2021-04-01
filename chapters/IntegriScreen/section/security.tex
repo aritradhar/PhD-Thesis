@@ -1,26 +1,16 @@
 \section{Security Analysis} 
 \label{integriscreen:sec:securityAnalysis}
 
+
 We now informally analyze how \sysname provides authenticated user input under our strong adversary model, from the general setting to more specific attacks.
-We assume that the user is not a victim of a targeted attack rather than a wide-spread vulnerability in her OS/applications -- hence it is safe to assume that not all of the user devices are compromised at the same time. Such trust assumption is valid in any system that involves two factors such as OTP.
-
-\myparagraph{Generating arbitrary client requests}
-As soon as users authenticate to a remote service, a compromised client would also gain access to their credentials and can subsequently generate arbitrary (authenticated!) requests to the remote server without any user interaction.
-However, this is not the case for \sysname, since the remote server requires an authenticated \POI from the \app to accept any request coming from the \client.
-
-
-\myparagraph{Covertly modifying the client request}
-\sysname protects against any adversary that modifies the data exchanged between the \client and the \server without any visible change on the client's screen, because the \POI from the \app and the data received by the \server would mismatch.
-This significantly raises the bar for the adversary, who now needs to achieve that the mobile device submits a \POI that exactly matches his malicious data, e.g.,  by tricking the user into submitting data that matches adversary's intentions (i.e., manipulating UI instructions), or by carefully changing the data on the screen so that the modifications are detected by the mobile app, but not by the user.
+We assume that the user is not a victim of a targeted attack rather than a wide-spread vulnerability in her OS/applications -- hence it is safe to assume that not all of the user devices are compromised at the same time. Such trust assumption is valid in any system that involves two factors, such as OTP. Note that all the data communication between the \sysname phone app and the server-side component is authenticated and replay protected (Cf. Section~\ref{sec:systemDesign:phone}). Hence, any modification or relay attempt by the attacker can be detected by both the phone app and the server-side component.
 
 
 \subsection{UI manipulation attacks}
 
-If the client is compromised, the adversary fully controls the web form shown to the user on screen and could change the context to manipulate the user to actually input the malicious data himself.
+An attacker-controlled client can edit the web form shown to the user on screen and change its context, to manipulate the user to input the malicious data himself. \name prevents such attacks by ensuring that the web form shown to the user complies to the specification: all labels must show the correct text, all default values of input elements must be present (as their modification could also misguide the user), and no unexpected text is allowed in the rendered web form. If any of those requirements are not met, the \app clearly shows the offending UI element to the user and does not accept any new input. The attacker can also change some of the form's visual instrumentation (Cf. Section~\ref{sec:systemDesign:webserver:instr}), which leads to the \sysname app not being able to detect the form. However, this attack causes denial of service (DoS) and it is outside the scope of this paper.
+We experimentally measure the performance of this UI verification in Section~\ref{ssec:UIVerificationEvaluation} and discuss potential extensions to non-textual elements in Section~\ref{integriscreen:sec:discussion}.
 
-\name prevents such attacks by ensuring that the web form shown to the user directly corresponds to the specification: all labels must show the correct text, all default values of input elements must be present (as their modification could also misguide the user), and no unexpected text is allowed in the rendered web form.
-
-If any of those requirements are not met, the \app clearly shows the offending UI element to the user and does not accept any new input.
 
 \myparagraph{Modifying the form header}
 Since the \app relies on optical recognition of the form title to detect which form specification to load, the adversary can cause the \app to load a form specification that he fully controls by changing the title name.
@@ -29,35 +19,13 @@ Similarly, attack vectors exploiting typosquatted domains or phishing cannot tri
 
 
 \subsection{On-screen data modification}
-Besides attempting to manipulate the user into entering incorrect data, the adversary can attempt to directly add, modify, or delete the data shown on the screen. This can happen either before, during, or after user's input. 
-The adversary succeeds if such changes are not detected by the user, but registered as legitimate.
-\sysname includes several mechanisms to prevent such attacks.
+Another strategy for the adversary to evade the defending mechanisms is to modify the data in form elements while the user fills another field. Below we discuss different attack scenarios and explain how \sysname prevents them.
 
 
-\myparagraph{Not conforming to UI behavior specifications}
-The application protects the form semantics by enforcing that the form follows the design guidelines specified in Section~\ref{sec:hardenUI}.
-Further, in order to change any element, the adversary must clearly indicate the location of attempted change to the mobile app by showing a blue rectangle around it.
-If the web form does not show the blue rectangle to indicate the focused element, no legitimate user input is allowed, resulting only in a DoS.
-If multiple rectangles are shown at the same time, or focus changes faster than the form specification allows, the application warns the user.
-%The adversary is, thus, not allowed to change the form behavior.
-
-\myparagraph{Modification during user absence}
-The adversary could wait for users to load the form, start the application, and potentially leave their desk without stopping the app.
-During this time, the adversary has an opportunity to change any values on the screen, and thus trick the user into submitting modified data.
-\sysname, however, prevents such attacks by mandating for user's presence and hand activity during any detected screen changes and raises an alarm if they are absent.
-The adversary must thus attempt an attack concurrently with user's interaction with the client.
+\myparagraph{Concurrent Data Modification} The attacker may try to modify the data of a text field when the user in the the process of filling up another. As described in Section~\ref{sec:systemDesign:phone:inputerSupervision}, \sysname phone app ensures that it only records the input data from the screen that is in focus and filled up by the user. In case of concurrent modification of the active input element by both the adversary and the user, we assume that the user detects such changes (which are similar to autocorrect not behaving according to user's expectation) and will not move the focus to the next input element until they are satisfied with its content.
+We evaluate this assumption in Section~\ref{ssec:userStudyAttackEvaluation} and discuss further measures to reduce this assumption about user behavior in Section~\ref{integriscreen:sec:discussion}.
 
 
-\myparagraph{Concurrent Data Modification}
-The application raises an alarm and refuses any change if two elements are shown to be in focus, or if an unfocused element ever changes.
-If the user is present and entering data into some element $X$, the adversary is unable to concurrently change any other element $Y$ because $Y$ would also have to be in focus.
+\myparagraph{Rapid change of focus} A potential attack is to change the focused element from one element to another, modify the data there and go back to the first one. This entire process could be extremely fast without the user noticing it in order to evade the concurrent form modification protection. However, the cool-down time for focus change (Cf.Section~\ref{sec:systemDesign:phone:inputerSupervision}) prevents such attacks. The users are thus likely to detect such sudden changes in focus during data input (for at least 2 seconds). We evaluate this assumption as part of our user study in Section~\ref{sec:userStudy}.
 
-
-In case of concurrent modification of the active input element by both the adversary and the user, we assume that the user detects such changes (which are similar to autocorrect not behaving according to user's expectation) and will not move the focus to the next input element until they are satisfied with its content.
-
-
-\myparagraph{Rapid change of focus}
-Finally, a potential attack is to change the focused element from $X$ to $Y$ and back to $X$ so that the mobile app detects the change in focus and in value of $Y$, but the user remains unaware (or considers the change to simply be a glitch).
-However, if such a change happened too fast, it would raise an alarm due to the limits imposed in the form specification and enforced by the application.
-Namely, if the value of a focused element $Y$ is changed, then the form should delay changing the focus to the next element ($X$) for at least 300~ms after $Y$ is changed, and also ensure that the total time that element $Y$ was focused is at least 2~seconds.
-
+\myparagraph{Modification during user absence} The attacker may trigger some modification in the form when the user is absent. However, the \sysname app also detects user's hand from the camera stream to make sure that the user is physically present. We discuss other ways to implement this step in Section~\ref{integriscreen:sec:discussion}.
