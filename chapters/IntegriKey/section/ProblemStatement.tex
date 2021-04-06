@@ -27,7 +27,7 @@ We consider such strong adversary realistic, since OS vulnerabilities in PC plat
 
 \subsection{Limitations of Known Solutions}
 
-The problem of trusted user input to a remote server through an untrusted host has been studied in a few different contexts. Here we review the main limitations of known approaches, while Section~\ref{sec:relatedWork} provides a more extensive review of related work.
+The problem of trusted user input to a remote server through an untrusted host has been studied in a few different contexts. Here we review the main limitations of known approaches, while Section~\ref{sec:discussion_IK} provides a more extensive review of related work.
 
 \myparagraph{Transaction confirmation} One common approach is transaction confirmation using a separate trusted device. For example, in the ZTIC system~\cite{weigold2011}, a USB device with a small display and limited user input capabilities is used to confirm transactions such as payments. The USB device shows a summary of the transaction performed on the untrusted host and the user is expected to review the summary from the USB device display before confirming it. This approach is prone to \emph{user habituation}, i.e., the risk that users confirm transactions without carefully examining them to be able to proceed with their main task, such as completing the payment, similar to systems that rely on security indicators~\cite{schechter2007emperor,197283,41927}. Another limitation of this approach is that it breaks the normal workflow, as the user has to focus his attention to the USB device screen in addition to the user interface of the host. Finally, such trusted devices with displays and input interfaces can be expensive to deploy. 
 

@@ -29,9 +29,17 @@ Solving the relay attack still does not make TEEs ideal for a trusted path. TEEs
 
 %think about combining 1 and 2
 
+\begin{figure}[t]
+  \centering
+    %\includegraphics[trim={0 12cm 11cm 0},clip,width=\linewidth]{chapters/introduction/images/works.pdf}
+    \includegraphics[trim={0 7cm 4cm 0},clip,width=\linewidth]{chapters/introduction/images/RQ.pdf}
+    \caption[Research questions]{\textbf{Research question.} In this figure, we summarize the research question that we address in this thesis a context of a modern computing platform.}
+    \label{fig:rq}
+\end{figure}
+
 \section{Research Questions}
 
-Given the problem space discussed above, this thesis addresses the four following research questions (RQ) concerning the trusted path and trusted execution in modern platforms: 
+Given the problem space discussed above, this thesis addresses the four following research questions (RQ) concerning the trusted path and trusted execution in modern platforms. Figure~\ref{fig:rq} depicts these research questions in the context of morn computing platforms.
 \begin{enumerate}
   
   	\item[\textbf{RQ1}] How to build trusted path systems that provide integrity (and possibly confidentiality) guarantees without the users rely on cognitive-heavy solutions such as transaction confirmation devices while maintaining a small TCB? Are these systems truly secure against an attacker-controlled user system?
@@ -78,7 +86,7 @@ We achieve this by introducing two new events into the enclave lifecycle, \texti
 \begin{figure}[t]
   \centering
     %\includegraphics[trim={0 12cm 11cm 0},clip,width=\linewidth]{chapters/introduction/images/works.pdf}
-    \includegraphics[trim={0 3cm 2cm 0},clip,width=\linewidth]{chapters/introduction/images/works_1.pdf}
+    \includegraphics[trim={0 3cm 3.5cm 0},clip,width=\linewidth]{chapters/introduction/images/works_1.pdf}
     \caption[Summary of the works in this thesis]{\textbf{Summary of the works in this thesis.} In this figure, we summarize the works that are in the thesis in a context of a modern computing platform.}
     \label{fig:works}
 \end{figure}
@@ -91,7 +99,7 @@ The contributions of this thesis are divided into four parts and summarized as t
 
 \begin{enumerate}[leftmargin=*]
   
-  \item[] \textbf{Part 1} How (not) to build a trusted path: providing negative results on how system-oriented way of proposing trusted path solution can lead to insecure systems.
+  \item[] \textbf{Part 1: How (not) to build a trusted path: providing negative results on how system-oriented way of proposing trusted path solution can lead to insecure systems.}
   
   \begin{itemize}
   \item \textbf{Chapter~\ref{ch:integrikey}: \integrikey, an input signing approach to provide the second factor for integrity in user input through input signing}
@@ -112,13 +120,13 @@ The contributions of this thesis are divided into four parts and summarized as t
 
 \item \textbf{Prototype implementation and evaluation.} We implement a prototype dubbed \integriscreen as an Android app and server-side component. Moreover, we perform a variety of experiments, which show the system is practical, effective, and performs well. 
 
-\item \textbf{Future challenges.} We are the first to explore the use of \emph{screen supervision} for security, and especially in the context of transaction confirmation solutions. This new paradigm opens new possibilities for continuous supervision of user inputs over the l imitations of existing solutions while neither risking user habituation nor increasing their efforts.
+\item \textbf{Future challenges.} We are the first to explore the use of \emph{screen supervision} for security, and especially in the context of transaction confirmation solutions. This new paradigm opens new possibilities for continuous supervision of user inputs over the limitations of existing solutions while neither risking user habituation nor increasing their efforts.
 \end{enumerate}
 
 \end{itemize}
 
 
-\item[] \textbf{Part 2} Fundamental security properties for trusted path, attacks on existing systems and building new systems that incorporate these fundamental security properties. 
+\item[] \textbf{Part 2: Fundamental security properties for trusted path, attacks on existing systems and building new systems that incorporate these fundamental security properties.}
 
 \begin{itemize}
     \item \textbf{Chapter~\ref{ch:protectIOn}: ProtectIOn: Root-of-Trust for IO in Compromised Platforms}
@@ -138,7 +146,7 @@ The contributions of this thesis are divided into four parts and summarized as t
 \end{itemize}
    
    
-\item[] \textbf{Part 3} Understanding relay attack in the context of Intel SGX remote attestation considering a secure trusted path enclave.
+\item[] \textbf{Part 3: Understanding relay attack in the context of Intel SGX remote attestation considering a secure trusted path enclave.}
 
 \begin{itemize}
     \item \textbf{Chapter~\ref{ch:proximitee}: \proximitee: Understanding Relay attacks on in Intel SGX remote attestation and building system for addressing the relay attacks in different attacker models (non-emulating vs. emulating attacker)}
