@@ -53,7 +53,7 @@ Figure~\ref{fig:systemSetUp} illustrates the attestation protocol that proceeds 
 \begin{figure}[t]
  \centering
   %\includegraphics[trim={0 8.7cm 13.2cm 0},clip,width=\linewidth]{chapters/ProximiTEE/figures/proximiteeMain.pdf}
-  \includegraphics[trim={0 8.7cm 13.2cm 0},clip,width=\linewidth]{chapters/ProximiTEE/images_new/distance_bound.pdf}
+  \includegraphics[trim={0 8cm 13.2cm 0},clip,width=\linewidth]{chapters/ProximiTEE/images_new/distance_bound.pdf}
  \caption[\name attestation]{\textbf{\name attestation.} The remote verifier establishes a secure channel to the \device device that first attests the enclave and then verifies its proximity.}
  	\label{fig:systemSetUp}
 \end{figure}
@@ -64,7 +64,7 @@ Figure~\ref{fig:systemSetUp} illustrates the attestation protocol that proceeds 
 
   \item[\two] The untrusted application creates and starts the attestation target enclave.%
 
-  \item[\three] \device performs the standard remote attestation to verify the code configuration of the enclave with the help of the IAS server or using a custom DCAP procedure (see Section~\ref{sec:background}). In the attestation protocol, the device learns the public key of the attested enclave.%
+  \item[\three] \device performs the standard remote attestation to verify the code configuration of the enclave with the help of the IAS server or using a custom DCAP procedure (see Section~\ref{sec:background_proximitee}). In the attestation protocol, the device learns the public key of the attested enclave.%
 
   \item[\four] \device establishes a secure channel (e.g., \tls) to the enclave using that public key.
 
@@ -88,7 +88,8 @@ After the initial connection establishment, the \device device performs \emph{pe
 
 \begin{figure}[t]
   \centering
-   \includegraphics[trim={0 14cm 20cm 0}, clip, width=0.7\linewidth]{chapters/ProximiTEE/figures/SlidingWindow_1.pdf}
+   %\includegraphics[trim={0 14cm 20cm 0}, clip, width=0.7\linewidth]{chapters/ProximiTEE/figures/SlidingWindow_1.pdf}
+   \includegraphics[trim={0 12.5cm 19cm 0}, clip, width=0.7\linewidth]{chapters/ProximiTEE/figures/SlidingWindow.pdf}
     \caption[\name periodic proximity verification]{\textbf{Sliding window} for periodic proximity verification with three different types of challenge-response latencies.}
     \label{fig:slidingWindow}
 \end{figure}

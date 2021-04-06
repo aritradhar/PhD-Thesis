@@ -1,6 +1,6 @@
 %!TEX root =  ../paper.tex
 \section{SGX Background}
-\label{sec:background}
+\label{sec:background_proximitee}
 
 Intel SGX is a TEE architecture that isolates application enclaves from all other software running on the system, including the privileged OS~\cite{sgxexplained}. Enclave's data is encrypted and integrity protected whenever it is moved outside the CPU chip. The untrusted OS is responsible for the enclave creation and its initialization actions are recorded securely inside the CPU, creating a \emph{measurement} that captures the enclave's code. Enclaves can perform local attestation, which allows one enclave to ask the CPU to generate a signed report that includes its measurement. Another enclave on the same platform can verify the validity of the report without interacting with any other external services. Enclaves can \emph{seal} data to disk, which  allows them to securely store confidential data such  that only the same enclave running in the same CPU will be able to retrieve it later.
 
