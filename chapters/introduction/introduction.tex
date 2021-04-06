@@ -29,7 +29,7 @@ Given the problem space discussed above, this thesis address the four following 
   
   	\item[\textbf{RQ1}] How to build trusted path systems that provide integrity (and possibly confidentiality) guarantees without the users rely on cognitive-heavy solutions such as transaction confirmation devices while maintaining a small TCB? Are these systems truly secure against an attacker-controlled user system?
   	
-    \item[\textbf{RQ2}] Why existing solutions failed to provide a trusted path that provides integrity and confidentiality guarantees to the user interactions? What are the fundamental security properties required for a secure trusted path?
+    \item[\textbf{RQ2}] Why all\footnote{to the best of our knowledge} the existing solutions failed to provide a trusted path that provides integrity and confidentiality guarantees to the user interactions? What are the fundamental security properties required for a secure trusted path?
     
     \item[\textbf{RQ3}] Relay attack from a local platform to a remote attacker-controlled platform is a real threat to the remote attestation of TEEs like Intel SGX. How to ensure that the attacker cannot relay the attestation to an attacker-controlled platform that exposes all the sensitive IO data?
     
@@ -37,14 +37,14 @@ Given the problem space discussed above, this thesis address the four following 
 \end{enumerate}
 
 
-\section{Outlines of the Solutions}
+\section{Addressing the Research Question: Contribution of this Thesis}
 
 
 This section provides a brief outline of the proposed solutions to address the aforementioned research questions.
 
 \subsection{Addressing RQ1}
 We propose two systems: \integrikey~\cite{integrikey} and \integriscreen~\cite{integriscreen} to answer \textbf{RQ1}, the first research question. \integrikey uses input signing to provide a second factor for the integrity of the keyboard input. While the latter uses a phone camera to capture the information that the user is typing on the screen to provide a second factor for user intention's integrity. Unlike exiting trusted path solutions, these proposals rely neither on any transaction confirmation devices that put a heavy cognitive load on the user nor on a hypervisor or trusted drivers that introduce a large TCB. Moreover, \integriscreen provides a restricted form of output integrity to ensure that the attacker-controlled host does not manipulate UIs. \integrikey uses a small embedded trusted device that runs a few hundred LoC to sign user input. In \integrikey, we identify a new form of input manipulation attack that we name field swapping attack. In a swapping attack, the attacker can swap the levels of different input fields that accept overlapping values (e.g., blood pressure and heart rate for a medical implant). \integrikey analyzes the type of input fields, and based on the regular expression of these fields, it can compute the overlapping fields that could be vulnerable to swapping attack and recommend the user to append a label with the input value to distinguish it. 
-In comparison, the \integriscreen uses a phone to verify the user input by using text recognition and send that result to the server on a different communication channel. Even though both \integrikey and \integriscreen provide a significant improvement over state-of-the-art trusted path solutions, they suffer similar security and functionality pitfalls as their counterparts. They are all ad-hoc approaches focus on solving a single problem and a single input source. This leads to multiple sophisticated attacks on them.
+In comparison, the \integriscreen uses a phone to verify the user input by using text recognition and send that result to the server on a different communication channel. Even though both \integrikey and \integriscreen provide a significant improvement over state-of-the-art trusted path solutions, they suffer similar security and functionality pitfalls as their counterparts. They are all ad-hoc approaches focus on solving a single problem and a single input source. This leads to multiple sophisticated attacks on them (e.g., character addition/reduction attack, early form submission attack, etc.).
 
 
 \subsection{Addressing RQ2}
@@ -52,7 +52,8 @@ The shortcomings of the existing literature provide the groundwork of our system
 \protection is built on the following observations: i) input integrity is possible only when both input and output integrity are ensured simultaneously, ii) all the input modalities are needed to be protected as they influence each other, and iii) high cognitive load results in user habituation errors. \protection uses a trusted low-TCB auxiliary device that we call \deviceprotection, which works as a mediator between all user IO devices and the untrusted host. Instead of implementing a separate network interface, the \deviceprotection uses the host as an untrusted transport - reducing the attack surface. \protection ensures output integrity and confidentiality by sending an encoded UI to the host that only the \deviceprotection can overlay on the part of the screen. The overlay is possible as the \deviceprotection intercepts the display signal between the host and the monitor. The overlay generated by the \deviceprotection ensures that the host cannot manipulate any output information on that overlaid part of the screen; hence, it can not trick the user. All the user interaction to this protected overlay is encrypted and signed by the \deviceprotection. Therefore input integrity and confidentiality are preserved.
 
 \subsection{Addressing RQ3}
-Parno~\cite{parno2008bootstrapping} identified distance bounding as a candidate solution to TPM relay attacks already ten years ago but concluded that it could not be realized securely as the slow TPM identification operations (signatures) make a local and relayed attestation indistinguishable. However, the implication of the relay attack was never well-studied. In this dissertation, we investigate the implication of the relay attack and show that it could have an adverse consequence. To answer the second research question, \textbf{RQ3},  We propose a new solution, called \proximitee, that prevents relay attacks by leveraging a simple embedded device that we call \deviceproximitee that is attached to the attested target platform. The \deviceproximitee executes a challenge-response protocol between itself and the platform and based on the latency of the protocol, and the \deviceproximitee determines if it is connected to the target platform physically or not. Our solution is best suited to scenarios where i) the deployment cost of such an embedded device is minor compared to the benefit of more secure attestation, and ii) TOFU solutions are not acceptable. Attestation of servers at cloud computing platforms and setup of SGX-based permissioned blockchains are two such examples. 
+
+While addressing RQ2 provides the necessary mechanisms to construct a remote trusted path application, porting the same trusted path application into a trusted execution environment (TEE) such as the Intel SGX is still non-trivial due to the relay attack on the the SGX's remote attestation. Parno~\cite{parno2008bootstrapping} identified distance bounding as a candidate solution to TPM relay attacks already ten years ago but concluded that it could not be realized securely as the slow TPM identification operations (signatures) make a local and relayed attestation indistinguishable. However, the implication of the relay attack was never well-studied. In this dissertation, we investigate the implication of the relay attack and show that it could have an adverse consequence. To answer the second research question, \textbf{RQ3},  We propose a new solution, called \proximitee, that prevents relay attacks by leveraging a simple embedded device that we call \deviceproximitee that is attached to the attested target platform. The \deviceproximitee executes a challenge-response protocol between itself and the platform and based on the latency of the protocol, and the \deviceproximitee determines if it is connected to the target platform physically or not. Our solution is best suited to scenarios where i) the deployment cost of such an embedded device is minor compared to the benefit of more secure attestation, and ii) TOFU solutions are not acceptable. Attestation of servers at cloud computing platforms and setup of SGX-based permissioned blockchains are two such examples. 
 
 
 \subsection{Addressing RQ4}
@@ -77,16 +78,17 @@ We achieve this by introducing two new events into the enclave lifecycle, \texti
 
 In summary, Figure~\ref{fig:works} provides an overview of all the works included in this thesis.
 
-\section{Thesis contributions} 
+\section{Summary of the Contributions and Organization} 
 
-The contributions of this thesis are divided into four parts as the following:
+The contributions of this thesis are divided into four parts and summarized as the following:
 
 \begin{enumerate}[leftmargin=*]
   
   \item[] \textbf{Part 1} How (not) to build a trusted path: providing negative results on how system-oriented way of proposing trusted path solution can lead to insecure systems.
   
   \begin{itemize}
-  \item \textbf{\integrikey, an input signing approach to provide the second factor for integrity in user input through input signing}\footnote{Note that this work presents negative results and shows how an input signing method is not secure. However, the chapter also explores a new input manipulation attack - label swapping attack,}
+  \item \textbf{Chapter~\ref{ch:integrikey}: \integrikey, an input signing approach to provide the second factor for integrity in user input through input signing}
+  %\footnote{Note that this work presents negative results and shows how an input signing method is not secure. However, the chapter also explores a new input manipulation attack - label swapping attack,}
 
 \begin{enumerate}
     \item \emph{New attack.} In \integrikey, we identify swapping attacks as a novel form of user input manipulation against simple user input matching strategies.
@@ -96,14 +98,14 @@ The contributions of this thesis are divided into four parts as the following:
    %, and our preliminary user study indicates that users can perform the needed labeling.
 \end{enumerate}
 
-	\item \textbf{\integriscreen, second factor for user intention integrity through UI analysis captured through a smartphone.~\footnote{\integriscreen was a collaboration between multiple researchers. This thesis only includes my primary contribution in \integriscreen: the development of \integriscreen{}'s main idea, security analysis, and implementation of the \integriscreen{}s server-side component.}}
+	\item \textbf{Chapter~\ref{ch:integriscreen}: \integriscreen, second factor for user intention integrity through UI analysis captured through a smartphone.~\footnote{\integriscreen was a collaboration between multiple researchers. This thesis only includes my primary contribution in \integriscreen: the development of \integriscreen{}'s main idea, security analysis, and implementation of the \integriscreen{}s server-side component.}}
 
 \begin{enumerate}
 \item \textbf{Novel approach for transaction confirmation.} We design \integriscreen based on \emph{screen supervision}, which differs fundamentally from the existing alternatives, integrates well with user devices (e.g., smartphones), and has the potential to offer high integrity guarantees for the user inputs in the presence of compromised hosts.
 
 \item \textbf{Prototype implementation and evaluation.} We implement a prototype dubbed \integriscreen as an Android app and server-side component. Moreover, we perform a variety of experiments, which show the system is practical, effective, and performs well. 
 
-\item \textbf{Future challenges.} We are the first to explore the use of \emph{screen supervision} for security, and especially in the context of transaction confirmation solutions. This new paradigm opens new possibilities for continuous supervision of user inputs over the limitations of existing solutions while neither risking user habituation nor increasing their efforts.
+\item \textbf{Future challenges.} We are the first to explore the use of \emph{screen supervision} for security, and especially in the context of transaction confirmation solutions. This new paradigm opens new possibilities for continuous supervision of user inputs over the l imitations of existing solutions while neither risking user habituation nor increasing their efforts.
 \end{enumerate}
 
 \end{itemize}
@@ -112,7 +114,7 @@ The contributions of this thesis are divided into four parts as the following:
 \item[] \textbf{Part 2} Fundamental security properties for trusted path, attacks on existing systems and building new systems that incorporate these fundamental security properties. 
 
 \begin{itemize}
-    \item \textbf{\protection: Root-of-Trust for IO in Compromised Platforms}
+    \item \textbf{Chapter~\ref{ch:protectIOn}: ProtectIOn: Root-of-Trust for IO in Compromised Platforms}
     \begin{enumerate}
       
       	\item \textbf{Identification of new attacks:} We identify two new attacks on the existing trusted path systems. The first one is \emph{input addition/reduction} attack on trusted path systems that uses input signing. \integrikey is susceptible to this attack. Another attack is \emph{early form submission} attack that targets target path systems that do not consider all modalities of input.
@@ -132,12 +134,12 @@ The contributions of this thesis are divided into four parts as the following:
 \item[] \textbf{Part 3} Understanding relay attack in the context of Intel SGX remote attestation considering a secure trusted path enclave.
 
 \begin{itemize}
-    \item \textbf{\proximitee: Understanding Relay attacks on in Intel SGX remote attestation and building system for addressing the relay attacks in different attacker models (non-emulating vs. emulating attacker)}
+    \item \textbf{Chapter~\ref{ch:proximitee}: \proximitee: Understanding Relay attacks on in Intel SGX remote attestation and building system for addressing the relay attacks in different attacker models (non-emulating vs. emulating attacker)}
     
     \begin{enumerate}
         \item \textbf{Analysis of relay attacks.} While relay attacks have been known for more than a decade, their implications have not been fully analyzed. We provide the first such analysis and show how relaying amplifies the adversary's capabilities for attacking SGX enclaves.   
 
-        \item \textbf{\proximitee, a system for addressing relay attacks.} We propose a hardened SGX attestation mechanism based on an embedded device and proximity verification to prevent relay attacks. \proximitee does not rely on the common TOFU assumption, and hence, our solution improves the security of previous attestation approaches. Note that the distance bounding approaches are well-known in the literature, but using such a method in the context of SGX is non-trivial.
+        \item \textbf{\proximitee, a system for addressing relay attacks.} We propose a hardened SGX attestation mechanism based on an embedded device and proximity verification to prevent relay attacks. \proximitee does not rely on the common trust on first use (ToFU) assumption, and hence, our solution improves the security of previous attestation approaches. Note that the distance bounding approaches are well-known in the literature, but using such a method in the context of SGX is non-trivial.
     
         \item \textbf{Experimental evaluation.} We implement a complete prototype of \proximitee and evaluate it against a very strong and fast adversary. Our evaluation is the first to show that proximity verification can be both secure and reliable for TEEs like SGX.
     
@@ -148,7 +150,7 @@ The contributions of this thesis are divided into four parts as the following:
 \item[] \textbf{Part 3: Generalizing platform security in the context of TEEs and peripherals}
     
   \begin{itemize}  
-    \item \textbf{\pie:A Platform-wide TEE}
+    \item \textbf{Chapter~\ref{ch:pie}: \pie:A Platform-wide TEE}
     
     \begin{enumerate}
         \item \textbf{Security properties for platform-wide integrity} We extend traditional TEEs by introducing a dynamic hardware TCB. We call these new systems platform isolation environment (\pie{}). We identify key security properties for \pie{}, namely \emph{platform-wide attestation} and \emph{platform awareness}.
@@ -161,9 +163,12 @@ The contributions of this thesis are divided into four parts as the following:
 	\end{itemize}
 \end{enumerate}
 
+\iffalse
 \section{Thesis Organization}
 
-The organization of the rest of this thesis is as the following. Part 1 consists of Chapter~\ref{ch:integrikey} and~\ref{ch:integriscreen} that provide details of the two ad-hoc trusted path systems based on two different second-factor methods:\integrikey and \integriscreen. \integrikey is based on input signing, and \integriscreen is based on the visual verification of user intent. In Part 2, Chapter~\ref{ch:protectIOn}, we discussed \protection that explores fundamental security properties of the remote trusted path and shows attacks on existing trusted path solutions. Next, in Chapter~\ref{ch:proximitee}, we discuss the challenges with relay attacks when we try to port an existing trusted path application to a TEE like Intel SGX, and we address this by introducing a new system based on distance-bounding mechanism: \proximitee. \proximitee shows how one can compromise a trusted path application without even compromising any security properties of the trusted path itself, but only by compromising underlying TEE properties - remote attestation. Chapter~\ref{ch:pie} in Part 3 describes \pie, where we address the new challenges that arise from the disaggregated computing model where the trusted execution is not only bounded to the CPU cores, rather distributed among different hardware components of the platform such as a GPU, TPU, NIC, etc. Finally, Chapter~\ref{ch:summary} provides summary and concluding remarks.
+The thesis is organized in three parts and 6 chapters (including introduction). Part 1 consists of Chapter~\ref{ch:integrikey} and~\ref{ch:integriscreen} that provide details of the two ad-hoc trusted path systems based on two different second-factor methods:\integrikey and \integriscreen. \integrikey is based on input signing, and \integriscreen is based on the visual verification of user intent. In Part 2, Chapter~\ref{ch:protectIOn}, we discussed \protection that explores fundamental security properties of the remote trusted path and shows attacks on existing trusted path solutions. Next, in Chapter~\ref{ch:proximitee}, we discuss the challenges with relay attacks when we try to port an existing trusted path application to a TEE like Intel SGX, and we address this by introducing a new system based on distance-bounding mechanism: \proximitee. \proximitee shows how one can compromise a trusted path application without even compromising any security properties of the trusted path itself, but only by compromising underlying TEE properties - remote attestation. Chapter~\ref{ch:pie} in Part 3 describes \pie, where we address the new challenges that arise from the disaggregated computing model where the trusted path application is not only bounded to the CPU cores, rather distributed among different hardware components of the platform such as a GPU, TPU, NIC, etc. Finally, Chapter~\ref{ch:summary} provides summary and concluding remarks.
+\fi
+
 
 \section{Publications}
 
