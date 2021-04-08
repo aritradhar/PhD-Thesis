@@ -28,7 +28,9 @@ More generally, trusted input through an untrusted host platform to a remote ser
 \end{figure}
 
 
-\myparagraph{Our goals and approach} In this chapter, we address the \emph{integrity protection} of user input in security-critical web user interfaces. Our goal is to design a solution that provides strong protection (e.g., no risk of user habituation, small TCB) and easy adoption (e.g., minimal changes to the existing systems and user experience, low deployment cost). We use remote configuration of a commercial safety-critical device (see Figure~\ref{fig:PLC} (a)) as a running example, but we emphasize that our solution is not limited to that application domain. In Section~\ref{sec:discussion_IK} we discuss how the same approach can be applied to integrity protection of various other services including financial transactions, social media posts, and email.
+\subsection{Our Solution} 
+
+In this chapter, we address the \emph{integrity protection} of user input in security-critical web user interfaces. Our goal is to design a solution that provides strong protection (e.g., no risk of user habituation, small TCB) and easy adoption (e.g., minimal changes to the existing systems and user experience, low deployment cost). We use remote configuration of a commercial safety-critical device (see Figure~\ref{fig:PLC} (a)) as a running example, but we emphasize that our solution is not limited to that application domain. In Section~\ref{sec:discussion_IK} we discuss how the same approach can be applied to integrity protection of various other services including financial transactions, social media posts, and email.
 
 The basic idea behind \name is straightforward and we call this approach \emph{input trace matching}.  When the user needs to perform a security-critical web operation like configuring a PLC device or performing a cryptocurrency payment, he installs a trusted embedded device between the user input peripheral and the host platform. This device intercepts user's input events, passes them through to the host, and sends a trace of them (over a secure channel) to an authenticated remote server that compares the trace to the user input received from the host to detect input manipulation. Once the user has completed the web transaction, he can remove the embedded device from the host to preserve the user's privacy and to prevent that any subsequent input events are sent to the same server unnecessarily.
 
@@ -48,7 +50,7 @@ We implemented a prototype of \device using an Arduino board and evaluated \tool
 We also conducted a preliminary user study where we simulated a swapping attack on $15$ study participants. Labeling prevented the attack in $14$ cases.
 
 
-\myparagraph{Contributions} To summarize, in this chapter we make the following contributions:
+\subsection{Our Contributions} To summarize, in this chapter we make the following contributions:
 
 \begin{enumerate}
     %\item \emph{New approach for integrity protection.} We propose input trace matching as a novel approach for integrity protection of user input on untrusted host platforms.
@@ -60,7 +62,7 @@ We also conducted a preliminary user study where we simulated a swapping attack 
 \end{enumerate}
 
 
-\myparagraph{Outline} The rest of the chapter is organized as follows. We explain our problem in Section~\ref{sec:problemStatement_IK}. Section~\ref{sec:ourApproach} introduces our approach, Section~\ref{sec:integriKey} describes our system and Section~\ref{sec:integriTool} the UI analysis tool. We provide security analysis in Section~\ref{sec:securityAnalysis_IK}. Sections~\ref{sec:implementation_IK} and~\ref{sec:results} explain our implementation and evaluation. In Section~\ref{sec:discussion_IK} we discuss other applications for our solution. Section~\ref{sec:relatedWork_IK} reviews related work and Section~\ref{sec:conclusion_IK} concludes this chapter.
+\subsection{Organization of this Chapter} The rest of the chapter is organized as the following. We explain our problem in Section~\ref{sec:problemStatement_IK}. Section~\ref{sec:ourApproach} introduces our approach, Section~\ref{sec:integriKey} describes our system and Section~\ref{sec:integriTool} the UI analysis tool. We provide security analysis in Section~\ref{sec:securityAnalysis_IK}. Sections~\ref{sec:implementation_IK} and~\ref{sec:results} explain our implementation and evaluation. In Section~\ref{sec:discussion_IK} we discuss other applications for our solution. Section~\ref{sec:relatedWork_IK} reviews related work and Section~\ref{sec:conclusion_IK} concludes this chapter.
 
 
 

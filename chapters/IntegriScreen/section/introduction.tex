@@ -16,7 +16,7 @@ In the previous chapter (Chapter \ref{ch:integrikey}) we describe \integrikey th
 
 
 
-\myparagraph{Visually extracting user intent} In this paper, we build on the observation that \textit{users' intentions are what they see on the screen}, regardless of what a compromised client might do in the background: users enter and modify the values shown on the screen until they are satisfied with what they see, or abort if they are prevented from doing so.
+\subsection{Our Contribution} In this paper, we build on the observation that \textit{users' intentions are what they see on the screen}, regardless of what a compromised client might do in the background: users enter and modify the values shown on the screen until they are satisfied with what they see, or abort if they are prevented from doing so.
 
 Motivated by the advancements in computer vision capabilities of various camera-enabled devices (e.g., augmented reality headsets~\cite{TimCookAR, HoloLens2}, smart home camera assistants~\cite{fleck2008smart, lenovoSmartHome} and smartphones~\cite{wald2018real, smartphonesCV}), we propose the concept of \emph{visual supervision of user's intent}: by extracting the contents of the client's screen during normal user input, a camera-equipped device can confirm to the remote service the values that the legitimate user intends to submit, or notify the user of any mismatch.
 
@@ -33,3 +33,7 @@ In summary, this chapter makes the following contributions:
 
 
 \end{enumerate}
+
+\subsection{Organization of this Chapter}
+
+The rest of this chapter is organized as the following. In Section~\ref{sec:problemStatement_IS}, we describe the problem statement including the system and the attacker model. Section~\ref{integriscreen:sec:systemDesign} proves an overview of our approach: visually supervising IO on the screen and discuss the challenges of implementing such a trusted path system. Section~\ref{sec:hardenUI} and~\ref{integriscreen:sec:securityAnalysis} provide detailed technical description of our system \integriscreen and its security analysis respectively. In Section~\ref{sec:experimentalEvaluation}, we describe the experimental prototype and evaluation result. Section~\ref{integriscreen:sec:discussion} and~\ref{integriscreen:sec:relatedWork} provide additional discussion and related works respectively. Finally, Section~\ref{integriscreen:sec:conclusion} conclude this chapter. 
