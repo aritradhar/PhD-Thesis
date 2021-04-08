@@ -24,7 +24,7 @@ In this section we provide an overview of our \name prototype implementation.
         \label{fig:prototype_protection}
     \end{subfigure}
     \end{center}
-    
+   
     \caption[\name prototype]{\textbf{\name prototype}. Figure~\ref{fig:prototypeArch} and~\ref{fig:prototype_protection} shows the schematic and a photo of the  \name \device prototype respectively.} 
     \label{fig:prototypeAll}
 \end{figure*}
@@ -61,12 +61,42 @@ The QR code generation phase is between \one and \two in Figure~\ref{fig:transfo
 \subsection{Bitmap generation}
 \label{sec:prototype:impl:bitmap}
 %
-The \device reads the QR code from the HDMI frame and generate the UI overlay bitmap from it. We have used the \texttt{piCamera} library to intercept the HDMI frames and generate the UI on top of it. Our \name prototype implements the most frequently used HTML input elements~\cite{html_elements} that are common in sensitive forms. 
+The \device reads the QR code from the HDMI frame and generate the UI overlay bitmap from it. We have used the \texttt{piCamera} library to intercept the HDMI frames and generate the UI on top of it. Our \name prototype implements the most frequently used HTML input elements~\cite{html_elements} that are common in sensitive forms using Java SWT graphic library. 
+
+
+\begin{figure}[t]
+\centering
+\includegraphics[trim={0 12cm 10cm 0}, clip, width=\linewidth]{chapters/ProtectIOn/images/cursorDetect.pdf}
+\caption[Cursor detection on the HDMI frame]{\textbf{Cursor detection on the HDMI frame.} The figure shows \name mouse pointer tracking. \one shows the captured HDMI frame captured by B101 HDMI to CSI bridge. \two shows the cropped HDMI frame based on the mouse position received by the \device. \three shows the detected mouse pointer. For testing, we program the \device to put a rectangle around the pointer. \four shows one of the pointer templates that we used in our OpenCV routine.}
+%\spacesave
+\label{fig:cursorDetect}
+\centering
+\end{figure} 
+
+
 
 \subsection{Detection of mouse pointer}
 \label{sec:prototype:impl:mouse}
 %
-Initially, when the system boots up the \device perform the calibration phase (see Section \ref{sec:systemDesign:analysis:calibration}) to synchronize its coordinates of the pointer with the host. The detection of the mouse pointer is implanted partially on the raspberry pi 4 (\six in Figure~\ref{fig:prototypeAll}), while the mouse intercepting is done in the Arduino Due (\three in Figure~\ref{fig:prototypeAll}). The Due gathers the raw mouse data (in terms of displacement measurements $(\Delta x_i, \Delta y_i)$) and sends them to the Pi over \texttt{Serial} interface.  To guarantee that the \device and the host interpret displacement events likewise, the Pi performs an adjustment operation. This operation consists of the \device detecting the exact position of the host pointer in the HDMI frame by analyzing a small square of the frame (200 x 200 px) around its pointer coordinates. Considering that the \device gets raw HDMI frames and pointer images are static, we use the lightweight \texttt{template matching} algorithm of the OpenCV library for the detection.
+Initially, when the system boots up the \device perform the calibration phase (see Section \ref{sec:systemDesign:analysis:calibration}) to synchronize its coordinates of the pointer with the host. The detection of the mouse pointer is implanted partially on the raspberry pi 4 (\six in Figure~\ref{fig:prototypeAll}), while the mouse intercepting is done in the Arduino Due (\three in Figure~\ref{fig:prototypeAll}). The Due gathers the raw mouse data (in terms of displacement measurements $(\Delta x_i, \Delta y_i)$) and sends them to the Pi over \texttt{Serial} interface.  To guarantee that the \device and the host interpret displacement events likewise, the Pi performs an adjustment operation. This operation consists of the \device detecting the exact position of the host pointer in the HDMI frame by analyzing a small square of the frame (200 x 200 sq. pixel) around its pointer coordinates. Considering that the \device gets raw HDMI frames and pointer images are static, we use the lightweight \texttt{template matching} algorithm of the OpenCV library for the detection.
+
+\myparagraph{Mouse Pointer Tracking}
+The pointer tracing is also executed in the aforementioned Java program using simple object detection technique supplied by the OpenCV API~\cite{opencv_template}. Figure~\ref{fig:cursorDetect} shows one screenshot of the pointer detection. The Figure shows the entire HDMI frame, the cropped frame of resolution $200 \times 200$ square pixel (based on the mouse input data), the detected pointer in the cropped frame and the cursor template that is used by the object detection algorithm.
+
+
+\subsection{HID Drivers}
+We use Arduino prototype development board as the HID drivers. Figure~\ref{fig:prototype_protection} shows an Arduino Due, and a Zero board where the Due connects to the HIDs via the native USB port and the Zero relays the HID data to the Raspberry Pi (RPi). The Due and the Zero boards are connected over $I^2C$ interface. As both Due and Zero only have one native USB port on each of them, we were forced to use two boards as an HID interceptor and relay. The Zero relays the HID signals both to the connected host (over native USB) and to the RPi (over serial interface). The connection from the Zero to the host is one way and emulates a composite HID. While the connection between the Zero and the RPi is bidirectional. The HID drivers are implemented using the native Arduino \texttt{keyboard} and \texttt{mouse} library. On the RPi, no HID drivers were needed as the RPi receives processed HID data from the Zero (for the pointer: displacement over x and y-axis and for keyboard, ASCII characters).
+
+
+\subsection{HDMI Interceptor, Relay and Overlay}
+The RPi along with the Auvidea B101 HDMI to CSI bridge, acts as the HDMI interceptor and relay. The B101 board converts HDMI signals from the host as a camera input (via the CSI interface) to the RPi. This allows the RPi to access the HDMI frames as a stream of JPEG frames. The HDMI out of the RPi acts as the relay that connects to the monitor. On the RPi, we use Picamera API~\cite{picamera} to access the HDMI frames. The B101 is capable of processing 25 frames at 1080p resolution. Hence, this is the hardware bottleneck of our implementation. However, the upcoming B112 board
+%\footnote{still in development: \url{https://auvidea.eu/showcase/}.} 
+could solve this performance issue.
+
+On the RPi, the overlay and HDMI out is implemented using Java SWT. Using SWT, we create a full-screen window that is shown on the monitor. The SWT class polls the HDMI frames and process them as individual JPEG images via the \texttt{BufferedImage} class. This allows the overlays to be drawn on the HDMI images efficiently. The Java program uses a QR code interpreter to extract the UI specification. Based on the UI specification, it creates the geometrical shapes (corresponding to the UI elements) and draw them on the frames. In the current implementation of the \name, the UI elements such as button, text-field, radio button etc. are preloaded in the \device memory. Note that the current implementation of \device is based on the RPi. But one could implement such functionality on an FPGA, reducing the TCB even more. 
+
+
+
 
 \subsection{Implementation of the upstream channel}
 \label{sec:prototype:impl:upstream}
@@ -94,30 +124,7 @@ For the IO confidentiality, the \device and server create a \tls channel. When t
   \item[\four] The remote server gets the signed certificate from the \device, verifies it, and finally derives the shared secret.
 \end{enumerate}
 
-\begin{figure}[t]
-\centering
-\includegraphics[trim={0 12cm 10cm 0}, clip, width=\linewidth]{chapters/ProtectIOn/images/cursorDetect.pdf}
-\caption[Cursor detection on the HDMI frame]{\textbf{Cursor detection on the HDMI frame.} The figure shows \name mouse pointer tracking. \one shows the captured HDMI frame captured by B101 HDMI to CSI bridge. \two shows the cropped HDMI frame based on the mouse position received by the \device. \three shows the detected mouse pointer. For testing, we program the \device to put a rectangle around the pointer. \four shows one of the pointer templates that we used in our OpenCV routine.}
-%\spacesave
-\label{fig:cursorDetect}
-\centering
-\end{figure} 
 
-
-\subsection{HID Drivers}
-We use Arduino prototype development board as the HID drivers. Figure~\ref{fig:prototype_protection} shows an Arduino Due, and a Zero board where the Due connects to the HIDs via the native USB port and the Zero relays the HID data to the Raspberry Pi (RPi). The Due and the Zero boards are connected over $I^2C$ interface. As both Due and Zero only have one native USB port on each of them, we were forced to use two boards as an HID interceptor and relay. The Zero relays the HID signals both to the connected host (over native USB) and to the RPi (over serial interface). The connection from the Zero to the host is one way and emulates a composite HID. While the connection between the Zero and the RPi is bidirectional. The HID drivers are implemented using the native Arduino \texttt{keyboard} and \texttt{mouse} library. On the RPi, no HID drivers were needed as the RPi receives processed HID data from the Zero (for the pointer: displacement over x and y-axis and for keyboard, ASCII characters).
-
-
-\subsection{HDMI Interceptor, Relay and Overlay}
-The RPi along with the Auvidea B101 HDMI to CSI bridge, acts as the HDMI interceptor and relay. The B101 board converts HDMI signals from the host as a camera input (via the CSI interface) to the RPi. This allows the RPi to access the HDMI frames as a stream of JPEG frames. The HDMI out of the RPi acts as the relay that connects to the monitor. On the RPi, we use Picamera API~\cite{picamera} to access the HDMI frames. The B101 is capable of processing 25 frames at 1080p resolution. Hence, this is the hardware bottleneck of our implementation. However, the upcoming B112 board
-%\footnote{still in development: \url{https://auvidea.eu/showcase/}.} 
-could solve this performance issue.
-
-On the RPi, the overlay and HDMI out is implemented using Java SWT. Using SWT, we create a full-screen window that is shown on the monitor. The SWT class polls the HDMI frames and process them as individual JPEG images via the \texttt{BufferedImage} class. This allows the overlays to be drawn on the HDMI images efficiently. The Java program uses a QR code interpreter to extract the UI specification. Based on the UI specification, it creates the geometrical shapes (corresponding to the UI elements) and draw them on the frames. In the current implementation of the \name, the UI elements such as button, text-field, radio button etc. are preloaded in the \device memory. Note that the current implementation of \device is based on the RPi. But one could implement such functionality on an FPGA, reducing the TCB even more. 
-
-
-\subsection{Mouse Pointer Tracking}
-The pointer tracing is also executed in the aforementioned Java program using simple object detection technique supplied by the OpenCV API~\cite{opencv}. Figure~\ref{fig:cursorDetect} shows one screenshot of the pointer detection. The Figure shows the entire HDMI frame, the cropped frame of resolution $200 \times 200$ square pixel (based on the mouse input data), the detected pointer in the cropped frame and the cursor template that is used by the object detection algorithm.
 
 
 
