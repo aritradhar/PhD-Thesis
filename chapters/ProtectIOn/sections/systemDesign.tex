@@ -9,32 +9,6 @@
 \section{\name for IO Integrity}
 \label{sec:protection}
 
-
-
-\lstset{language=JSON, frame=tb, caption=\textbf{Protected UI specification language.} The UI specification shows the JSON formatted UI specification that is generated from the \html source provided in the UI illustrated in Figure~\ref{fig:transformation}., label=snippet:UISpecification, firstnumber =1}
-
-\begin{figure}[t]
-\scriptsize
-\begin{lstlisting}[mathescape=true]
-{ "formId": "form1", "formName": "form1",
-  "domain": "secure_site.io",
-  "size": "400*400", "SAS": "5:LB",
-  "ui": [{"id":"textbox_1", "type":"textbox", 
-      "label":"Sensitive field 1",
-    "text":"secret data 1",
-    "RE":(A-Z)*.(A-Z)*},
-    {"id":"textbox_2", "type":"textbox",
-    "label":"Sensitive field2 ",
-    "text":"secret data 2"},
-    {"id":"b1", "type":"button",
-    "label":"OK", "trigger":"true"},    
-    {"id":"b2", "type":"button",
-    "label":"Cancel", "trigger":"false"}],
-  "signature": "0x45AB...", "id": "0x0ab.."}
-\end{lstlisting}
-
-\end{figure}
-
 %In this section, we provide the technical details of \name for the integrity protection of IO devices. 
 In this section, we provide the technical details of \name that guarantees the integrity of IO operations.
 
@@ -50,7 +24,74 @@ To achieve a more generic and efficient solution, we follow a different approach
 
 The process of rendering the overlay on the screen has two phases: (i) convert the existing sensitive form to specification, and (ii) specification to overlay.
 
-\myparagraph{(i) Secure form $\rightarrow$ Specification} The W3C UI security policy~\cite{w3c_spec} recommends developers to annotate the security-critical UI elements of a page to protect them against malicious JS running on the browser. We use a similar technique by asking developers to manually annotate the sensitive elements in the HTML code (as \emph{protect=``true''} attribute). Then For every request, the \name server-side component parses the HTML source, adds a random identifier (\texttt{id}) to the \texttt{form} element, signs it, add the \texttt{signature} to the \texttt{form} and then delivers it to the user's browser. The \texttt{id} serves as session identification to prevent the attacker from re-submitting an old input data from the user. On the host-side, \name JS parses the tagged HTML source and produces a specification that can be interpreted by the \device.  An example of a specification is presented in~Specification~\ref{snippet:UISpecification}. In our implementation, the \name JS encodes the specification in a QR code. We choose QR codes to encode UIs as it is one of many robust ways to encode data on a visual channel such as HDMI stream. Figure~\ref{fig:transformation} shows the transformation between the step \one and \two. The step \two is processed by \device in the next phase and is not visible to the user.
+
+\lstset{language=JSON, frame=tb, caption=\textbf{Protected UI specification language.} The UI specification shows the JSON formatted UI specification that is generated from the \html source provided in the UI illustrated in Figure~\ref{fig:transformation}., label=snippet:UISpecification, firstnumber =1}
+
+\begin{figure}[t]
+\begin{lstlisting}[mathescape=true]
+{ "formId": "form1", 
+  "formName": "form1",
+  "domain": "secure_site.io",
+  "size": "400*400", 
+  "SAS": "5:LB",
+  "ui": [{
+	"id":"textbox_1",
+	"type":"textbox", 
+	"label":"Sensitive field 1",
+	"text":"secret data 1",
+	"RE":5|(A-Z)+.(A-Z)+},
+	{
+	"id":"textbox_2",
+	"type":"textbox",
+	"label":"Sensitive field 2",
+	"text":"secret data 2"},
+	{
+	"id":"button_1",
+	"type":"button",
+	"label":"OK",
+	"trigger":"true"},    
+	{
+	"id":"button_2",
+	"type":"button",
+	"label":"Cancel",
+	"trigger":"false"}],
+  "id": "0x0ab..",
+  "signature": "0x45AB..."}
+\end{lstlisting}
+
+\end{figure}
+
+
+
+\myparagraph{(i) Secure form $\rightarrow$ Specification} The W3C UI security policy~\cite{w3c_spec} recommends developers to annotate the security-critical UI elements of a page to protect them against malicious JS running on the browser. We use a similar technique by asking developers to manually annotate the sensitive elements in the HTML code (as \emph{protect=``true''} attribute). Then For every request, the \name server-side component parses the HTML source, adds a random identifier (\texttt{id}) to the \texttt{form} element, signs it, add the \texttt{signature} to the \texttt{form} and then delivers it to the user's browser. The \texttt{id} serves as session identification to prevent the attacker from re-submitting an old input data from the user. On the host-side, \name JS parses the tagged HTML source and produces an intermediate representation that we call an \emph{UI specification}. This specification can be interpreted by the \device can converted to an equivalent bitmap representation of the corresponding HTML form.  One such example of a specification is presented in~Specification~\ref{snippet:UISpecification}. The specification is divided into two parts:
+
+\begin{enumerate}
+  \item \emph{Global form attributes:} The global form attributes describe and define the identity of the form. Our implementation of \name specification contains the following:
+  	\begin{itemize}
+  	  \item \texttt{formID} is the identifier of the HTML form in the DOM tree.
+  	  \item \texttt{formName} is the name of the form.
+  	  \item \texttt{domain} defines where the form originates form. This domain is crucial to determine the corresponding public key to verify the signature of the form.  
+  	  \item \texttt{size} defines the size of the form bitmap that is generated by the \device.
+  	  \item \texttt{SAS} describes the secure attention sequence which is important for confidentiality of the form and the input to it. For more details on confidentiality and SAS, refer to Section~\ref{sec:confidentiality}.
+  	  \item \texttt{id} is a nonce that is injected by the server to identify a specific session with user. This is used as the replay protection for the form. 
+  	  \item \texttt{signature} is the signature of the entire specification signed by the \texttt{domain}'s private key.
+  	\end{itemize}
+  
+  \item \emph{UI elements:} UI elements on the form is listed under the \texttt{ui} attribute. Individual UI elements may contain some of the following UI attributes.
+  
+  \begin{itemize}
+    \item \texttt{id} is the identifier of the HTML element of the UI element. This id is used as the key to bind the user input data to submit to the remote server. 
+    \item \texttt{type} define the type of the element and crucial for the \device to generate the correct bitmap representation. 
+    \item \texttt{label} is the label of the the UI element that the \device use to generate the text label.
+    \item \texttt{text} is the initial text in case the server provide some default value for the corresponding UI element.
+    \item \texttt{RE} is the regular expression for input sanitation.
+    \item \texttt{trigger} is important only for the element that either trigger the input to the form to submit (\texttt{trigger=true}) to the server ot reset (\texttt{trigger=false}) the form to its initial state.
+  \end{itemize}
+\end{enumerate}
+
+
+
+In our implementation, the \name JS encodes the specification in a QR code. We choose QR codes to encode UIs as it is one of many robust ways to encode data on a visual channel such as HDMI stream. Figure~\ref{fig:transformation} shows the transformation between the step \one and \two. The step \two is processed by \device in the next phase and is not visible to the user.
 
 
 %We further optimize this process that does not require to add the UI specifications into the HTML sources. The developers include small JavaScript code: \name JS to their sources. \name JS has the same functionally as the server-side code that parses the HTML code and outputs the specification. Note the specification generation process is deterministic, hence, given identical HTML sources, both server and the \name \js generate identical UI specifications. Note that \name JS runs on the browser and is not trusted in our system model. We illustrate the method of UI transformation in Figure~\ref{fig:transformation}. 
@@ -65,10 +106,10 @@ The process of rendering the overlay on the screen has two phases: (i) convert t
 
 In the previous section, we explain how \name provides output integrity for the overlay generated by the \device. However, the attacker can show fake information to the user on the untrusted part of the display space that may potentially influence her inputs. An advanced adversary could craft malicious directions and present to the user as part of the overlay.
 
-To mitigate these attacks, we employ techniques that are proposed against similar threats in the context of browser-based security. The goal of these techniques is to focus user attention on the sensitive UI elements she is interacting with. Huang et al.~\cite{huang2012clickjacking} proposes two main techniques that are shown to be effective and can easily be adopted by the \device.  The first technique is called Lightbox, and it dims out the non-overlaid part of the screen, which is generated by the untrusted host. The second technique consists of freezing display frames from the host when the user enters into the overlaid UI. This way, a malicious host cannot grab the user's attention by showing an animation or exploiting other tricks.
-Lightbox offers more security guarantees because it blocks the untrusted screen completely, but is more intrusive to the user. While freezing is less intrusive but does not remove potential malicious information from the screen.
+To mitigate these attacks, we employ techniques that are proposed against similar threats in the context of browser-based security. The goal of these techniques is to focus user attention on the sensitive UI elements she is interacting with. Huang et al.~\cite{huang2012clickjacking} proposes two main techniques that are shown to be effective and can easily be adopted by the \device.  The first technique is called Lightbox, and it dims out the non-overlaid part of the screen, which is generated by the untrusted host as shown in the right most sub-figure in Figure~\ref{fig:screenshot_1}. The second technique consists of freezing display frames from the host when the user enters into the overlaid UI. This way, a malicious host cannot grab the user's attention by showing an animation or exploiting other tricks.
+Lightbox offers more security guarantees because it blocks the untrusted screen completely, but is more intrusive to the user. While freezing is less intrusive but does not remove potential malicious information from the screen. Another technique that we can apply is called highlight that enable a highly-visible border (typically on bright green or red) around the UI form. A combination of all or the subset of the aforementioned techniques is also a possibility to focus user attention to the overlaid UI.
 
-Lightbox mitigates the attacks presented above. The paper shows that the Lightbox and freezing are effective in $98\%$ and $97\%$ of the time (baseline: $69\%$ effectiveness when no protection is provided), respectively, making them suitable candidates for \name. For more details of the user study, refer to Table 2 in~\cite{huang2012clickjacking}. We assume that a similar result should be expected in \name due to the similarity of the application space (web applications). \device uses Lightbox as the default technique, but depending on the specific form, the developers can select the appropriate technique.
+Lightbox mitigates the attacks presented above. The above mentioned work~\cite{huang2012clickjacking} shows that the Lightbox and freezing are effective in $98\%$ and $97\%$ of the time (baseline: $69\%$ effectiveness when no protection is provided), respectively, making them suitable candidates for \name. For more details of the user study, refer to Table 2 in~\cite{huang2012clickjacking}. We assume that a similar result should be expected in \name due to the similarity of the application space (web applications). \device uses Lightbox as the default technique, but depending on the specific form, the developers can select the appropriate technique.
 
 When the focusing mechanism (e.g., LightBox) is active, the user can still interact with the UI elements and browser button outside the secure UI elements as the \device does not control those. Browser back button does not influence the state of the overlaid UI as long as it does not remove/change the QR code on the web page.
 
