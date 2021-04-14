@@ -2,11 +2,56 @@
 \section{Intel SGX Background}
 \label{ch:background:SGX}
 
-Intel SGX is a TEE architecture that isolates application enclaves from all other software running on the system, including the privileged OS~\cite{sgxexplained}. Enclave's data is encrypted and integrity protected whenever it is moved outside the CPU chip. The untrusted OS is responsible for the enclave creation and its initialization actions are recorded securely inside the CPU, creating a \emph{measurement} that captures the enclave's code. Enclaves can perform local attestation, which allows one enclave to ask the CPU to generate a signed report that includes its measurement. Another enclave on the same platform can verify the validity of the report without interacting with any other external services. Enclaves can \emph{seal} data to disk, which  allows them to securely store confidential data such  that only the same enclave running in the same CPU will be able to retrieve it later.
+Intel SGX is a TEE architecture that isolates application enclaves from all other software running on the system, including the privileged OS, hypervisor, BIOS etc.~\cite{sgxexplained}. Enclave's data is encrypted and integrity protected whenever it is moved outside the CPU chip. The untrusted OS is responsible for the enclave creation and its initialization actions are recorded securely inside the CPU, creating a \emph{measurement} that captures the enclave's code. Enclaves can perform local attestation, which allows one enclave to ask the CPU to generate a signed report that includes its measurement. Another enclave on the same platform can verify the validity of the report without interacting with any other external services. Enclaves can \emph{seal} data to disk, which  allows them to securely store confidential data such  that only the same enclave running in the same CPU will be able to retrieve it later.
+
+
+
+\subsection{Attestation}
+
+Attestation is an important security primitive for a TEE that ensures that the SGX platform is running a proper piece of software (enclave). Upon instantiation by the trusted hardware, the platform can compute the \emph{measurement} of the enclave that includes the cryptographic hash of the code, data, stack, heap etc. The measurement of the enclave is then signed by the platform's private key. This signed measurement is known as the report. A verifier can then check the signature of the report to verify the following:
+
+\begin{enumerate}
+  \item The enclave is running on a legitimate platform.
+  \item The enclave code is proper as it matches a known measurement of the software.
+  \item Corresponding public key of the platform to create a secure channel with the enclave in order to provision secret to that enclave.
+\end{enumerate}  
+
+Intel SGX also implements an attestation scheme which follows the same principles. Every Intel processor comes with two device root key that fused into the processor during the production phase~\cite{attestation_primitive} -  root provisioning key and root sealing key. These keys are the related key generations are shown in Figure~\ref{fig:keys_bg}. The attestation key is derived from these initial platform keys that are used to generate report from the enclave measurement.
+
+
+\begin{figure}[t]
+  \centering
+    \includegraphics[trim={0 1cm 10cm 0},clip,width=0.9\linewidth]{chapters/background/figures/keys.pdf}
+    \caption[Intel SGX keys and key derivations]{\textbf{Intel SGX keys and key derivations.} }
+    \label{fig:keys_bg}
+\end{figure}
+
+
+\myparagraph{Measurement} When an enclave is built and initialized, Intel SGX will generate a cryptographic log of all the build activities (details in~\cite{attestation_primitive_all}), including:
+
+\begin{itemize}
+  \item Content: code, data, stack, heap
+  \item Location of each page within the enclave
+  \item Security flags being used
+\end{itemize}
+    
+The ``Enclave Identity'', which is a 256-bit hash digest of the log, is stored as \texttt{MRENCLAVE} as the enclave’s software TCB. In order to verify the software TCB, one should first securely obtain the enclave’s software TCB, then securely obtain the expected enclave’s software TCB and compare those two values.
+
+\myparagraph{Report} \texttt{REPORT} contains the following information:
+
+\begin{itemize}
+  \item Measurement of the code and data in the enclave.
+  \item A hash of the public key in the ISV certificate presented at enclave initialization time.
+  \item User data.
+  \item Other security related state information.
+  \item A signature block over the above data, which can be verified by the same platform that produced the report.
+\end{itemize}
+
+Intel SGX supports both local and remote attestation. In this chapter, we only describe remote attestation as this form of attestation is the most relevant.
 
 
 \subsection{Remote Attestation}
-\label{sec:background:attestation}
+\label{ch:background:SGX:remote}
 
 Remote attestation enables an external verifier to check whether a specific enclave has been correctly instantiated in a SGX protected environment. In the following, we describe the two main classes of remote attestation supported by Intel: i) ``enhanced privacy ID'' (EPID) attestation~\cite{epid_attestation}, and ii) the recently introduced ``data center attestation primitives'' (DCAP)~\cite{DCAP}.
 
