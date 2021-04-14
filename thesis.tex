@@ -69,6 +69,7 @@
 \cleardoublepage\pagenumbering{arabic}%
 
 \part{Introduction and Background}
+\label{part:intro}
 
 \def\dir{chapters/introduction}
 \include{chapters/introduction/main} 
@@ -82,6 +83,7 @@
 
 
 \part{How (\emph{Not}) to Build a Trusted Path}
+\label{part:howNot}
 \def\dir{chapters/IntegriKey}
 \include{chapters/IntegriKey/main}
 
@@ -90,12 +92,14 @@
 
 \cleardoublepage
 \part{Fundamentals of Trusted Path}
+\label{part:fundamental}
 \def\dir{chapters/ProtectIOn}
 \include{chapters/ProtectIOn/main}
 
 
 \cleardoublepage
 \part{Relay Attack on TEE: Effects on Trusted Path}
+\label{part:relay}
 \def\dir{chapters/ProximiTEE}
 \include{chapters/ProximiTEE/main}
 
@@ -103,6 +107,7 @@
 \cleardoublepage
 
 \part{Distributed TEEs and Trusted Path}
+\label{part:platform}
 \def\dir{chapters/PIE}
 \include{chapters/PIE/main}
 
@@ -110,6 +115,7 @@
 \cleardoublepage
 
 \part{Conclusions}
+\label{part:conclusion}
 \def\dir{chapters/conclusion_outlook}
 \include{chapters/conclusion_outlook/main}
 
