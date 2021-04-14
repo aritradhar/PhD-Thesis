@@ -4,7 +4,7 @@
 \begin{figure}[t]
 \centering
 \includegraphics[trim={0 8.5cm 17cm 0}, clip, width=0.8\linewidth]{chapters/ProtectIOn/images/approachOverview.pdf}
-\caption[High-level approach overview of \name]{\textbf{High-level approach overview of our solution.}  The \device connects the trusted IO devices and the attacker-controlled host.}
+\caption[High-level approach overview of \name]{\textbf{High-level approach overview of our solution.}  The \device connects the trusted IO devices and the attacker-controlled host. The \device intercepts all the IO communication between the IO devices and the host. Additionally, the \device establishes a secure channel with the remote server using the host as the untrusted transport. Using this secure channel, the \device receives the secure UI information from the server which is overlaid in the intercepted display signal (frames).}
 \label{fig:approachOverview}
 \centering
 \end{figure}

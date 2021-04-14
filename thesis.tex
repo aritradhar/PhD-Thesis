@@ -67,10 +67,19 @@
 % Mainmatter
 %
 \cleardoublepage\pagenumbering{arabic}%
+
+\part{Introduction and Background}
+
 \def\dir{chapters/introduction}
 \include{chapters/introduction/main} 
 
 \cleardoublepage
+
+\def\dir{chapters/background}
+\include{chapters/background/main} 
+
+\cleardoublepage
+
 
 \part{How (\emph{Not}) to Build a Trusted Path}
 \def\dir{chapters/IntegriKey}
@@ -98,8 +107,9 @@
 \include{chapters/PIE/main}
 
 
+\cleardoublepage
 
-%\cleardoublepage%
+\part{Conclusions}
 \def\dir{chapters/conclusion_outlook}
 \include{chapters/conclusion_outlook/main}
 

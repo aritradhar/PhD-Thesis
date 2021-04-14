@@ -1,6 +1,6 @@
 \begin{figure*}[t]
 \centering
-\includegraphics[trim={0 4cm 0 0}, clip, width=\linewidth]{chapters/ProtectIOn/images/formTransform.pdf}
+\includegraphics[trim={0 2cm 0 0}, clip, width=\linewidth]{chapters/ProtectIOn/images/formTransform.pdf}
 \caption[Transformation of UI elements: HTML $\rightarrow$ encoded specification $\rightarrow$ \device generated UI overlay]{\textbf{Transformation of UI elements: HTML $\rightarrow$ encoded specification $\rightarrow$ \device generated UI overlay.} \one The actual webpage and the corresponding \html source shows the UI elements that requires integrity protection. \two These UI elements are transformed into an encoded UI specification (our \name prototype uses QR code that encodes a UI specification, e.g., Specification~\ref{snippet:UISpecification}) by the \name JS. The QR code. \three AThe QR code decoded and overlaid on the HDMI stream by the \device. \four Upon the user's action on the overlaid UI elements, the device signs all the input data. \five The \device sends these signed input data them to the remote server. Note that the intermediate QR code transformation (\two) is not visible by the user.}
 \spacesave
 \label{fig:transformation}
@@ -85,7 +85,7 @@ The process of rendering the overlay on the screen has two phases: (i) convert t
     \item \texttt{label} is the label of the the UI element that the \device use to generate the text label.
     \item \texttt{text} is the initial text in case the server provide some default value for the corresponding UI element.
     \item \texttt{RE} is the regular expression for input sanitation.
-    \item \texttt{trigger} is important only for the element that either trigger the input to the form to submit (\texttt{trigger=true}) to the server ot reset (\texttt{trigger=false}) the form to its initial state.
+    \item \texttt{trigger} is important only for the element that either trigger the input to the form to submit (\texttt{trigger=true}) to the server ot reset (\texttt{trigger=false}) the form to its initial state. More details on \texttt{trigger} attribute in Section~\ref{sec:systemDesign:commit}.
   \end{itemize}
 \end{enumerate}
 

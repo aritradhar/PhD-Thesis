@@ -4,8 +4,7 @@ We now evaluate the effectiveness of \sysname, by running a series of experiment
 
 \myparagraph{Prototype Implementation}
 We developed a smartphone app in Android with the Text Recognition API~\cite{googleOCR} for optical character detection and recognition, and OpenCV~\cite{openCV} for the rest of the image processing functionality (e.g., detection of form boundaries and perspective realignment).
-Users press a button to start form supervision; the app then augments the camera feed indicating whether verification is having success or there are mismatches or failures (Figure~\ref{fig:userExperience}); finally, users press another button to submit the generated proof-of-intent to the server.
-The lower part of the camera feed detects hand activity by filtering out the background of the keyboard, and detecting significant changes between consecutive frames.
+Users press a button to start form supervision; the app then augments the camera feed indicating whether verification is having success or there are mismatches or failures (Figure~\ref{fig:userExperience}); finally, users press another button to submit the generated proof-of-intent to the server.  The prototype server is implemented using the Apache Tomcat 9.0 framework~\cite{ApacheTomcat}. The lower part of the camera feed detects hand activity by filtering out the background of the keyboard, and detecting significant changes between consecutive frames.
 
 \subsection{Verification of Loaded Web Forms} \label{ssec:UIVerificationEvaluation}
 
