@@ -2,6 +2,16 @@
 \section{Intel SGX Background}
 \label{ch:background:SGX}
 
+\begin{figure}[t]
+  \centering
+    \includegraphics[trim={0 9cm 5cm 0},clip,width=\linewidth]{chapters/background/figures/SGX_trust.pdf}
+    \caption[Intel SGX trust model compared to traditional platform]{\textbf{Intel SGX trust model compared to traditional platform.} The figure shows the comparison of software had hardware TCB between a traditional platform and an Intel SGX platform. In a traditional platform, the user of an application (e.g., the green app box) needs to trust the hardware (CPU, DRM, other devices, etc.) and the entire software stack (OS, VMM, hypervisor). Compared to the traditional platform, in an Intel SGX platform, the user needs to trust the specific isolated execution environment (enclave) and the Intel CPU.}
+    \label{fig:sgx_trust_bg}
+\end{figure}
+
+
+
+
 Intel SGX is a TEE architecture that isolates application enclaves from all other software running on the system, including the privileged OS, hypervisor, BIOS etc.~\cite{sgxexplained}. Enclave's data is encrypted and integrity protected whenever it is moved outside the CPU chip. The untrusted OS is responsible for the enclave creation and its initialization actions are recorded securely inside the CPU, creating a \emph{measurement} that captures the enclave's code. Enclaves can perform local attestation, which allows one enclave to ask the CPU to generate a signed report that includes its measurement. Another enclave on the same platform can verify the validity of the report without interacting with any other external services. Enclaves can \emph{seal} data to disk, which allows them to securely store confidential data such that only the same enclave running in the same CPU will be able to retrieve it later.
 
 

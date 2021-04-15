@@ -1,4 +1,4 @@
-\section{Disaggregated Computing}
+\section{Disaggregated Computing Architecture}
 \label{ch:background:disaggregated}
 
 
@@ -9,3 +9,6 @@
     \caption[Disaggregated architecture similar to dReDBox project]{\textbf{Disaggregated architecture similar to dReDBox project~\cite{dis1}.} The figure shows an example disaggregated architecture similar to dReDBox project~\cite{dis1} that are common in modern data centers. Rather than fully-fledged computers, the architecture employs different racks - compute, memory, storage etc. Inside this racks, there are multiple special purpose SoC-based microservers that are called bricks. These bricks have communication ports to talk to other bricks over fast optical circuit switches.}
     \label{fig:disagg_bg}
 \end{figure}
+
+
+Traditional computing hardware is built around the concept of motherboard-as-a-unit (or mainboard), where a motherboard has one or multiple CPU sockets, DRAM slots, PCI express ports to plug expansion cards for storage, accelerators, networks, etc. Many of the legacy data centers employs such integrated server racks  (e.g., Dell PowerEdge rack server~\cite{rack_server_dell}, Lenovo Blade server~\cite{rack_server_lenovo}, etc.). However, such systems are not fully flexible, e.g., one needs to allocate a new server rack to expand the DRAM if existing racks are already at their maximum capacity. Such a way to resource allocation/revocation is further complicated because not all VM instances are equal. Some of them are CPU-intensive, while others could be storage or memory or GPU intensive. In order to have a flexible allocation of resources all-around a data center, many of the modern data centers are moving to the disaggregated architecture where the resources (CPU, memory, storage, GPUs, etc.) are \emph{disaggregated}. One such example architecture is dReDBox project~\cite{dis1,dis2} that is also shown in Figure~\ref{fig:disagg_bg}. Such an architecture is flexible and demand-driven. For example, if a VM requires more memory, Memory bricks can be allocated to the VM dynamically~c\cite{lim2009disaggregated}. After the computation, these bricks can be revoked and utilized in other workloads. Similar could be done for other resources such as GPUs, accelerators, etc. All of these specialized racks are connected over a very low-latency optical network and provides an abstraction of all the data center resources. A summary of different disaggregated computing proposal can be found in~\cite{meyer2017disaggregated}.
