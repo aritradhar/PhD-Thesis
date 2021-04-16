@@ -72,7 +72,7 @@ These measurements highlight that the context switches are independent on the sh
 
 \begin{table}[tbp]
     \centering
-    \caption{Size of the default configuration of the Ariane core in gate equivalents (GE), synthesized in 22nm at 1GHz with varying number of PMP entries.}
+    \caption[Hardware size over of \name over the Ariane core]{\textbf{Hardware size over of \name over the Ariane core}Size of the default configuration of the Ariane core in gate equivalents (GE), synthesized in 22nm at 1GHz with varying number of PMP entries.}
     \begin{tabular}{llll}\toprule
         PMP entries & logic & caches & total \\\midrule
         0 & 472k GE & 686k GE & 1141k GE \\
@@ -83,7 +83,6 @@ These measurements highlight that the context switches are independent on the sh
     
     \label{tab:eval:ariane}
 \end{table}
-\item 
 
 
 \item \textbf{PMP overhead}
@@ -99,7 +98,7 @@ We measure the hardware overhead of PMP units in terms of the logic, the caches,
 
 \begin{table}[tbp]
 \centering
-\caption{The area rundown of our modifications to the accelerator with 4 and 0 PMP entries respectively. Synthesized in 22nm with 750MHz clock for 0 entries and 666MHz with 4 entries. Area given in $\mu m^2$.}
+\caption[The area rundown of our modifications to the accelerator]{\textbf{The area rundown of our modifications to the accelerator.} The area rundown of our modifications to the accelerator with 4 and 0 PMP entries respectively. Synthesized in 22nm with 750MHz clock for 0 entries and 666MHz with 4 entries. Area given in $\mu m^2$.}
 \label{tab:areasnitch}
 \begin{tabular}{@{}lccc@{}}
 \toprule
