@@ -4,7 +4,7 @@
 
 In this section, we provide an overview of our approach \name and introduce \emph{\nameenclave{}s}. \Nameenclave{}s dynamically extend the TCB of traditional TEEs running on the CPU to the \sphw. \Nameenclave{}s consist of multiple distributed enclaves that run on various hardware components such as the CPU and \sphw as shown in Figure~\ref{fig:new_system}. \Nameenclave{}s aim to provide similar security properties as traditional enclaves, such as integrity, attestation, and data isolation from other enclaves and the attacker-controlled OS. 
 
-\begin{figure}[tbp]
+\begin{figure}[t]
     \centering
 	\includegraphics[trim={0 8cm 15cm 0}, clip, width=\linewidth]{chapters/PIE/images/pwe_idea.pdf}
     \caption[\Nameenclave{}s consists of different applications and \sphw]{Two \nameenclave{}s are highlighted by blue and yellow outlines. The blue one consists of \texttt{Encl1}, a keyboard that is connected over the memory-mapped SPI bus and a GPU connected over PCI through DMA. This case represents a trusted path scenario where user requires both input and output. The second consists of \texttt{Encl2} and a GPU connected over PCI through DMA. The second one represents a usecase such as executing machine learning workload in the GPU cores.}
@@ -29,7 +29,7 @@ We further differentiate two types of processor-local enclaves: \app{}s, and \ce
 \myparagraph{Enclaves on \sphw}
 \label{sec:overview:enclaves:peripheralEnclave}
 Most \sphw run some firmware or even some custom code (e.g., graphic shaders) which has to be included in the TCB of a \nameenclave.
-E.g., the GPU and its firmware in Figure~\ref{fig:new_system} is part of the yellow \nameenclave. Since a remote verifier also wants to attest to the \sphw, they have to be modified to support attestation. However, we stress that these modifications  remain rather small (c.f. \Cref{sec:eval:accel}) and usually only involve small changes in the device firmware. %Essentially, one only has to add a certificate from the manufacturer for a secret key stored in the \sphw.
+E.g., the GPU and its firmware in Figure~\ref{fig:new_system} is part of the yellow \nameenclave. Since a remote verifier also wants to attest to the \sphw, they have to be modified to support attestation. However, we stress that these modifications  remain rather small (refer to \Cref{sec:eval:accel}) and usually only involve small changes in the device firmware. %Essentially, one only has to add a certificate from the manufacturer for a secret key stored in the \sphw.
 
 \begin{figure}[tbp]
      \centering

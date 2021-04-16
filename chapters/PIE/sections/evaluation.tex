@@ -6,7 +6,7 @@ In this section, we describe our prototype of \name and its evaluation.
 \begin{figure}[t]
 \centering
 \includegraphics[trim={0 8cm 19cm 0}, clip, width=\linewidth]{chapters/PIE/images/prototype.pdf}
-\caption[\name prototype]{The figure shows different components of our prototype: \one Digilent Genesys 2 FPGA board, \two Arduino Due as the peripheral simulator, and \three a seven-segment display unit as an example peripheral.} %\vspace{-2em}
+\caption[\name prototype]{The figure shows different components of our prototype: \one Digilent Genesys 2 FPGA board, \two Arduino Due as the peripheral simulator, and \three a seven-segment display unit as an example peripheral.} 
 \label{fig:prototype}
 \end{figure}
 
@@ -52,7 +52,6 @@ We list \name{}'s performance in the following categories:
 \begin{figure}[t]
     \centering
     \includegraphics[width=\linewidth]{chapters/PIE/images/graphs/ctxswitch.png}
-    \vspace{-3em}
     \caption[Context switch performance]{Context switch performance for varying sizes of a shared memory region compared to stock Keystone performance on the left (equivalent to no shared memory).}
     \label{fig:ctxswitches}
 \end{figure}
@@ -73,7 +72,7 @@ These measurements highlight that the context switches are independent on the sh
 
 \begin{table}[tbp]
     \centering
-    \caption{Size of the default configuration of the Ariane core in gate equivalents (GE), synthesized in 22nm at 1GHz with varying number of PMP entries.}\vspace{-0.5em}
+    \caption{Size of the default configuration of the Ariane core in gate equivalents (GE), synthesized in 22nm at 1GHz with varying number of PMP entries.}
     \begin{tabular}{llll}\toprule
         PMP entries & logic & caches & total \\\midrule
         0 & 472k GE & 686k GE & 1141k GE \\
@@ -92,22 +91,34 @@ We measure the hardware overhead of PMP units in terms of the logic, the caches,
 
 \item \textbf{Simple \sphw} The communication overhead between the platform and the peripheral device emulated by the Arduino due is very small. At the time of initialization, the peripheral and the platform exchanges handshake messages to perform local attestation. The initial handshake message is $60$ bytes. Every message size of our modified $I^2C$ protocol is 32 bytes. The combined latency introduced by signing averages around 60 $\mu$s.
 
-\item \textbf{Accelerator} Our modification of the accelerator cores increases size by around 15\% and slows down from 750MHz to 666MHz due to the impact of the PMP access checks on the critical path. Note that this may not reflect the general case but rather reflects an upperbound. The change in area of a single core complex (core, FPU, and an integer subsystem) can be found in \Cref{fig:areasnitch}. In total, the area of the entire accelerator only increased by around 0.6\%, with most of the area being occupied by the floating point units.
+\item \textbf{Accelerator} Our modification of the accelerator cores increases size by around 15\% and slows down from 750MHz to 666MHz due to the impact of the PMP access checks on the critical path. Note that this may not reflect the general case but rather reflects an upperbound. The change in area of a single core complex (core, FPU, and an integer subsystem) can be found in \Cref{tab:areasnitch}. In total, the area of the entire accelerator only increased by around 0.6\%, with most of the area being occupied by the floating point units.
 %The implementation and verification of the firmware took another engineering week. 
 \end{enumerate}
 
 
 
+\begin{table}[tbp]
+\centering
+\caption{The area rundown of our modifications to the accelerator with 4 and 0 PMP entries respectively. Synthesized in 22nm with 750MHz clock for 0 entries and 666MHz with 4 entries. Area given in $\mu m^2$.}
+\label{tab:areasnitch}
+\begin{tabular}{@{}lccc@{}}
+\toprule
+\multirow{2}{*}{Area {[}$\mu$m$^2${]}} & \multicolumn{2}{c}{\#PMP entries} & \multirow{2}{*}{Overhead} \\ & 0                 & 4                 &\\ \midrule
+Core   & 5.7               & 6.7               & 15.5\%                    \\
+FPU    & 39.2              & 37.9              & -3.3\%                    \\
+IPU   & 8.6               & 8.5               & -1.4\%                    \\ \midrule
+Total  & 53.5              & 53.2              & -0.7\%                    \\ \bottomrule
+\end{tabular}
+\end{table}
 
-
-
-\begin{figure}
-    \centering
-    \includegraphics[width=0.9\linewidth]{chapters/PIE/images/graphs/areasnitch.png}
-    \vspace{-1em}
-    \caption[The post-synthesis area of a core complex of our accelerators]{The post-synthesis area of a core complex of our accelerators, with four and zero PMP entries respectively. Note that the design was synthesized with 750MHz clock for 0 PMP entries and 666MHz with 4 entries. The size of the core increases due to the increased pressure by the PMPs, while the FPU gets smaller with the lower clock as its critical path is not affected by the PMP entries.}
-    \label{fig:areasnitch}
-\end{figure}
+% 
+% \begin{figure}
+%     \centering
+%     \includegraphics[width=0.9\linewidth]{chapters/PIE/images/graphs/areasnitch.png}
+%     \vspace{-1em}
+%     \caption[The post-synthesis area of a core complex of our accelerators]{The post-synthesis area of a core complex of our accelerators, with four and zero PMP entries respectively. Note that the design was synthesized with 750MHz clock for 0 PMP entries and 666MHz with 4 entries. The size of the core increases due to the increased pressure by the PMPs, while the FPU gets smaller with the lower clock as its critical path is not affected by the PMP entries.}
+%     \label{fig:areasnitch}
+% \end{figure}
 
 \setcounter{para}{0}
 
