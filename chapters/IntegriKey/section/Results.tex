@@ -41,8 +41,7 @@ We evaluated our UI analysis tool implementation using two existing systems: PLC
 \small
 \caption[\tool user interface processing time]{\textbf{\tool user interface processing time.} We tested the processing time of our UI analysis tool on the web pages from the x600m PLC server, the home automation system and bitcoin wallets. All the measurements where conducted over 500K iterations.}
 \begin{tabular}{lccc}
-\toprule
-\textbf{Web page} & \textbf{\#Fields} &\textbf{Processing time (ms.)} & \textbf{SD}\\ \hline
+\textbf{Web page} & \textbf{\#Fields} &\textbf{Processing time (ms.)} & \textbf{SD}\\ \toprule
 \multicolumn{4}{c}{x600m Web PLC} \\ \midrule
 Register configuration & $6$ & $1.654$ & $0.0131$\\ 
 Counter configuration & $7$ & $0.771$ & $0.0089$\\ 
@@ -71,9 +70,8 @@ Additionally, we tested our UI analysis tool on user interfaces of other PLC con
 \caption[\tool evaluation 1]{\textbf{\tool evaluation 1.} We tested our implementation of the UI analysis tool on `ControlByWeb x600m' industrial I/O server Web pages column shows the configuration pages that we tested. We list types and formats for each user input field in the tested pages, and also list those input fields that are swappable.}
 \resizebox{\textwidth}{!}{
 \begin{tabular}{llccp{2.4cm}}
-\toprule
 \textbf{Web pages} & \textbf{Fields} & \textbf{Type} & \textbf{Length/value constraint} &\textbf{Swappable fields} \\
-\midrule
+\toprule
 \multicolumn{5}{c}{\bfseries Web PLC configuration forms} \\
 \hline
  & Name & \String& $[min=1, max=20]$ & Name \\  
@@ -140,9 +138,8 @@ configuration & Start time & \Time &  $[min=00:00, max=23:59]$ & Stop time \\ \c
 \caption[\tool evaluation]{\textbf{\tool evaluation 2.} Similar to Table~\ref{tab:evaluation}, we tested our implementation of the UI analysis tool on `home-assistant' home automation systems.}
 \resizebox{\textwidth}{!}{
 \begin{tabular}{llccp{2.4cm}}
-\toprule
 \textbf{Web pages} & \textbf{Fields} & \textbf{Type} & \textbf{Length/value constraint} &\textbf{Swappable fields} \\
-\midrule
+\toprule
 \multicolumn{5}{c}{\bfseries Web Home automation configuration forms} \\
 \midrule
 
@@ -181,14 +178,13 @@ We notice that some user input fields are strictly swappable only with another i
 \caption[Input field specifications]{\textbf{Input field specifications.} This table lists specifications (type, regular expression, length/value constraints) that we mined by analyzing various web pages (banking, medical, PLC, home automation). The swappable column denotes that the group of input fields with $\checkmark$ mark can be swapped with each other. Such as the current can be swapped with the frequency field.}
 \resizebox{\textwidth}{!}{
 \begin{tabular}{lp{0.5cm}cp{5cm}p{1cm}}
-\toprule
-\multicolumn{1}{c}{\textbf{Name}} &
+\multicolumn{1}{l}{\textbf{Name}} &
 \multicolumn{1}{c}{\textbf{Type}} &
 \multicolumn{1}{c}{\textbf{Regular expression}} &
-\multicolumn{1}{c}{\textbf{Length/value constraints}} & 
+\multicolumn{1}{l}{\textbf{Length/value constraints}} & 
 \multicolumn{1}{c}{\textbf{Swappable}}
 \\
-\hline
+\toprule
 %\hline\hline
 \multicolumn{5}{c}{\bfseries Personal information}\\
 \cline{1-5}

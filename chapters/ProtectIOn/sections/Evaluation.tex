@@ -6,15 +6,15 @@
 \begin{table}[t]
 \small
 \centering
-\begin{tabular}{l | c}
-\textbf{Operation} & \textbf{Average time/accuracy} \\\hline
+\begin{tabular}{ll}
+\textbf{Operation} & \textbf{Average time/accuracy} \\\toprule
 Detecting mouse pointer $(A)$ & 1.76 ms \\
 Detection QR code $(B)$ & 14 ms\\
 Decoding QR code + Overlay $(C)$ & 6 ms\\
 Effective display latency $(A+B+C)$ & 21.76 ms \\
 Mouse latency & 250 $\mu$s\\
-Keyboard latency & 170 $\mu$s\\\hline
-Image analysis accuracy of mouse pointer & 0.997 \\\hline
+Keyboard latency & 170 $\mu$s\\\midrule
+Image analysis accuracy of mouse pointer & 0.997 \\\bottomrule
 \end{tabular} 
 \caption[\device performance]{\textbf{\device performance}. The table shows the latency and accuracy corresponding to \name prototype operations.}
 %\spacesave
@@ -57,20 +57,20 @@ Our prototype of \name does not require the user to install any additional softw
 \begin{table}[t]
 \small
 \centering
-\begin{tabular}{c |  l | c}
-\multicolumn{2}{c|}{\textbf{Projects}} & \textbf{LOC} \\\hline
+\begin{tabular}{lll}
+\multicolumn{2}{c}{\textbf{Projects}} & \textbf{LOC} \\\toprule
 %&\multicolumn{2}{c}{\textbf{Browsers}}\\\hline
-\rowcolor{Gray}&Chromium (Google Chrome)~\cite{chromium_2019} &  $25,163,547$\\
-\rowcolor{Gray}\multirow{-2}{*}{Browser} &Mozilla Firefox~\cite{mozilla_2019} & $20,928,358$\\
+&Chromium (Google Chrome)~\cite{chromium_2019} &  $25,163,547$\\
+\multirow{-2}{*}{Browser} &Mozilla Firefox~\cite{mozilla_2019} & $20,928,358$\\\midrule
 \multirow{2}{*}{JS Engine}&Chrome V8~\cite{V8} & $2,009,183$\\
-&Firefox SpiderMonkey~\cite{spiderMonkey} & $2,908,550$\\
-\rowcolor{Gray}& Ubuntu 19.10 w/o kernel & $600,712$\\
-\rowcolor{Gray}& Arch Linux w/o kernel & $71,188$\\
-\rowcolor{Gray}\multirow{-3}{*}{OS}&Linux Kernel & $36,680,915$\\
+&Firefox SpiderMonkey~\cite{spiderMonkey} & $2,908,550$\\\midrule
+& Ubuntu 19.10 w/o kernel & $600,712$\\
+& Arch Linux w/o kernel & $71,188$\\
+\multirow{-3}{*}{OS}&Linux Kernel & $36,680,915$\\\toprule
 \multirow{4}{*}{\textbf{\device}}&HDMI interceptor + overlay & $1,911$\\ 
 &USB stack & $893$\\
 &Crypto stack & $3,500$\\ 
-&RPi tiny core Linux & $121,899$ \\\hline
+&RPi tiny core Linux & $121,899$ \\\bottomrule
 \end{tabular} 
 \caption[\name code-base comparison]{\textbf{\name code-base comparison} with respect to some of the open-source browsers, JS engines and OSs.}
 %\spacesaveL
