@@ -41,23 +41,22 @@ We evaluated our UI analysis tool implementation using two existing systems: PLC
 \small
 \caption[\tool user interface processing time]{\textbf{\tool user interface processing time.} We tested the processing time of our UI analysis tool on the web pages from the x600m PLC server, the home automation system and bitcoin wallets. All the measurements where conducted over 500K iterations.}
 \begin{tabular}{lccc}
-\hline
+\toprule
 \textbf{Web page} & \textbf{\#Fields} &\textbf{Processing time (ms.)} & \textbf{SD}\\ \hline
-\multicolumn{4}{c}{x600m Web PLC} \\ \hline
+\multicolumn{4}{c}{x600m Web PLC} \\ \midrule
 Register configuration & $6$ & $1.654$ & $0.0131$\\ 
 Counter configuration & $7$ & $0.771$ & $0.0089$\\ 
 Event configuration & $8$ & $0.622$ & $0.0085$\\ 
 Action configuration & $5$ & $1.241$ & $0.0111$\\ 
 Supply voltage & $4$ & $0.673$ & $0.0099$\\ 
-Calender configuration & $11$ & $0.713$ & $0.0105$\\ \hline
-\multicolumn{4}{c}{Home automation} \\ \hline
+Calender configuration & $11$ & $0.713$ & $0.0105$\\ \midrule
+\multicolumn{4}{c}{Home automation} \\ \midrule
 Home configuration & $6$ & $0.016$ & $0.0018$\\ 
 Room configuration & $5$ & $0.012$ & $0.0015$\\ 
 \hline
-\multicolumn{4}{c}{Bitcoin wallet} \\ \hline
+\multicolumn{4}{c}{Bitcoin wallet} \\ \midrule
 Send Bitcoin & $4$ & $0.9$ & $0.024$\\ 
-\hline
-%\vspace{-20pt}
+\bottomrule
 \end{tabular}
 
 
@@ -71,10 +70,10 @@ Additionally, we tested our UI analysis tool on user interfaces of other PLC con
 \centering
 \caption[\tool evaluation 1]{\textbf{\tool evaluation 1.} We tested our implementation of the UI analysis tool on `ControlByWeb x600m' industrial I/O server Web pages column shows the configuration pages that we tested. We list types and formats for each user input field in the tested pages, and also list those input fields that are swappable.}
 \resizebox{\textwidth}{!}{
-\begin{tabular}{l|lcc|p{2.4cm}}
-\hline
+\begin{tabular}{llccp{2.4cm}}
+\toprule
 \textbf{Web pages} & \textbf{Fields} & \textbf{Type} & \textbf{Length/value constraint} &\textbf{Swappable fields} \\
-\hline
+\midrule
 \multicolumn{5}{c}{\bfseries Web PLC configuration forms} \\
 \hline
  & Name & \String& $[min=1, max=20]$ & Name \\  
@@ -84,7 +83,7 @@ configuration & Units & \String& $[min=1, max=5]$ & Decimal place \\
  & Decimal places & \integer& $[min=0, max=5]$ & Initial  \\  
  & Initial Value & \integer& $[min=0, max=999999]$ & Type\\
 
-\hline
+\midrule
  & Device & \radio & \{\texttt{on}, \texttt{off}\} & Name \\ 
  & Device counter number & \integer& $[min=0, max=50]$ & Description\\ \cline{5-5}
  & Name & \String & $[min=1, max=20]$ & Device counter number\\
@@ -92,7 +91,7 @@ Counter & Description & \String & $[min=0, max=60]$ & Decimal places\\
 configuration & Decimal places & \integer & $[min=0, max=5]$ & Debounce \\
  & Debounce & \integer & $[min=0, max=9999]$ & Edge\\ 
  & Edge & \integer & $[min=0, max=6]$ & \\
-\hline
+\midrule
 
 & Name & \String & $[min=1, max=20]$ & Name\\
  & Description & \String & $[min=0, max=60]$ & Description \\ 
@@ -102,20 +101,20 @@ configuration & Event group & \menu & \{available Groups\} &\\
  & Condition & \menu & \{\texttt{On}, \texttt{Off}, \texttt{Equals}, \texttt{Change state}\}&\\ 
  & Eval on powerup & \radio & \{\texttt{yes}, \texttt{no}\} &\\ 
  & Duration & \integer & $[min=0, max=9999]$ &\\ 
-\hline
+\midrule
 
  & Name & \String & $[min=1, max=20]$ &Name\\ 
  & Description & \String & $[min=0, max=60]$  &Description \\ 
 Action & Event source & \menu & \{available events\} &\\ 
 configuration & Type & \menu & \{\texttt{On}, \texttt{Off}, \texttt{Toggle},\ldots\} &\\ 
  & Relay & \menu & \{Available relays\}&\\ 
-\hline
+\midrule
 
  & Name & \String & $[min=1, max=20]$ &Name \\ 
 Supply & Description & \String &$[min=0, max=60]$ & Description \\ 
 voltage & Decimal places & \integer & $[min=0, max=5]$ &\\ 
  & Device & \menu & \{Available devices\} &\\
-\hline
+\midrule
 
  & Name & \String & $[min=1, max=20]$ &Name  \\
  & Description & \String & $[min=0, max=60]$ & Description \\ \cline{5-5}
@@ -128,7 +127,7 @@ configuration & Start time & \Time &  $[min=00:00, max=23:59]$ & Stop time \\ \c
  & Repeat type & \menu & \{None, Secondly, Minutely, \ldots\} & \\ 
  & Repeat val & \integer & $[min=10, max=9999]$ &\\ 
  & Occurrences & \integer & $[min=0, max=999999]$ &\\ 
-\hline
+\bottomrule
 \end{tabular}
 }
 \label{tab:evaluation}
@@ -140,12 +139,12 @@ configuration & Start time & \Time &  $[min=00:00, max=23:59]$ & Stop time \\ \c
 \centering
 \caption[\tool evaluation]{\textbf{\tool evaluation 2.} Similar to Table~\ref{tab:evaluation}, we tested our implementation of the UI analysis tool on `home-assistant' home automation systems.}
 \resizebox{\textwidth}{!}{
-\begin{tabular}{l|lcc|p{2.4cm}}
-\hline
+\begin{tabular}{llccp{2.4cm}}
+\toprule
 \textbf{Web pages} & \textbf{Fields} & \textbf{Type} & \textbf{Length/value constraint} &\textbf{Swappable fields} \\
-\hline
+\midrule
 \multicolumn{5}{c}{\bfseries Web Home automation configuration forms} \\
-\hline
+\midrule
 
  & Room door lock & \radio & \rdelim\}{3}{25mm}[{\{\texttt{on}, \texttt{off}\}}] & Room door lock\\
  & Alarm & \radio & &Alarm \\ 
@@ -153,14 +152,14 @@ Home & Water lawn & \radio && Water lawn\\
 configuration & Alarm time & \Time & $[min=00:00, max=23:59]$ &\\ 
  & Nest (thermostat) & \integer & $[min=16, max=25]$&\\ 
  & Sound selection & \menu & \{Available sounds\} &\\  
-\hline 
+\midrule 
 
  & Table lamp & \radio & \rdelim\}{3}{25mm}[{\{\texttt{on}, \texttt{off}\}}] &Table lamp \\
 Room & TV back light & \radio & &TV back light\\ 
 configuration & Celling lights & \radio & &Celling lights \\ 
  & AC & \integer & $[min=16, max=25]$ &\\ 
  & Window shutter level & \integer & $[min=0, max=10]$ &\\
-\hline 
+\bottomrule 
 \end{tabular}
 }
 \label{tab:evaluation2}
@@ -182,7 +181,7 @@ We notice that some user input fields are strictly swappable only with another i
 \caption[Input field specifications]{\textbf{Input field specifications.} This table lists specifications (type, regular expression, length/value constraints) that we mined by analyzing various web pages (banking, medical, PLC, home automation). The swappable column denotes that the group of input fields with $\checkmark$ mark can be swapped with each other. Such as the current can be swapped with the frequency field.}
 \resizebox{\textwidth}{!}{
 \begin{tabular}{lp{0.5cm}cp{5cm}p{1cm}}
-\cline{1-5}
+\toprule
 \multicolumn{1}{c}{\textbf{Name}} &
 \multicolumn{1}{c}{\textbf{Type}} &
 \multicolumn{1}{c}{\textbf{Regular expression}} &
@@ -274,7 +273,7 @@ IBAN account no. & \String &$(ISO 3166-1\ \text{IBAN code}) [0-9A-Z]^+$ & $[min=
 %\cline{1-4}
 Transaction amount. & \float & $(ISO 4217\ \text{currency code}) [0-9]^+((.)[0-9])^*$ & $[min=0, max=*]$  & \\
 
-\hline
+\bottomrule
 \end{tabular}
 }
 \label{tab:inputFields}
