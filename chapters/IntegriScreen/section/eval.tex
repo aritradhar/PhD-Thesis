@@ -1,23 +1,24 @@
-\section{Experimental Evaluation} \label{sec:experimentalEvaluation}
+\section{Experimental Evaluation} 
+\label{sec:experimentalEvaluation}
 
 We now evaluate the effectiveness of \sysname, by running a series of experimental tests against potential attacks.
 
 \myparagraph{Prototype Implementation}
 We developed a smartphone app in Android with the Text Recognition API~\cite{googleOCR} for optical character detection and recognition, and OpenCV~\cite{openCV} for the rest of the image processing functionality (e.g., detection of form boundaries and perspective realignment).
-Users press a button to start form supervision; the app then augments the camera feed indicating whether verification is having success or there are mismatches or failures (Figure~\ref{fig:userExperience}); finally, users press another button to submit the generated proof-of-intent to the server.  The prototype server is implemented using the Apache Tomcat 9.0 framework~\cite{ApacheTomcat}. The lower part of the camera feed detects hand activity by filtering out the background of the keyboard, and detecting significant changes between consecutive frames.
+Users press a button to start form supervision; the app then augments the camera feed indicating whether verification is having success or there are mismatches or failures (Figure~\ref{fig:userExperience}); finally, users press another button to submit the generated proof-of-intent to the server.  The prototype server is implemented using the Apache Tomcat 9.0 framework~\cite{ApacheTomcat}. The lower part of the camera feed detects hand activity by filtering out the background of the keyboard and detecting significant changes between consecutive frames.
 
 \subsection{Verification of Loaded Web Forms} \label{ssec:UIVerificationEvaluation}
 
-We first evaluate the baseline accuracy of UI verification (i.e., integrity of elements of the web form) without any attack.
+We first evaluate the baseline accuracy of UI verification (i.e., the integrity of elements of the web form) without any attack.
 
 
 \myparagraph{Setup}
-We use \numforms randomly generated web forms (similar to the one in Figure~\ref{fig:userExperience:inputSupervision}), varying in complexity of visual elements (between 4 and 9) and types of data as labels and default input values (English words, numerical, and random alphabetical strings).
+We use \numforms randomly generated web forms (similar to the one in Figure~\ref{fig:userExperience:inputSupervision}), varying in the complexity of visual elements (between 4 and 9) and types of data as labels and default input values (English words, numerical, and random alphabetical strings).
 Each form in the dataset is displayed for exactly 5 seconds.
 During this time, the \app automatically detects the form based on its title, loads its specification from the server, and performs UI verification.
 Mismatching forms are stored for later analysis.
 
-We use three Android devices: Samsung Galaxy S9+, Google Pixel 2XL, and Samsung Galaxy S6. Each device is evaluated in two positions: i) in front of the screen (straight setup), and ii) to the right of the keyboard, observing the client's screen with an angle (inclined setup).
+We use three Android devices: Samsung Galaxy S9+, Google Pixel 2XL, and Samsung Galaxy S6. Each device is evaluated in two positions: i) in front of the screen (straight setup) and ii) to the right of the keyboard, observing the client's screen with an angle (inclined setup).
 
 \begin{table}[t]
   \setlength{\tabcolsep}{10pt}
@@ -46,15 +47,15 @@ We use three Android devices: Samsung Galaxy S9+, Google Pixel 2XL, and Samsung 
 Table~\ref{table:UIVerificationResults} shows the results of verifying the UI for all randomly generated forms. The highest recognition rate was achieved by Samsung Galaxy S9+, which was successful in detecting, loading the specification, and \emph{verifying the text values of 98\%} of the forms in less than 5 seconds.
 This translates to 99.75\% of the UI elements being correctly detected and recognized on the screen.
 
-All three devices achieved stable performance, with average processing rates of \updatelater{2.6} (Samsung S6), \updatelater{3.3} (Google 2XL) and \updatelater{4.7} (Samsung S9+) frames per second.
+All three devices achieved stable performance, with average processing rates of 2.6 (Samsung S6), \updatelater{3.3} (for Google Pixel 2XL) and 4.7 (for Samsung S9+) frames per second.
 
-Note that the errors in this experiment, on randomly generated forms that often featured atypical designs (e.g., many elements close to each other) do not immediately translate to false positives in real-world forms, with more regular designs and better spacing within elements.
+Note that the errors in this experiment on randomly generated forms that often featured atypical designs (e.g., many elements close to each other) do not immediately translate to false positives in real-world forms, with more regular designs and better spacing within elements.
 
 
 
 \myparagraph{Positioning and verification time}
 Table~\ref{table:UIVerificationResults} also shows the performance of the UI verification procedure when the mobile device is on the right side of the client's keyboard (inclined setup), resulting in a significant angle between the camera and the client's screen.
-Our evaluation shows that realigning and then detecting elements with such large angle is successful at \emph{correctly verifying 93\%} of the forms from the dataset, resulting in an overall per-element detection rate of 99.12\%.
+Our evaluation shows that realigning and then detecting elements with such a large angle is successful at \emph{correctly verifying 93\%} of the forms from the dataset, resulting in an overall per-element detection rate of 99.12\%.
 
 Finally, when the total time allowed for the application to verify a single form is reduced to 3~seconds, the application maintains a high detection rate: the form verification rate for this short duration remains at a high 93\%, with a per-element detection rate of 98.97\%.
 
@@ -63,12 +64,13 @@ Finally, when the total time allowed for the application to verify a single form
 
 \subsection{Preventing Edits To Displayed Data} \label{ssec:inputSupervisionEvaluation}
 
-We now evaluate the ability of \sysname to detect modification of an element that is not a result of user activity, i.e., one that happens either during page load, or at the time of user input but outside of the focused element.
+We now evaluate the ability of \sysname to detect modification of an element that is not a result of user activity, i.e., one that happens either during page load or at the time of user input but outside of the focused element.
 
 \myparagraph{Setup}
 To achieve testing consistency and allow running a large number of controlled experiments, we simulate user input with Selenium WebDriver~\cite{seleniumWebDriver}, a UI testing framework.
-We evaluate potential UI manipulation and on-screen data modification attacks by loading randomly generated forms, and simulating user input by an average \textit{touch} typist (120-200~ms per character)~\cite{pereira2013effect}.
-During user input, the adversary replaces three random subsequent characters, that can be either:
-\begin{enumerate}[leftmargin=*]
-	\item[\B{1}] \textbf{Concurrent modification.} Changing an input element not in focus, concurrently with the simulated user input.
-    \item[\B{2}] \textbf{Modification before input.} Changing the value of an element while the form is being loaded.
+We evaluate potential UI manipulation and on-screen data modification attacks by loading randomly-generated forms and simulating user input by an average \textit{touch} typist (120-200~ms per character)~\cite{pereira2013effect}.
+During user input, the adversary replaces three subsequent random characters, that can be either:
+\begin{enumerate}
+	\item \emph{Concurrent modification.} Changing an input element not in focus, concurrently with the simulated user input.
+    \item \emph{Modification before input.} Changing the value of an element while the form is being loaded.
+\end{enumerate}
