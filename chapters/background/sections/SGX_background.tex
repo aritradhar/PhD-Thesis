@@ -63,30 +63,32 @@ Intel SGX provides two form of attestation: local attestation and remote attesta
 
 \begin{figure}[t]
   \centering
-    \includegraphics[trim={0 11cm 9cm 0},clip,width=0.9\linewidth]{chapters/background/figures/local_attestation.pdf}
+    \includegraphics[trim={0 11cm 8cm 0},clip,width=0.9\linewidth]{chapters/background/figures/local_attestation.pdf}
     \caption[Intel SGX local attestation example]{\textbf{Intel SGXlocal attestation example.} Intel SGX local attestation example that involves two pairs of applications and enclaves (A and B). This figure is a reproduction of the figure in Intel's white paper~\cite{attestation_primitive_all}.}
     \label{fig:la_bg}
 \end{figure}
 
+\subsection{Local Attestation}
+\label{ch:background:SGX:local}
+
 Local attestation (also known as the Intra-Platform Attestation) enables two enclaves to verify that they are running the proper version of the enclave code on the same hardware platform. Figure~\ref{fig:la_bg} shows one such example of local attestation involving Application A that runs Enclave A and Application B that runs Enclave B. The step of the attestation process is as the following, and it follows the description provided in Intel's white paper~\cite{attestation_primitive_all}.
 
 \begin{enumerate}
-  \item [\one] Enclave A obtains Enclave B’s \texttt{MRENCLAVE} value. We assume that Application A and Application B already have a communication channel over either shared memory or file system. Note that the actual communication channel does not have any effect on the local attestation process. Moreover, the communication channel between Application A and Application B does not need to be secure.
-  \item [\two] Enclave A invokes the \texttt{EREPORT} instruction together with enclave B’s \texttt{MRENCLAVE} to create a signed \texttt{REPORT} destined for enclave B. Enclave A transmits its \texttt{REPORT} to enclave B via the insecure communication channel mentioned in step \one.
+  \item [\one] Enclave A obtains Enclave B's \texttt{MRENCLAVE} value. We assume that Application A and Application B already have a communication channel over either shared memory or file system. Note that the actual communication channel does not have any effect on the local attestation process. Moreover, the communication channel between Application A and Application B does not need to be secure.
+  \item [\two] Enclave A invokes the \texttt{EREPORT} instruction together with enclave B's \texttt{MRENCLAVE} to create a signed \texttt{REPORT} destined for enclave B. Enclave A transmits its \texttt{REPORT} to enclave B via the insecure communication channel mentioned in step \one.
   \item [\three] After receiving the \texttt{REPORT} from Enclave A, Enclave B executes the following steps:
   
    \begin{enumerate}
      \item  Enclave B calls \texttt{EGETKEY} to retrieve its Report Key, recomputes the \texttt{MAC} over the \texttt{REPORT} structure, and compares the result with the MAC accompanying the \texttt{REPORT}. A match in the \texttt{MAC} value confirms that A is indeed an enclave running on the same platform as Enclave B, and as such, Enclave A is running in an environment that abides by Intel SGX's security model.
      \item Once the firmware and hardware components of the TCB have been verified, and Enclave B can then examine Enclave A's \texttt{REPORT} to verify the software components of the TCB. \texttt{MRENCLAVE} reflects the contents of the software image running inside the enclave. \texttt{MRSIGNER} reflects the sealer's identity.
-     \item Enclave B can then reciprocate by creating a \texttt{REPORT} for enclave A by using the \texttt{MRENCLAVE} value from the REPORT it just received.
-     \item Enclave B transmits its \texttt{REPORT} to enclave A. Enclave A can then similarly verify the report to enclave B, confirming that enclave B exists on the same platform as enclave A.
+     \item Enclave B can then reciprocate by creating a \texttt{REPORT} for enclave A by using the \texttt{MRENCLAVE} value from the \texttt{REPORT} it just received.
+     \item Enclave B transmits its \texttt{REPORT} to Enclave A. Enclave A can then similarly verify the report to enclave B, confirming that Enclave B exists on the same platform as Enclave A.
    \end{enumerate}
    
 \end{enumerate}
 
 
-\subsection{Local Attestation}
-\label{ch:background:SGX:local}
+
 
 
 \begin{figure}[t]

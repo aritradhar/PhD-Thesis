@@ -15,26 +15,25 @@ We evaluated the performance of our \device prototype using the following three 
 \begin{enumerate}
   \item \textbf{Page loading latency:} The elapsed time between the web page load and when the \device is ready to take input from the user. The \js code served by the remote server communicates with the \device and establishes a \tls using the \webusb API. The additional \tls messages and the \device processing introduce this delay only at the initial loading of the page. We measure the difference between the time when the \js code gets loaded into the browser and the time when the final \tls handshake message is sent.
   
-  \item \textbf{Keystroke latency:} The added processing delay when the user presses a key. This time is due to the internal processing of the \device. We place the measurement at program point where the \texttt{USBHost} library starts capturing the keyboard event and at the program point the device sends the data via the \webusb interface to the browser.
+  \item \textbf{Keystroke latency:} The added processing delay when the user presses a key. This time is due to the internal processing of the \device. We place the measurement at the program points where the \texttt{USBHost} library starts capturing the keyboard event, and the device sends the data via the \webusb interface to the browser.
   
   \item \textbf{Communication overhead.} The communication overhead between the \device and the remote server. As the \device establishes a separate \tls channel with the server, this adds data overhead to the standard HTTP communication between the browser and the remote server.
 \end{enumerate}
 
-We measured the page loading latency as $500$ ms (includes loading of the \webusb \js and establishment of the \tls channel between the \device and the remote server) and the keystroke latency as $5$ ms (both averaged over 500K iterations). These latencies are specific to the implementation architecture and the used boards, and that they can be reduced significantly using newer prototyping boards.\footnote{The master-slave $I^2C$ channel is limited to $1$ kHz. A Standalone implementation based on Arduino Genuino Zero, supported by the new version of the \webusb driver eliminates the $I^2C$ channel and reduces the latencies significantly.} 
+We measured the page loading latency as $500$ ms (includes loading of the \webusb \js and establishment of the \tls channel between the \device and the remote server) and the keystroke latency as $5$ ms (both averaged over 500K iterations). These latencies are specific to the implementation architecture and the used boards, and that they can be reduced significantly using newer prototyping boards.\footnote{The master-slave $I^2C$ channel is limited to $1$ kHz. A Standalone implementation based on Arduino Genuino Zero, supported by the new version of the \webusb driver, eliminates the $I^2C$ channel and reduces the latencies significantly.} 
 
-Here, we emphasize that our solution is intended for user input integrity protection for specific security-critical operations. While a page loading latency of $500$ ms may be significant performance penalty for many web applications like online commerce in general, such a delay is insignificant for the types of operations like configuration of safety-critical devices that we focus on.
+Here, we emphasize that our solution is intended for user input integrity protection for specific security-critical operations. While a page loading latency of $500$ ms may be a significant performance penalty for many web applications like online commerce in general, such a delay is insignificant for the types of operations like configuration of safety-critical devices that we focus on.
 
-The communication overhead between the host system and the \device is very small. At the time of initialization, the \device and the remote server exchanges \tls handshake messages to establish the session. The handshake messages are $60$ bytes each. Each \tls message adds extra overhead of $80$ bytes (signature and announcement of next key). 
+The communication overhead between the host system and the \device is very small. At the time of initialization, the \device and the remote server exchange \tls handshake messages to establish the session. The handshake messages are $60$ bytes each. Each \tls message adds an extra overhead of $80$ bytes (signature and announcement of next key). 
 
-We also tested the performance overhead of the server-side processing. The server has to maintain an additional TLS connection ($TLS_2$) which has a small cost and match the parsed HTTP response with the received user input events which takes less than a microsecond. 
-%The overhead of these extra steps is minor as the comparison of $265$ byte and $1$ kilobyte of data requires $60$ nanoseconds and $142$ nanoseconds respectively. This data is averaged over one million samples. 
-From bandwidth point of view, the overhead of the second TLS channel is also small (this channel is only used to send the characters typed in by the user).
+We also tested the performance overhead of the server-side processing. The server has to maintain an additional TLS connection ($TLS_2$) which has a small cost and matches the parsed HTTP response with the received user input events, which takes less than a microsecond. 
+From a bandwidth point of view, the overhead of the second TLS channel is also small (this channel is only used to send the characters typed in by the user).
 
 %\vspace{-5pt}
 \subsection{\tool Evaluation} 
 \label{sec:results:framework}
 
-We evaluated our UI analysis tool implementation using two existing systems: PLC and home automation controller. The PLC system we used was ControlByWeb \emph{x600m}~\cite{controlbyweb} I/O server and we tested six separate configuration web pages for it. The home automation system we used is called home-assistant~\cite{ha} and we tested two different configuration pages for it. We wrote UI specifications these pages and the fed the specifications to our tool implementation. The tool produced groups of interchangeable user input fields that we the manually verified to be correct. Table~\ref{tab:evaluation} and~\ref{tab:evaluation2} provide the details of this evaluation, including specifications for tested UIs and reported swappable elements. Based on this evaluation, we make two conclusions. The first is that our tool is able to process configuration UIs of existing, commercially-available safety-critical systems. The second is that many such UIs have swappable user input fields that need protection provided by our labeling scheme.
+We evaluated our UI analysis tool implementation using two existing systems: PLC and home automation controller. The PLC system we used was ControlByWeb \emph{x600m}~\cite{controlbyweb} I/O server, and we tested six separate configuration web pages for it. The home automation system we used is called home-assistant~\cite{ha}, and we tested two different configuration pages for it. We wrote UI specifications these pages and fed the specifications to our tool implementation. The tool produced groups of interchangeable user input fields that we manually verified to be correct. Table~\ref{tab:evaluation} and~\ref{tab:evaluation2} provide the details of this evaluation, including specifications for tested UIs and reported swappable elements. Based on this evaluation, we make two conclusions. The first is that our tool is able to process configuration UIs of existing, commercially available safety-critical systems. The second is that many such UIs have swappable user input fields that need the protection provided by our labeling scheme.
 
 \begin{table}[t]
 \centering
@@ -63,7 +62,7 @@ Send Bitcoin & $4$ & $0.9$ & $0.024$\\
 \end{table}
 
 
-Additionally, we tested our UI analysis tool on user interfaces of other PLC controllers, home automation systems, medical device control, personal data management and online banking. Again, we wrote specifications for these user interfaces and processed them through our tool that founds swappable input elements in many of the tested user interfaces. We mined around $35$ different text fields from $4$ different application types. We list our findings in Table~\ref{tab:inputFields}. We enumerate the user input fields in each page, their specifications that we manually created (including types and constraints) and the output of the tool that is grouping of swappable fields. We verified each output of the tool manually. We observe that in some cases the tool outputs as ``swappable'' input fields that can, in fact, be easily detected at the server. For example `start date' and `end date' are not swappable as the former has to be less than the later. This is an example of a case, where both fields are specified correctly, but their relationship imposes additional constraints that can be checked by the server. For such type of fields, the developers can exclude them from the input specification.
+Additionally, we tested our UI analysis tool on user interfaces of other PLC controllers, home automation systems, medical device control, personal data management, and online banking. Again, we wrote specifications for these user interfaces and processed them through our tool that founds swappable input elements in many of the tested user interfaces. We mined around $35$ different text fields from $4$ different application types. We list our findings in Table~\ref{tab:inputFields}. We enumerate the user input fields on each page, their specifications that we manually created (including types and constraints), and the output of the tool that is a grouping of swappable fields. We verified each output of the tool manually. We observe that in some cases, the tool outputs as ``swappable'' input fields that can, in fact, be easily detected at the server. For example, `start date' and `end date' are not swappable as the former has to be less than the latter. This is an example of a case where both fields are specified correctly, but their relationship imposes additional constraints that can be checked by the server. For such types of fields, the developers can exclude them from the input specification.
 
 \begin{table}[!htpb]
 \centering
@@ -164,9 +163,9 @@ configuration & Celling lights & \radio & &Celling lights \\
 
 
 \myparagraph{Example input fields}
-Table~\ref{tab:inputFields} provides provides a listing of additional web UIs that we analyzed using the tool. The list includes web pages for online banking page, medical programmer device, PLC server and home automation system. The main purpose of this table is to provide examples (or templates) for the developer for the fields which they are likely encounter while analyzing with \tool. The table provides the names of the input fields along with their specifications, such as the regular expression and the length/value constraints, and whether some of the fields are mutually swappable or not.
+Table~\ref{tab:inputFields} provides a listing of additional web UIs that we analyzed using the tool. The list includes web pages for online banking pages, medical programmer devices, PLC server, and home automation system. The main purpose of this table is to provide examples (or templates) for the developer for the fields which they are likely to encounter while analyzing with \tool. The table provides the names of the input fields along with their specifications, such as the regular expression and the length/value constraints, and whether some of the fields are mutually swappable or not.
 
-We notice that some user input fields are strictly swappable only with another identical field.  Such as an arbitrary field is not swappable with bank account number such as \emph{IBAN} number due to the specific format (e.g., $[ISO 3166-1\ \text{IBAN code}] [0-9A-Z]^+$ with minimum and maximum length of $20$ and $30$ respectively).
+We notice that some user input fields are strictly swappable only with another identical field.  Such as an arbitrary field is not swappable with bank account number such as \emph{IBAN} number due to the specific format (e.g., $[ISO 3166-1\ \text{IBAN code}] [0-9A-Z]^+$ with minimum and the maximum length of $20$ and $30$ respectively).
 
 
 %% -----------------
@@ -280,7 +279,7 @@ Transaction amount. & \float & $(ISO 4217\ \text{currency code}) [0-9]^+((.)[0-9
 
 The time complexity of our UI analysis algorithm is exponential~\cite{Salomaa1997} ($\mathcal{O}(2^S)$) with respect to the number of states $S$ in the non-deterministic finite automaton (NFA) that is derived from the regular expression that is quadratic $\mathcal{O}(|F|^2)$ with respect to the number of input fields $|F|$. In practice, the analysis of tested UIs was very fast as i) the number of input fields is usually $6$ or less and ii) the DFAs from the specifications contain 2-3 states for most of the input fields.
 
-%Algorithm~\ref{algo:makeGroup} is $\mathcal{O}(|F|^22^{|S|})$. Even though the running time is exponential in the number of states, most of the regular expressions of the text fields we encountered, are around 3-4, making the actual running time in the order of few milliseconds (refer Table~\ref{tab:frameworkPerformance} in Section~\ref{sec:results}).
+%Algorithm~\ref{algo:makeGroup} is $\mathcal{O}(|F|^22^{|S|})$. Even though the running time is exponential in the number of states, most of the regular expressions of the text fields we encountered are around 3-4, making the actual running time in the order of few milliseconds (refer Table~\ref{tab:frameworkPerformance} in Section~\ref{sec:results}).
 
 
 %\vspace{-5pt}
@@ -293,14 +292,14 @@ We also conducted a small-scale user study to understand whether the users can p
 
 \myparagraph{Procedure} We prepared a web page extracted from the ControlByWeb x600m I/O server. We passed this page through our \tool that annotated the page with the labeling instruction and converted drop-down menus to equivalent text fields. To simulate a swapping attack, we modified the page such that the description for the \texttt{`Relay temp 1'} and \texttt{`Relay temp 2'} fields were exchanged. The labeling instructions were unmodified.
 
-We provided each study participant with an information sheet that provided brief background information on labeling and explained that the task is to configure a PLC device based on the provided instructions. We observed the study participants while they performed this task. %The figure in~\texttt{\url{https://goo.gl/oMFQBW}} 
+We provided each study participant with an information sheet that provided brief background information on labeling and explained that the task is to configure a PLC device based on the provided instructions. We observed the study participants while they performed this task. 
 Figure~\ref{fig:userStudyInstruction} shows the study UI and the information sheet.
 
-\myparagraph{Results} Out of 15 participants, 7 noticed the inconsistency between the fields and labeling instructions in the UI, stopped the task, and report it to the study supervisor (\emph{Case 1} in Section~\ref{sec:securityAnalysis_IK}.2). Another 7 participants did not detect the UI inconsistency, but filled the input with correctly associated labels. The result is a correctly configured device (\emph{Case 2}). One study participants completed the labeling incorrectly and fell for the attack (\emph{Case 4}). The users reported that the additional labelling does not pose any significant effort. Additionally, none of the users made any mistakes while writing the labels in the text field along with the data. 
+\myparagraph{Results} Out of 15 participants, 7 noticed the inconsistency between the fields and labeling instructions in the UI, stopped the task, and report it to the study supervisor (\emph{Case 1} in Section~\ref{sec:securityAnalysis_IK}.2). Another 7 participants did not detect the UI inconsistency but filled the input with correctly associated labels. The result is a correctly configured device (\emph{Case 2}). One study participants completed the labeling incorrectly and fell for the attack (\emph{Case 4}). The users reported that the additional labeling does not pose any significant effort. Additionally, none of the users made any mistakes while writing the labels in the text field along with the data. 
 
-\myparagraph{Ethical considerations} Our user study did not collect any private information, such as email addresses or password. In such cases, our institution does not issue IRB approvals.
+\myparagraph{Ethical considerations} Our user study did not collect any private information, such as email addresses or passwords. In such cases, our institution does not issue IRB approvals.
 
-\myparagraph{Study discussion} In our user study, we provided brief instructions the participants as shown in see Figure~\ref{fig:userStudyInstruction}. This is in line with the primary usage of our system, where \name is used by trained professionals, who configure medical devices, industrial PLC systems and similar safety-critical devices. The secondary user group of our system is people like home automation system owners or cryptocurrency wallet users who have not received training for the task. Our study was not tailored for this scenario.
+\myparagraph{Study discussion} In our user study, we provided brief instructions to the participants as shown in Figure~\ref{fig:userStudyInstruction}. This is in line with the primary usage of our system, where \name is used by trained professionals, who configure medical devices, industrial PLC systems, and similar safety-critical devices. The secondary user group of our system is people like home automation system owners or cryptocurrency wallet users who have not received training for the task. Our study was not tailored for this scenario.
 
 
 \begin{figure*}[t]
@@ -310,7 +309,7 @@ Figure~\ref{fig:userStudyInstruction} shows the study UI and the information she
  \label{fig:userStudyInstruction}
 \end{figure*}
 
-%We got necessary permission from our institutes' ethics board for conduction the study. 
+%We got necessary permission from our institutes' ethics board to conduction the study. 
 
 %\begin{table}[t]
 %\centering
