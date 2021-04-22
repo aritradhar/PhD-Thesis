@@ -1,0 +1,84 @@
+\section{Summary of the Contributions}
+
+The contributions of this thesis are divided into four parts and summarized as the following:
+
+\begin{enumerate}[leftmargin=*]
+  
+  \item[] \textbf{Part~\ref{part:howNot}: How (not) to build a trusted path: providing negative results on how system-oriented way of proposing trusted path solution can lead to insecure systems.}
+  
+  \begin{itemize}
+  \item Chapter~\ref{ch:integrikey}: \integrikey, an input signing approach to provide the second factor for integrity in user input through input signing
+  %\footnote{Note that this work presents negative results and shows how an input signing method is not secure. However, the chapter also explores a new input manipulation attack - label swapping attack,}
+
+\begin{enumerate}
+    \item \emph{New attack.} In \integrikey, we identify swapping attacks as a novel form of user input manipulation against simple user input matching strategies.
+    \item \integrikey. We design and implement a user input integrity protection system that is tailored for keyboard input, prevents swapping attacks, and is easy to deploy.
+    \item \integrikey{} tool. We develop a user interface analysis and webpage annotation tool that helps developers to protect their web services and minimizes user effort. However, later analysis shows that the input signing is insecure. This is not due to the implementation of the input signing method, rather the fundamental pitfall of the method.
+    \item \emph{Evaluation.} We verified that our tool could process UIs of existing safety-critical systems and cryptocurrency wallets correctly. Our experiments show that the performance delay of \integrikey user input integrity protection is low. Our preliminary user study indicates that user input labeling prevents swapping attacks in most cases.
+   %, and our preliminary user study indicates that users can perform the needed labeling.
+\end{enumerate}
+
+	\item Chapter~\ref{ch:integriscreen}: \integriscreen, second factor for user intention integrity through UI analysis captured through a smartphone\footnote{\integriscreen was a collaboration between multiple researchers. This thesis only includes my primary contribution in \integriscreen: the development of \integriscreen{}'s main idea, security analysis, and implementation of the \integriscreen{}s server-side component.}.
+
+\begin{enumerate}
+\item \textbf{Novel approach for transaction confirmation.} We design \integriscreen based on \emph{screen supervision}, which differs fundamentally from the existing alternatives, integrates well with user devices (e.g., smartphones), and has the potential to offer high integrity guarantees for the user inputs in the presence of compromised hosts.
+
+\item \textbf{Prototype implementation and evaluation.} We implement a prototype dubbed \integriscreen as an Android app and server-side component. Moreover, we perform a variety of experiments, which show the system is practical, effective, and performs well. 
+
+\item \textbf{Future challenges.} We are the first to explore the use of \emph{screen supervision} for security, and especially in the context of transaction confirmation solutions. This new paradigm opens new possibilities for continuous supervision of user inputs over the limitations of existing solutions while neither risking user habituation nor increasing their efforts.
+\end{enumerate}
+
+\end{itemize}
+
+
+\item[] \textbf{Part~\ref{part:fundamental}: Fundamental security properties for trusted path, attacks on existing systems and building new systems that incorporate these fundamental security properties.}
+
+\begin{itemize}
+    \item Chapter~\ref{ch:protectIOn}: \protection: Root-of-Trust for IO in Compromised Platforms
+    \begin{enumerate}
+      
+      	\item \textbf{Identification of new attacks:} We identify two new attacks on the existing trusted path systems. The first one is \emph{input addition/reduction} attack on trusted path systems that uses input signing. \integrikey is susceptible to this attack. Another attack is \emph{early form submission} attack that targets target path systems that do not consider all modalities of input.
+      	 
+        \item  \textbf{Identification of IO security requirements:} We identify new requirements for trusted path based on the drawbacks of the existing literature: i) unless both output and input integrity are secured simultaneously, it is impossible to achieve any of the two, and ii) without protecting the integrity of all the modalities of inputs, none could be achieved.
+        
+        \item \textbf{System for IO integrity:} We describe the design of \protection, a system that provides a remote trusted path from the server to the user in an attacker-controlled environment. The design of \protection leverages a small, low-TCB auxiliary device that acts as a \emph{root-of-trust} for the IO. \protection ensures the integrity of the UI, specifically the integrity of mouse pointer and keyboard input. \protection is further designed to avoid user habituation.
+        
+        \item \textbf{System for IO confidentiality:} We also describe an extension of \protection that provides IO confidentiality, where the user needs to execute an operation like a secure attention sequence (SAS) to identify the trusted overlay on display.
+        
+        \item \textbf{Implementation and evaluation:} We also implement a prototype of \protection and evaluate its performance ).
+    \end{enumerate}
+
+\end{itemize}
+   
+   
+\item[] \textbf{Part~\ref{part:relay}: Understanding relay attack in the context of Intel SGX remote attestation considering a secure trusted path enclave.}
+
+\begin{itemize}
+    \item Chapter~\ref{ch:proximitee}: \proximitee: Understanding Relay attacks on in Intel SGX remote attestation and building system for addressing the relay attacks in different attacker models (non-emulating vs. emulating attacker).
+    
+    \begin{enumerate}
+        \item \textbf{Analysis of relay attacks.} While relay attacks have been known for more than a decade, their implications have not been fully analyzed. We provide the first such analysis and show how relaying amplifies the adversary's capabilities for attacking SGX enclaves.   
+
+        \item \textbf{\proximitee, a system for addressing relay attacks.} We propose a hardened SGX attestation mechanism based on an embedded device and proximity verification to prevent relay attacks. \proximitee does not rely on the common trust on first use (ToFU) assumption, and hence, our solution improves the security of previous attestation approaches. Note that the distance bounding approaches are well-known in the literature, but using such a method in the context of SGX is non-trivial.
+    
+        \item \textbf{Experimental evaluation.} We implement a complete prototype of \proximitee and evaluate it against a very strong and fast adversary. Our evaluation is the first to show that proximity verification can be both secure and reliable for TEEs like SGX.
+    
+        \item \textbf{Addressing emulation attacks.} We also propose another attestation mechanism based on boot-time initialization to prevent emulation attacks. This mechanism is a novel variant of TOFU with deployment, security, and revocation benefits.
+    \end{enumerate}
+\end{itemize}   
+
+\item[] \textbf{Part~\ref{part:platform}: Handling TEEs distributed over CPU cores and peripherals and generalizing platform security}
+    
+  \begin{itemize}  
+    \item Chapter~\ref{ch:pie}: \pie:A Platform-wide TEE
+    
+    \begin{enumerate}
+        \item \textbf{Security properties for platform-wide integrity} We extend traditional TEEs by introducing a dynamic hardware TCB. We call these new systems platform isolation environment (\pie{}). We identify key security properties for \pie{}, namely \emph{platform-wide attestation} and \emph{platform awareness}.
+        
+        \item \textbf{Programming model} We propose a programming model that provides flexibility to the developers is comparable to the modern operating systems for developing enclaves that communicate with peripherals. The programming model abstracts the underlying hardware layer. 
+        
+        \item \textbf{Prototype and experimental evaluation} We demonstrate a prototype of a \pie{} based on Keystone~\cite{keystone} on an open-source RISC-V processor~\cite{ariane}. The prototype includes a simplified model of the entire platform, including external peripherals emulated by multiple Arduino microcontrollers. In total, our modifications to the software TCB of Keystone only amount to around 350 LoC.
+
+    \end{enumerate}
+	\end{itemize}
+\end{enumerate}
