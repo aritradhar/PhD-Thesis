@@ -40,12 +40,12 @@ Our prototype of \name does not require the user to install any additional softw
 \item \emph{Frame processing for mouse} \device processes every frame of the host for pointer detection. This takes $1.76 ms$, which does not impact the frame rate. The image analysis routine achieves an accuracy of $0.997$. 
 
 
-\item \emph{Keystroke latency} The \device intercepts all user's keystrokes and forwards them to the host or renders on the screen. When rendering on the screen, the latency is $170\ \mu s$.
+\item \emph{Keystroke latency} The \device intercepts all user's keystrokes and forwards them to the host or renders them on the screen. When rendering on the screen, the latency is $170\ \mu s$.
 
 
 \item \emph{Cursor latency} Similarly to keystrokes, the \device intercepts mouse events also. However, the latency of event forwarding is $250\ \mu s$.
 
-\item \emph{Codebase comparison} In Table~\ref{tab:loc}, we provide the code base and executable binary sizes of \device with respect to some of the most popular open-source browsers, JavaScript interpreter engines and OS's. All of the codes are measured with the \texttt{cloc} open-source code line counting tool. The table shows that \name has a significantly lower code base, resulting in a smaller attack surface.
+\item \emph{Codebase comparison} In Table~\ref{tab:loc}, we provide the code base and executable binary sizes of \device with respect to some of the most popular open-source browsers, JavaScript interpreter engines, and OS's. All of the codes are measured with the \texttt{cloc} open-source code line counting tool. The table shows that \name has a significantly lower code base, resulting in a smaller attack surface.
 
 
 \item \emph{\device cost} We estimate that our \device prototype costs around 140 USD (Rpi4 = \$35 + HDMI-CSI =\$30 + Due = \$35 + Zero = \$40). An integrated, mass-produced device would be, of course, significantly cheaper.
@@ -60,19 +60,20 @@ Our prototype of \name does not require the user to install any additional softw
 \begin{tabular}{lll}
 \multicolumn{2}{c}{\textbf{Projects}} & \textbf{LOC} \\\toprule
 %&\multicolumn{2}{c}{\textbf{Browsers}}\\\hline
-&Chromium (Google Chrome)~\cite{chromium_2019} &  $25,163,547$\\
+&Chromium~\footnote{Google Chrome and Microsoft Edge are based on the Chromium project}~\cite{chromium_2019} &  $25,163,547$\\
 \multirow{-2}{*}{Browser} &Mozilla Firefox~\cite{mozilla_2019} & $20,928,358$\\\midrule
 \multirow{2}{*}{JS Engine}&Chrome V8~\cite{V8} & $2,009,183$\\
 &Firefox SpiderMonkey~\cite{spiderMonkey} & $2,908,550$\\\midrule
 & Ubuntu 19.10 w/o kernel & $600,712$\\
 & Arch Linux w/o kernel & $71,188$\\
 \multirow{-3}{*}{OS}&Linux Kernel & $36,680,915$\\\toprule
-\multirow{4}{*}{\textbf{\device}}&HDMI interceptor + overlay & $1,911$\\ 
+\multirow{5}{*}{\textbf{\device}}&HDMI interceptor + overlay & $1,911$\\ 
 &USB stack & $893$\\
 &Crypto stack & $3,500$\\ 
-&RPi tiny core Linux & $121,899$ \\\bottomrule
+&RPi tiny core Linux & $121,899$ \\
+&\device total codebase & $128,203$ \\\bottomrule
 \end{tabular} 
-\caption[\name code-base comparison]{\textbf{\name code-base comparison} with respect to some of the open-source browsers, JS engines and OSs.}
+\caption[\name \device code-base comparison]{\textbf{\name \device code-base comparison} with respect to some of the open-source browsers, JS engines and OSs.}
 %\spacesaveL
 \label{tab:loc}
 \end{table}
