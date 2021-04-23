@@ -1,11 +1,12 @@
-%!TEX root =  ../paper.tex
-
-\section{Discussion and Related Work}
+\section{Related Work}
 \label{sec:discussion_proximitee}
 
 %\parasaver
-\myparagraph{Extension to other TEEs} Our approach could be applied to other TEEs as well. The critical requirements for the TEE is that it must support programmable operations that can be executed sufficiently fast. One TEE that meets these requirements is ARM TrustZone. %We consider adapting our solution for TrustZone an interesting direction for future work.
+\subsection{Extension to other TEEs} 
+
+Our approach could be applied to other TEEs as well. The critical requirements for the TEE is that it must support programmable operations that can be executed sufficiently fast. Other TEEs that meets these requirements are ARM TrustZone and RISC-V keystone. Specifically, RISC-V keystone have a large number of similarity with SGX which makes it a suitable candidate for \proximitee. %We consider adapting our solution for TrustZone an interesting direction for future work.
 
 
-\myparagraph{DRTM proximity verification}
+\subsection{DRTM proximity verification}
+
 Presence attestation~\cite{presenceAttestation} enables proximity verification DRTM-based TEEs~\cite{mccune2008flicker}. The TEE shows an image that is captured by a trusted camera and communicated to a remote verifier. The same approach cannot be used with SGX since it lacks trusted path for secure image output. Catching the cuckoo~\cite{CatchingCuckoo} uses timing side channel to verify proximity with a TPM emulator. The TPM latency is in the order of seconds, making it invisible for any practical distance bounding. 

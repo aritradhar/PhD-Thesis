@@ -1,5 +1,3 @@
-%!TEX root =  ../paper_NDSS.tex
-
 \section{Relay Attack Analysis}
 \label{sec:problemStatement}
 
@@ -10,7 +8,7 @@ In this section, we provide an analysis of relay attacks on SGX.
   %\includegraphics[trim={0 13.4cm 11cm 0},clip,width=\linewidth]{relayAttack.pdf}
   %\includegraphics[trim={0cm 9cm 15.8cm 0},clip,width=0.75\linewidth]{chapters/ProximiTEE/figures/relayAttack2.pdf}
   \includegraphics[trim={0 0 4.5cm 0},clip,width=0.9\linewidth]{chapters/ProximiTEE/images_new/relay.pdf}
- \caption[Relay attack]{\textbf{Relay attack.} The adversary redirects attestation to his own platform which gives him increased (side-channel and kernel-level) abilities to attack the attested enclave.}
+ \caption[Relay attack]{\textbf{Relay attack.} The attacker redirects attestation to his own platform which gives him increased (side-channel and kernel-level) abilities to attack the attested enclave.}
 
  \label{fig:SystemModel}
 \end{figure}
@@ -19,16 +17,16 @@ In this section, we provide an analysis of relay attacks on SGX.
 \subsection{Relay Attacks}
 \label{sec:problemStatement:systemAttackerModel}
 
-We consider a system model shown in Figure~\ref{fig:SystemModel} that consists of three parties: the target platform, the remote verifier, and the attacker's platform. The remote verifier is a trusted party that wishes to connect and attest to a specific SGX platform. The target platform is the SGX platform to which the remote verifier intends to connect. Finally, the attacker's platform is a platform owned by the attacker that is connected to the target platform through the Internet.
+We consider a system model shown in Figure~\ref{fig:SystemModel} that consists of three parties: the target platform, the remote verifier, and the attacker's platform. The remote verifier is a trusted party that wishes to connect and attest to a specific SGX platform. The target platform is the SGX platform to which the remote verifier intends to connect. Finally, the attacker's platform is a platform owned by the attacker, connected to the target platform through the Internet.
 
 
 
-\myparagraph{Adversary model} We consider the following adversary model that we call the \emph{relay attacker}. The relay attacker controls the OS and all other privileged software on the \emph{target} platform at least \emph{temporarily}, in particular at the time of the remote attestation. The OS compromise on the target platform may be later detected and disinfected. We consider the case in which the target platform resides in a data center or otherwise in a facility with restricted physical access. The attacker hence \emph{does not} have physical access to the target platform (or any other co-located platform in the same facility). %The relay attacker cannot extract attestation or sealing keys from the target platform.
+\myparagraph{Attacker model} We consider the following attacker model that we call the \emph{relay attacker}. The relay attacker controls the OS and all other privileged software on the \emph{target} platform at least \emph{temporarily}, particularly at the time of the remote attestation. The OS compromise on the target platform maybe later detected and disinfected. We consider the case in which the target platform resides in a data center or otherwise in a facility with restricted physical access. Hence, the attacker hence \emph{does not} have physical access to the target platform (or any other co-located platform in the same facility). %The relay attacker cannot extract attestation or sealing keys from the target platform.
 
-The relay attacker controls the OS and all other privileged software on the attacker's platform \emph{permanently} and has physical access to that platform. The attacker also controls the network between the target platform and his platform. At the time of the attestation, the adversary has not been able to extract attestation or sealing keys from his platform or any other SGX processor.
+The relay attacker controls the OS and all other privileged software on the attacker's platform \emph{permanently} and has physical access to that platform. The attacker also controls the network between the target platform and his platform. At the time of the attestation, the attacker has not been able to extract attestation or sealing keys from his platform or any other SGX processor.
 
 
-\myparagraph{The process of the relay attack} The relay attacker can redirect the attestation requests intended for the target platform to his platform, as shown in Figure~\ref{fig:SystemModel}. This is a realistic attack for two reasons. First, in the SGX attacker's model the adversary is allowed to control the OS and can hence easily redirect any network request the target platform receives. Second, even if the attacker cannot compromise the OS in the target platform, it might be able to exploit some vulnerability of the untrusted application managing the enclave. The exploit might allow the attacker to manipulate the application's control flow to redirect attestation request to any platform he desires.
+\myparagraph{The process of the relay attack} The relay attacker can redirect the attestation requests intended for the target platform to his platform, as shown in Figure~\ref{fig:SystemModel}. This is a realistic attack for two reasons. First, in the SGX attacker's model, the attacker can control the OS and, hence, easily redirect any network request the target platform receives. Second, even if the attacker cannot compromise the OS in the target platform, it might be able to exploit some vulnerability of the untrusted application managing the enclave. The exploit might allow the attacker to manipulate the application's control flow to redirect attestation requests to any platform he desires.
 
 
 
@@ -81,17 +79,17 @@ sibling distance=12em]]
 
 Although relay attacks have been known for a long time~\cite{parno2008bootstrapping}, their implications to modern TEEs like SGX have not been carefully analyzed. Next, we perform the first such analysis.
 
-The main consequence of attestation redirection is that it \emph{increases the adversary's ability to attack the attested enclave} through side-channels which are a well-known limitation of SGX (see Section~\ref{sec:background:attacks}). In Figure~\ref{fig:relayTree} we highlight two major classes of attacks: those that are only possible by first performing a relay attack, which we denote as ``enabled by relay'', and those that can be done whether or not the attacker also does a relay attack, which we call ``independent of relay.''
+The main consequence of attestation redirection is that it \emph{increases the attacker's ability to attack the attested enclave} through side-channels which are a well-known limitation of SGX (see Section~\ref{sec:background:attacks}). In Figure~\ref{fig:relayTree} we highlight two major classes of attacks: those that are only possible by first performing a relay attack, which we denote as ``enabled by relay'', and those that can be done whether or not the attacker also executes a relay attack, which we call ``independent of relay.''
 
 
-\myparagraph{Attacks using leaked attestation keys} Our first observation is that attacks based on leaked attestation keys (e.g., ones obtained through the Foreshadow attack~\cite{foreshadow-usenix18}) are independent of relaying. If the adversary has obtained a valid and non-revoked attestation key, he can emulate an SGX processor on the target platform and obtain any secrets provisioned to it.
+\myparagraph{Attacks using leaked attestation keys} Our first observation is that attacks are based on leaked attestation keys (e.g., ones obtained through the Foreshadow attack~\cite{foreshadow-usenix18}) are independent of relaying. If the attacker has obtained a valid and non-revoked attestation key, he can emulate an SGX processor on the target platform and obtain any secrets provisioned to it.
 
 
-\myparagraph{Physical side channels} One major benefit of the relay, from the adversary's point of view, is that it enables \emph{physical} side-channel attacks against application enclaves. Once a secret has been provisioned to the attacker's platform, she has as much time as she likes to perform the attack. Some examples of physical side-channel attacks are acoustic, electric and electromagnetic monitoring, which have been shown to be both effective and inexpensive means to extract secrets from modern PC platforms (see~\cite{genkin2016physical} for a summary of known attacks). Since the adversary does not have physical access to the target platform, such attacks are clearly not possible without relay. Hardening programs like enclaves against physical side channels is difficult and currently an open problem~\cite{genkin2016physical}. Therefore, developers cannot easily defend their enclaves against physical side channels that are enabled by attestation redirection.
+\myparagraph{Physical side channels} One major benefit of the relay, from the attacker's point of view, is that it enables \emph{physical} side-channel attacks against application enclaves. Once a secret has been provisioned to the attacker's platform, she has as much time as she likes to perform the attack. Some examples of physical side-channel attacks are acoustic, electric, and electromagnetic monitoring, which has been shown to be both effective and inexpensive means to extract secrets from modern PC platforms (see~\cite{genkin2016physical} for a summary of known attacks). Since the attacker does not have physical access to the target platform, such attacks are clearly not possible without a relay. Hardening programs like enclaves against physical side channels is difficult and currently an open problem~\cite{genkin2016physical}. Therefore, developers cannot easily defend their enclaves against physical side channels that are enabled by attestation redirection.
 
 
 \myparagraph{Privilege escalation for digital side channels}
-Another possible benefit of relay attacks is that it may enable \emph{privilege escalation}. In cases where the adversary has only compromised the user-space application that manages the enclave, and not the OS, the application can redirect the attestation to the attacker's remote platform where he controls the OS as well. In such cases, the relay enables \emph{digital} side-channel attacks that require system privileges. Several such attacks have been recently demonstrated against SGX~\cite{moghimi2017cachezoom, sgxcache, gotzfried2017cache}.
+Another possible benefit of relay attacks is that it may enable \emph{privilege escalation}. In cases where the attacker has only compromised the user-space application that manages the enclave and not the OS, the application can redirect the attestation to the attacker's remote platform where he controls the OS as well. In such cases, the relay enables \emph{digital} side-channel attacks that require system privileges. Several such attacks have been recently demonstrated against SGX~\cite{moghimi2017cachezoom, sgxcache, gotzfried2017cache}.
 
 
 \begin{figure}[t]
@@ -174,18 +172,18 @@ Another possible benefit of relay attacks is that it may enable \emph{privilege 
 \end{figure}
 
 
-\myparagraph{Attacks that depend on timing of events}    
-The third, and perhaps the most subtle, implication of relay is that it can also enable software-based side-channel attacks that would not be possible to launch on the target platform due to \emph{timing of certain events}. These events include, but are not restricted to the provisioning of secrets to the enclave, the possible disinfection of the target platform from malicious software, and the discovery of a new side-channel attack. 
+\myparagraph{Attacks that depend on the timing of events}    
+The third, and perhaps the most subtle, implication of relay is that it can also enable software-based side-channel attacks that would not be possible to launch on the target platform due to \emph{timing of certain events}. These events include but are not restricted to the provisioning of secrets to the enclave, the possible disinfection of the target platform from malicious software, and the discovery of a new side-channel attack. 
 
-We group the relative ordering of these events into two cases: A and B. Case A covers event sequences that only lead to attacks which are independent of relay and Case B covers event sequences in which redirection gives extra capabilities to the adversary. Below, and in Figure~\ref{fig:timeLine}, we provide examples of sequences belonging to these two cases:
+We group the relative ordering of these events into two cases: A and B. Case A covers event sequences that only lead to attacks that are independent of relay, and Case B covers event sequences in which redirection gives extra capabilities to the attacker. Below, and in Figure~\ref{fig:timeLine}, we provide examples of sequences belonging to these two cases:
 
 \begin{enumerate}
-    \item[]\emph{Case A: independent of relay.} A digital side-channel is independent of relay if the adversary could perform it on the target platform as well. An example of such case is shown th timeline depicted in Figure~\ref{fig:timeLine}, where a new attack is discovered after secret provisioning but before the target platform OS is disinfected.
+    \item[]\emph{Case A: independent of relay.} A digital side-channel is independent of relay if the attacker could perform it on the target platform as well. An example of such a case is shown in the timeline depicted in Figure~\ref{fig:timeLine}, where a new attack is discovered after secret provisioning but before the target platform, OS is disinfected.
     
 
-    \item[]\emph{Case B: attack enabled by relay.} Case B is reached whenever it occurs that by using a side channel the enclave is exploitable on the attacker's platform, but not on the target platform. 
+    \item[]\emph{Case B: attack enabled by relay.} Case B is reached whenever it occurs that by using a side-channel, the enclave is exploitable on the attacker's platform but not on the target platform. 
     %In this case, by having the foresight to provision the enclave on its platform, the attacker has the possibility to launch an attack on an enclave that would otherwise be secure on the target platform. 
-    A timeline of such case is shown in Figure~\ref{fig:timeLine}, where at the time of attestation and secret provisioning, the enclave is hardened against all known digital side-channel attacks (using tools like Raccoon~\cite{raccoon}, ZeroTrace~\cite{zerotrace} or Obfscuro~\cite{obfscuro}). After secret provisioning, the OS compromise is detected and cleaned. Later, a new side-channel attack vector (that is not prevented by the used tools) is discovered. If the adversary performed redirection and the secret was provisioned to the attacker's machine, the new side channel is exploitable. Without the relay, the attack is not possible.
+    A timeline of such a case is shown in Figure~\ref{fig:timeLine}, where at the time of attestation and secret provisioning, the enclave is hardened against all known digital side-channel attacks (using tools like Raccoon~\cite{raccoon}, ZeroTrace~\cite{zerotrace} or Obfscuro~\cite{obfscuro}). After secret provisioning, the OS compromise is detected and cleaned. Later, a new side-channel attack vector (that is not prevented by the used tools) is discovered. If the attacker performed redirection and the secret was provisioned to the attacker's machine, the new side-channel is exploitable. Without the relay, the attack is not possible.
     
 
 \end{enumerate}
@@ -197,26 +195,26 @@ We group the relative ordering of these events into two cases: A and B. Case A c
 Next, we review commonly suggested solutions and their limitations.
 
 \myparagraph{Trust on first use} 
-A common ``solution'' in the research literature is to rely on \emph{trust on first use} (TOFU)~\cite{tofu}. Simple TOFU solutions assume that the OS is clean at the time of attestation or perform attestation only immediately after fresh OS installation. Both of these approaches have obvious security and deployment problems. OS re-installation is not always possible and trusting the OS, even if momentarily, is undesirable (and violates the SGX's trust model).
+A common ``solution'' in the research literature is to rely on \emph{trust on first use} (TOFU)~\cite{tofu}. Simple TOFU solutions assume that the OS is clean at the time of attestation or perform attestation only immediately after fresh OS installation. Both of these approaches have obvious security and deployment problems. OS re-installation is not always possible. Moreover, trusting the OS, even if momentarily, is undesirable (and violates the SGX's trust model).
 
 \myparagraph{SGX attestation variants}
 As we explain in Section \ref{sec:background:attestation}, SGX supports different variants of remote attestation. Unfortunately, none of these schemes prevents relay attacks without some form of TOFU assumption.
 
 \begin{enumerate}
-	\item \emph{The EPID attestation scheme} is based on group signatures, and thus the remote verifier cannot distinguish between attestation responses that are received from the expected target platform or the adversary's platform. To accept a successful attestation, the remote verifier must rely on trust on first use. 
+	\item \emph{The EPID attestation scheme} is based on group signatures, and thus the remote verifier cannot distinguish between attestation responses that are received from the expected target platform or the attacker's platform. To accept a successful attestation, the remote verifier must rely on trust on first use. 
 
-	\item \emph{The linkable EPID attestation mode} allows the remote verifier to check if he has attested the same platform before, but the first attestation protocol run is vulnerable to relay attacks, and therefore also in this case the remote verifier must assume TOFU. 
+	\item \emph{The linkable EPID attestation mode} allows the remote verifier to check if he has attested the same platform before, but the first attestation protocol run is vulnerable to relay attacks, and therefore also, in this case, the remote verifier must assume TOFU. 
 
-	\item \emph{The DCAP scheme} allows corporations to operate their own local attestation services after an enrollment phase. However, if the adversary controls the target platform during the enrollment, he can replace the enrolled platform identifier PPID with the identifier of his own platform PPID' and enroll the adversary's platform instead. Thus, also the DCAP variant scheme requires trust on first use. In addition, the entire corporate key management system must be trusted at the time of the enrollment (and after it).
+	\item \emph{The DCAP scheme} allows corporations to operate their own local attestation services after an enrollment phase. However, if the attacker controls the target platform during the enrollment, he can replace the enrolled platform identifier PPID with the identifier of his own platform PPID' and enroll the attacker's platform instead. Thus, also the DCAP variant scheme requires trust on first use. In addition, the entire corporate key management system must be trusted at the time of the enrollment (and after it).
 \end{enumerate}
 
 
 \myparagraph{Non-anonymous attestation}
-Because SGX's attestation protocol support anonymity features, like the EPID signature scheme, one may think that relay attacks are caused by such privacy protection mechanism. However, such reasoning is incorrect. Even if all anonymity features would be removed from attestation, the problem of relay attacks would still persist. The root cause of relay attacks is that certified keys can be securely installed to processors at the time of manufacturing, but the processor ownership by private individuals or companies is established much later. Therefore, common PKI mechanism do not eliminate relay attacks --- unless the processor manufacturing and distribution model is completely changed such that factories start to manufacture and certify customers-specific processors batches on demand (which would be very expensive).
+Because SGX's attestation protocol support anonymity features, like the EPID signature scheme, one may think that relay attacks are caused by such a privacy protection mechanism. However, such reasoning is incorrect. Even if all anonymity features would be removed from attestation, the problem of relay attacks would still persist. The root cause of relay attacks is that certified keys can be securely installed to processors at the time of manufacturing, but the processor ownership by private individuals or companies is established much later. Therefore, common PKI mechanisms do not eliminate relay attacks --- unless the processor manufacturing and distribution model is completely changed such that factories start to manufacture and certify customer-specific processors batches on demand (which would be very expensive).
 
 
 \myparagraph{Other TOFU variants}
-Recent research papers use slightly different TOFU variants. For example, the \textsc{Rote} system~\cite{matetic2017rote} assumes fresh OS installation at system initialization time and for each used platform it requires a local administrator to input a credential to the enclaves. As another example, in the \textsc{VC3} system~\cite{schuster2015vc3} enclaves generate a public/private key pair at the time of trusted initialization, output the public key and seal the private key. The public key can be sent to a trusted authority for certification, which then enables clients to securely connect to enclaves. Both of these solutions essentially avoid insecure attestation by pre-authorizing known enclaves during a setup phase that is assumed trusted. 
+Recent research papers use slightly different TOFU variants. For example, the \textsc{Rote} system~\cite{matetic2017rote} assumes fresh OS installation at system initialization time, and for each used platform, it requires a local administrator to input a credential to the enclaves. As another example, in the \textsc{VC3} system~\cite{schuster2015vc3} enclaves generate a public/private key pair at the time of trusted initialization, output the public key, and seal the private key. The public key can be sent to a trusted authority for certification, which then enables clients to securely connect to enclaves. Both of these solutions essentially avoid insecure attestation by pre-authorizing known enclaves during a setup phase that is assumed trusted. 
 
 In general, TOFU solutions suffer from the following limitations:
 
@@ -227,7 +225,7 @@ In general, TOFU solutions suffer from the following limitations:
 
   \item \emph{Pre-defined enclaves:} Solutions that only work with enclaves that are known at the time of initialization are not applicable to scenarios like cloud computing platforms where users need to install new enclaves after platform installation. 
 
-  \item \emph{Large temporary TCB:} Modern operating systems have a large TCB and trusting the OS even temporarily is unideal.
+  \item \emph{Large temporary TCB:} Modern operating systems have a large TCB, and trusting the OS even temporarily is unideal.
 
   \item \emph{Online authorities:} Solutions where a trusted authority needs to either certify or revoke new enclaves typically require that the authorities are online, which increases their attack surface.
 \end{enumerate}
