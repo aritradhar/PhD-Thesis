@@ -3,9 +3,5 @@
 
 
 
-% In this paper, we investigate TEEs that span multiple hardware components, including the processor and external peripherals. We propose the first TEE architecture, \name, which allows a dynamic reconfiguration of the hardware TCB and that can be used for general-purpose platforms. %\name allows \nameenclave{}s to utilize a dynamic hardware TCB and extend to any type of peripheral.
-% We identify key security properties needed to make TEEs extend to the whole platform, namely platform-wide attestation and platform awareness, and show how these properties can be achieved feasibly in a prototype. We implement a \name system on top of  Keystone, introducing only 600 LoC to the stock Keystone codebase. Finally, we present an fpga prototype based on an open-source RISC-V processor, and demonstrate the integration of a large scale accelerator with \name{}.
-
-%This paper observes an apparent disconnect between the progress in computer architecture and security. While modern computing architectures increasingly rely on \sphw to accelerate computation, trusted computing with TEEs remains confined in the CPU. Following this observation,
 We introduce \name, a secure platform design with a configurable hardware and software TCB. \name allows to integrate \sphw into TEEs, something that before was not possible without violating TEEs' adversary model.  
 \name provides two new security properties: platform-wide attestation and platform awareness. The former expands on the traditional notion of the attestation to provide a complete view of the platform's state, and platform awareness provides mechanisms to the enclave to cope with the platform's change, such as the disconnection of a \sphw. We present a prototype based on RISC-V Keystone, which shows that \name is feasible and only adds $600$ LoC to the TCB.
