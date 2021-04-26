@@ -3,6 +3,17 @@
 \usepackage[T2A,T1]{fontenc}
 \usepackage[utf8]{inputenc}
 
+% define page size and margins for the final print
+% \usepackage{geometry}
+% \geometry{paperwidth=18.91cm,paperheight=24.589cm,
+% bindingoffset=0.89cm, % gutter
+% inner=2cm, % inside margin
+% outer=4cm, % outside margin
+% vmargin=2.5cm, % top and bottom margins
+% marginparsep=0.6cm,
+% marginparwidth=3cm,
+% }
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Languages
 \usepackage[main=english,ngerman]{babel}
@@ -21,6 +32,20 @@
   %eulermath,%
   a5paper,%
 }{classicthesis}
+
+
+ \usepackage{geometry}
+ \geometry{
+ %a5paper,
+ paperwidth=14.9cm,paperheight=21.0cm,
+ bindingoffset=0.25cm, % gutter
+ inner=2cm, % inside margin
+ outer=4cm, % outside margin
+ vmargin=2.5cm, % top and bottom margins
+ marginparsep=0.6cm,
+ marginparwidth=3cm,
+ }
+%%%%%%
 
 % Meta
 \input{preamble/meta}
