@@ -76,7 +76,7 @@ This process is depicted in Figure~\ref{fig:boot-init} and it proceeds as follow
 
   \item[\two] The remote verifier uploads a new \app on the target platform.
 
-  \item[\three] The \nameclave performs local attestation (see~Section~\ref{sec:background_proximitee}) on the \app that binds its public key to the attestation. %The local attestation ensures that i) the \app is on the same physical platform, and ii) the code integrity of the \app.
+  \item[\three] The \nameclave performs local attestation (refer to~Section~\ref{ch:background:SGX:local}) on the \app that binds its public key to the attestation. %The local attestation ensures that i) the \app is on the same physical platform, and ii) the code integrity of the \app.
 
   \item[\four] The \nameclave sends the measurement and the public key of the \app to \device. \device establishes a secure channel to the \app and sends the measurement of the enclave to the remote verifier. The remote verifier then approves the communication to the \app.
 

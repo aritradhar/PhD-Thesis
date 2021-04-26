@@ -23,7 +23,6 @@ Another strategy for the adversary to evade the defending mechanisms is to modif
 
 
 \myparagraph{Concurrent Data Modification} The attacker may try to modify the data of a text field when the user in the the process of filling up another. As described in Section~\ref{sec:systemDesign:phone:inputerSupervision}, \sysname phone app ensures that it only records the input data from the screen that is in focus and filled up by the user. In case of concurrent modification of the active input element by both the adversary and the user, we assume that the user detects such changes (which are similar to autocorrect not behaving according to user's expectation) and will not move the focus to the next input element until they are satisfied with its content.
-We evaluate this assumption in Section~\ref{ssec:userStudyAttackEvaluation} and discuss further measures to reduce this assumption about user behavior in Section~\ref{integriscreen:sec:discussion}.
 
 
 \myparagraph{Rapid change of focus} A potential attack is to change the focused element from one element to another, modify the data there and go back to the first one. This entire process could be extremely fast without the user noticing it in order to evade the concurrent form modification protection. However, the cool-down time for focus change (Cf.Section~\ref{sec:systemDesign:phone:inputerSupervision}) prevents such attacks. The users are thus likely to detect such sudden changes in focus during data input (for at least 2 seconds).

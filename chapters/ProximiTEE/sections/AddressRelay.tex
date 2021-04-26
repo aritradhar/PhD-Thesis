@@ -64,7 +64,7 @@ Figure~\ref{fig:systemSetUp} illustrates the attestation protocol that proceeds 
 
   \item[\two] The untrusted application creates and starts the attestation target enclave.%
 
-  \item[\three] \device performs the standard remote attestation to verify the code configuration of the enclave with the help of the IAS server or using a custom DCAP procedure (see Section~\ref{sec:background_proximitee}). In the attestation protocol, the device learns the public key of the attested enclave.%
+  \item[\three] \device performs the standard remote attestation to verify the code configuration of the enclave with the help of the IAS server or using a custom DCAP procedure (see Section~\ref{ch:background:SGX:remote}). In the attestation protocol, the device learns the public key of the attested enclave.%
 
   \item[\four] \device establishes a secure channel (e.g., \tls) to the enclave using that public key.
 

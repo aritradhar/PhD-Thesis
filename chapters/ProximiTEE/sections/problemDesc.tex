@@ -198,7 +198,7 @@ Next, we review commonly suggested solutions and their limitations.
 A common ``solution'' in the research literature is to rely on \emph{trust on first use} (TOFU)~\cite{tofu}. Simple TOFU solutions assume that the OS is clean at the time of attestation or perform attestation only immediately after fresh OS installation. Both of these approaches have obvious security and deployment problems. OS re-installation is not always possible. Moreover, trusting the OS, even if momentarily, is undesirable (and violates the SGX's trust model).
 
 \myparagraph{SGX attestation variants}
-As we explain in Section \ref{sec:background:attestation}, SGX supports different variants of remote attestation. Unfortunately, none of these schemes prevents relay attacks without some form of TOFU assumption.
+As we explain in Section~\ref{ch:background:SGX}, SGX supports different variants of remote attestation. Unfortunately, none of these schemes prevents relay attacks without some form of TOFU assumption.
 
 \begin{enumerate}
 	\item \emph{The EPID attestation scheme} is based on group signatures, and thus the remote verifier cannot distinguish between attestation responses that are received from the expected target platform or the attacker's platform. To accept a successful attestation, the remote verifier must rely on trust on first use. 

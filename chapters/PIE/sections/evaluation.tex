@@ -11,7 +11,7 @@ In this section, we describe our prototype of \name and its evaluation.
 \end{figure}
 
 \subsection{Implementation}
-
+\label{sec:eval:impl}
 
 \myparagraph{FPGA prototype}
 
@@ -32,6 +32,7 @@ In Keystone, every enclave runs on top of a minimal runtime that handles syscall
 On the untrusted OS side, there are many components to make it easier to create and run enclaves such as an SDK and a kernel driver. These components also required numerous changes. However, they are not trusted and as such do not increase the TCB. 
 
 \subsection{Two Use Case Scenarios}
+\label{sec:eval:impl:usecase}
 
 \myparagraph{IO peripherals and sensors}  In our prototype, we emulated the a number of simple \sphw (e.g., keyboard, mice, simple sensors, etc.) on the Arduino Due microcontroller prototyping board (\two in Figure~\ref{fig:prototype}) using Arduino HID library. The Due's GPIO pins are connected to the FPGA's PMOD pins over two pairs of $8$ wires for bi-directioanl data. We modify the $I^2C$ protocol to communicate data between the Due and the FPGA. The physical limitations of the PMOD pins restricts the channel's frequency to $8$ MHz yielding 1 MB/s bandwidth. In the real world, the physical interfaces between the \sphw and the platform could be diverse such as USB, PCI-E, etc. As a concrete example, we implemented a keyboard with the Arduino board and wrote a simple keyboard driver that interprets the GPIO signal from the Arduino. Additionally, we use a PMOD interface-based seven-segment display unit as an output peripheral (\three in Figure~\ref{fig:prototype}). The driver contains around 50 LoC and is incorporated into our example controller enclave. Additionally, we use the \texttt{USBHost} library that can emulate a number of USB peripheral devices on the Arduino. We use the Arduino cryptographic library for signing the challenge messages from the \ce during the local attestation. The Due uses 128-bit AES (CTR mode) for encryption, HMAC\_SHA256 for message authentication, Curve25519 for key exchange, and SHA3 for the hash function. We use \texttt{DueFlashStorage} library to implement the NVM flash that contains the key materials for the peripheral attestation. Our prototype implementation is approximately 2.5K lines of code.
 
