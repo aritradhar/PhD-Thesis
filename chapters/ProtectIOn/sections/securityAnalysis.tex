@@ -6,7 +6,6 @@ In this section, we will informally analyze the security of \name. We divide the
 \subsection{Integrity}
 \label{sec:securityAnalysis:integrity}
 
-First we look into the integrity property.
 
 \myparagraph{Modifying IO operations} As only the \device can interact with the overlaid UI, the attacker can not manipulate the IO operations with the overlaid UI. Moreover, the attacker cannot submit arbitrary data to the remote server because the latter accepts only inputs signed by the \device.
 
