@@ -78,7 +78,7 @@ Local attestation (also known as the Intra-Platform Attestation) enables two enc
   \item [\three] After receiving the \texttt{REPORT} from Enclave A, Enclave B executes the following steps:
   
    \begin{enumerate}
-     \item  Enclave B calls \texttt{EGETKEY} to retrieve its Report Key, recomputes the \texttt{MAC} over the \texttt{REPORT} structure, and compares the result with the MAC accompanying the \texttt{REPORT}. A match in the \texttt{MAC} value confirms that A is indeed an enclave running on the same platform as Enclave B, and as such, Enclave A is running in an environment that abides by Intel SGX's security model.
+     \item  Enclave B calls \texttt{EGETKEY} to retrieve its Report Key, recomputes the \texttt{MAC} over the \texttt{REPORT} structure, and compares the result with the \texttt{MAC} accompanying the \texttt{REPORT}. A match in the \texttt{MAC} value confirms that A is indeed an enclave running on the same platform as Enclave B, and as such, Enclave A is running in an environment that abides by Intel SGX's security model.
      \item Once the firmware and hardware components of the TCB have been verified, and Enclave B can then examine Enclave A's \texttt{REPORT} to verify the software components of the TCB. \texttt{MRENCLAVE} reflects the contents of the software image running inside the enclave. \texttt{MRSIGNER} reflects the sealer's identity.
      \item Enclave B can then reciprocate by creating a \texttt{REPORT} for enclave A by using the \texttt{MRENCLAVE} value from the \texttt{REPORT} it just received.
      \item Enclave B transmits its \texttt{REPORT} to Enclave A. Enclave A can then similarly verify the report to enclave B, confirming that Enclave B exists on the same platform as Enclave A.
@@ -104,8 +104,8 @@ Remote attestation enables an external verifier to check whether a specific encl
 
 \myparagraph{EPID attestation}
 
-The EPID remote attestation is an interactive protocol between three parties: the remote verifier; the attested SGX platform; and the Intel Attestation Service (IAS), an online service operated by Intel. Each SGX platform includes a system service called \emph{Quoting Enclave} (QE) that has exclusive access to an \texttt{EPID} key. \texttt{EPID} is a group signature scheme that allows a platform to sign objects without uniquely identifying the platform or linking different signatures. Instead, each signer belongs to a "group", and verifiers use the group's public key to verify signatures. \texttt{EPID} supports two modes of signatures. In the fully anonymous mode of \texttt{EPID} a verifier cannot associate a giaven signature with a particular member of the group. In Pseudonymous mode, an \texttt{EPID} verifier can determine whether it has verified the platform previously.
-One example flow of the \texttt{EPID} remote attestation is shown in Figure~\ref{fig:ra_bg}. The steps are as the following:
+The EPID remote attestation is an interactive protocol between three parties: the remote verifier; the attested SGX platform; and the Intel Attestation Service (IAS), an online service operated by Intel. Each SGX platform includes a system service called \emph{Quoting Enclave} (QE) that has exclusive access to an EPID key. EPID is a group signature scheme that allows a platform to sign objects without uniquely identifying the platform or linking different signatures. Instead, each signer belongs to a "group", and verifiers use the group's public key to verify signatures. EPID supports two modes of signatures. In the fully anonymous mode of EPID a verifier cannot associate a giaven signature with a particular member of the group. In Pseudonymous mode, an EPID verifier can determine whether it has verified the platform previously.
+One example flow of the EPID remote attestation is shown in Figure~\ref{fig:ra_bg}. The steps are as the following:
 
 
 \begin{enumerate}
