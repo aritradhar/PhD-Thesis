@@ -21,9 +21,9 @@ Malicious peripherals can try to access protected memory through rogue DMA reque
 Mechanisms to restrict DMA requests already exist in other architectures, e.g., AMD IOMMU~\cite{amd2007iommu}, Intel VT-d~\cite{abramson2006vtd}, and ARM SMMU~\cite{arm2013smmu}. These mechanisms process every DMA request and verify its validity according to some access policy. Any memory access attempt that does not fit the access policy is blocked. Currently, the RISC-V standard does not contain a mechanism to limit such DMA requests. However, an input-output variant of a PMP called IOPMP~\cite{IOPMP} is an upcoming proposal in RISC-V. IOPMP enforces the configured PMP rules for non-RISC-V peripherals. Since our current prototype does not have any peripheral interface open to DMA requests, we do not need such protection. However, platforms that support DMA could implement mechanisms like IOPMP.
 
 \myparagraph{Malicious application or controller enclaves}
-The attacker-controlled OS can spawn malicious \app{}s and \ce{}s. Users remotely attest before providing any secret to the \app. During the platform-wide attestation, the user checks the attestation report of both the \app and \ce and aborts if they do not match with the intended enclave measurements. The platform-wide attestation also reveals any misconfiguration of communication links by an adversary. Note that this only verifies the static configuration of communication links. Upon any change to this setup, the external verifier might need to re-attest (c.f. \Cref{sec:security:lifecycleevents}). 
+The attacker-controlled OS can spawn malicious \app{}s and \ce{}s. Users remotely attest before providing any secret to the \app. During the platform-wide attestation, the user checks the attestation report of both the \app and \ce and aborts if they do not match with the intended enclave measurements. The platform-wide attestation also reveals any misconfiguration of communication links by an adversary. Note that this only verifies the static configuration of communication links. Upon any change to this setup, the external verifier might need to re-attest (refer to~\Cref{sec:security:lifecycleevents}). 
 
-We require the \ce{} to provide isolation between multiple connected \app{}s (c.f. \ref{sec:programmingModel:systemComponents:multiApp}). Hence an attacker-controlled \app cannot access the confidential data of other \app{}s in the same \ce{}s.
+We require the \ce{} to provide isolation between multiple connected \app{}s (refer to~\Cref{sec:programmingModel:systemComponents:multiApp}). Hence an attacker-controlled \app cannot access the confidential data of other \app{}s in the same \ce{}s.
 
 Vulnerabilities within any of these enclaves could break the isolation guarantees of the data in that specific enclave. However, such an attack remains contained in the compromised enclave and cannot spread to connected enclaves. E.g., if a vulnerability in a \ce{} is found, only the data within that enclave is revealed. Any data that does not pass through the compromised \ce remains confidential. In this way, we provide defense-in-depth and reduce the potential impact of vulnerabilities.
 
@@ -37,15 +37,15 @@ While we do not evaluate any defenses against side channel attacks, we discuss p
 
 \begin{enumerate}
   
-\item \textbf{Traditional side channel attacks against TEEs.}
+\item \emph{Traditional side channel attacks against TEEs.}
 Microarchitectural side channels in traditional TEEs leverage shared resources such as the cache~\cite{brasser2017software}, branch predictor~\cite{lee2017inferring}, and memory translation~\cite{xu2015controlled}. There exist several defenses against such attacks. Spatial partitioning of the cache in the form of cache coloring can fully defend against all cache based side channel attacks~\cite{costan2016sanctum,zhang2009cachecoloring,zhaosonicboom}. Similarly, other proposals have called for cache randomization~\cite{brasser2019dr,werner2019scattercache}. Processor features such as transactional memory have also been shown to mitigate cache attacks with low overhead~\cite{gruss2017strongsidechannel}. To the best of our knowledge, all of these proposals can be applied to \name{} due to the similar internal structure to traditional TEEs.
 
 % Other RISC-V implementation such as SonicBOOM~\cite{zhaosonicboom} provides an out-of-order architecture that provides a number of side channel protections such as cache partitioning, cache timing obfuscation etc.\aritra{we can expand this by saying how the other RISC-V implementations can mitigate some of the side channel attacks.} 
 
-\item \textbf{Side channel attacks within \sphw.}
+\item \emph{Side channel attacks within \sphw.}
 \Sphw contain shared resources such as caches, and thus are equally vulnerable as the processors~\cite{naghibijouybari2018rendered,ramesh2018fpga,visor}. However, mitigating these attacks is an orthogonal problem.
 
-\item \textbf{Bus contention} The introduction of peripherals into TEEs also implicates the bus as a new shared resource. An adversary could measure the throughput of her connection over the bus and observe any contention on the bus leading to less throughput.
+\item \emph{Bus contention} The introduction of peripherals into TEEs also implicates the bus as a new shared resource. An adversary could measure the throughput of her connection over the bus and observe any contention on the bus leading to less throughput.
 Bus contention, however only exposes the access patterns of the peripherals. In extreme cases, the timing of bus contention could leak data, e.g., one side of the branch performs bus accesses while the other does not. However, in normal cases, the data between the peripherals and their corresponding processor-local enclaves usually remains inaccessible to the attacker.
 
 \end{enumerate}

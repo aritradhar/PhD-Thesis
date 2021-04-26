@@ -54,12 +54,12 @@ We list \name{}'s performance in the following categories:
 
 
 \begin{enumerate}
-\item \textbf{Performance of enclave communication}
+\item \emph{Performance of enclave communication}
 %A comparison between traditional enclave communication and our shared memory model is quite pointless. 
 Since \name{} supports shared memory to communicate, its communication speed is the same as what the memory bus provides. This is much faster compared to traditional TEEs, where enclaves communicate through the OS requiring extra encryption steps. Concurrent work also demonstrates the performance gains that can be extracted from enclave to enclave communication using shared memory~\cite{yu2020elasticlave}.
 
 
-\item \textbf{Context switches}
+\item \emph{Context switches}
 Context switches are critical for any system and determine its responsiveness and a part of its performance.
 We performed experiments for various sizes of shared memory region and gathered various context switch latencies in \Cref{fig:ctxswitches}. We also measured the time of enclave creation which is mostly dominated by copying all the enclave data from the untrusted OS to the protected memory region and thus is expected to be linear in terms of shared memory size. 
 
@@ -81,12 +81,12 @@ These measurements highlight that the context switches are independent on the sh
 \end{table}
 
 
-\item \textbf{PMP overhead}
+\item \emph{PMP overhead}
 We measure the hardware overhead of PMP units in terms of the logic, the caches, and the total amount in NAND2 gate equivalents within the processor pipeline for 0, 8, and 16 PMP entries, and present them in \Cref{tab:eval:ariane}. We instantiate the Ariane core~\cite{ariane} with the default configuration: including the floating point unit, 32KiB L1 data cache, 16KiB L1 instruction cache, branch history table of size 64, and a 16-entry branch target buffer. We synthesized this instantiation of the core in a 22nm technology at 1GHz. %In order to provide a meaningful comparison, we provide the separate size of the logic, the caches, and the total amount in NAND2 gate equivalents in \Cref{tab:eval:ariane}. 
 
-\item \textbf{IO peripherals and sensors} The communication overhead between the platform and the peripheral device emulated by the Arduino due is very small. At the time of initialization, the peripheral and the platform exchanges handshake messages to perform local attestation. The initial handshake message is $60$ bytes. Every message size of our modified $I^2C$ protocol is 32 bytes. The combined latency introduced by signing averages around 60 $\mu$s.
+\item \emph{IO peripherals and sensors} The communication overhead between the platform and the peripheral device emulated by the Arduino due is very small. At the time of initialization, the peripheral and the platform exchanges handshake messages to perform local attestation. The initial handshake message is $60$ bytes. Every message size of our modified $I^2C$ protocol is 32 bytes. The combined latency introduced by signing averages around 60 $\mu$s.
 
-\item \textbf{Accelerator} Our modification of the accelerator cores increases size by around 15\% and slows down from 750MHz to 666MHz due to the impact of the PMP access checks on the critical path. Note that this may not reflect the general case but rather reflects an upperbound. The change in area of a single core complex (core, FPU, and an integer subsystem) can be found in \Cref{tab:areasnitch}. In total, the area of the entire accelerator only increased by around 0.6\%, with most of the area being occupied by the floating point units.
+\item \emph{Accelerator} Our modification of the accelerator cores increases size by around 15\% and slows down from 750MHz to 666MHz due to the impact of the PMP access checks on the critical path. Note that this may not reflect the general case but rather reflects an upperbound. The change in area of a single core complex (core, FPU, and an integer subsystem) can be found in \Cref{tab:areasnitch}. In total, the area of the entire accelerator only increased by around 0.6\%, with most of the area being occupied by the floating point units.
 %The implementation and verification of the firmware took another engineering week. 
 \end{enumerate}
 
