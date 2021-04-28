@@ -2,18 +2,18 @@
 \begin{table*}[t]
 \centering
 \resizebox{\textwidth}{!}{
-  \begin{tabular}{l | l | c  c  c  c | c  c  c  c | c c} 
+  \begin{tabular}{l !{\vline width 1pt} l !{\vline width 1pt} c  c  c  c !{\vline width 1pt} c  c  c  c !{\vline width 1pt} c c} 
     \multicolumn{2}{c}{\multirow{2}{*}{Security Requirements} \ldelim\{{2}{-10mm}[]} & \multicolumn{4}{c}{} & \multicolumn{4}{c}{\cellcolor{Gray}\textbf{R1}} & \multicolumn{2}{c}{} \\
     %\multicolumn{2}{c}{} & \multicolumn{4}{c}{} & \multicolumn{3}{c}{} & \multicolumn{3}{c}{} \\
     %\multicolumn{2}{c}{} & \multicolumn{8}{c}{} & \multicolumn{2}{c}{} \\
-    \multicolumn{2}{c}{} & \multicolumn{4}{c|}{\cellcolor{Gray}\textbf{R4}} & \multicolumn{3}{c}{\cellcolor{Gray}\textbf{R2}} & \multicolumn{1}{c}{} & \multicolumn{2}{c}{\cellcolor{Gray}\textbf{R3a/b}} \\ \hline
+    \multicolumn{2}{c}{} & \multicolumn{4}{c!{\vline width 1pt}}{\cellcolor{Gray}\textbf{R4}} & \multicolumn{3}{c}{\cellcolor{Gray}\textbf{R2}} & \multicolumn{1}{c}{} & \multicolumn{2}{c}{\cellcolor{Gray}\textbf{R3a/b}} \\ \Xhline{1pt}
    \multirow{4}{*}{Category}
-   & \multicolumn{1}{c|}{\multirow{4}{*}{Solutions}} &\multicolumn{4}{c|}{Trust Assumption} & \multicolumn{4}{c| }{IO Security Features} & \multicolumn{2}{c} {Usability}\\  \cline{3-12}
-   & &\multicolumn{2}{c|}{Hardware} & \multicolumn{2}{c|}{Software} & \multicolumn{3}{c|}{Input} & \multicolumn{1}{c|}{Output} & \\  \cline{3-10}
+   & \multicolumn{1}{c!{\vline width 1pt}}{\multirow{4}{*}{Solutions}} &\multicolumn{4}{c!{\vline width 1pt}}{Trust Assumption} & \multicolumn{4}{c!{\vline width 1pt} }{IO Security Features} & \multicolumn{2}{c} {Usability}\\  \Xcline{3-12}{1pt}
+   & &\multicolumn{2}{c!{\vline width 1pt}}{Hardware} & \multicolumn{2}{c!{\vline width 1pt}}{Software} & \multicolumn{3}{c!{\vline width 1pt}}{Input} & \multicolumn{1}{c!{\vline width 1pt}}{Output} & \\  \Xcline{3-10}{1pt}
    %\rowcolor{Gray}
-    & & Requires & \multicolumn{1}{c|}{External} & Isolated & Hypervisor/ & \multirow{2}{*}{Keyboard} & \multirow{2}{*}{Pointer} & \multicolumn{1}{c|}{\multirow{2}{*}{Touch}} & \multirow{2}{*}{Display} & No & \multirow{2}{*}{PnP}\\
-   \cellcolor{white} & & TEE & \multicolumn{1}{c|}{trusted HW} & API/Drivers & OS & & & \multicolumn{1}{c|}{} & & SI &\\
-   \hline    
+    & & Requires & \multicolumn{1}{c!{\vline width 1pt}}{External} & Isolated & Hypervisor/ & \multirow{2}{*}{Keyboard} & \multirow{2}{*}{Pointer} & \multicolumn{1}{c!{\vline width 1pt}}{\multirow{2}{*}{Touch}} & \multirow{2}{*}{Display} & No & \multirow{2}{*}{PnP}\\
+   \cellcolor{white} & & TEE & \multicolumn{1}{c!{\vline width 1pt}}{trusted HW} & API/Drivers & OS & & & \multicolumn{1}{c!{\vline width 1pt}}{} & & SI &\\
+   \Xhline{1pt}    
     \rowcolor{Gray}
     \cellcolor{white} & Shadowcrypt~\cite{he2014shadowcrypt}                  &          &      &      \yes      &  \yes    &               & \yes     &           &   &    &\yes\\
     
@@ -55,9 +55,9 @@
     \cellcolor{white} \cellcolor{white}\parbox[t]{5mm}{\multirow{-6}{*}{\rotatebox[origin=c]{90}{\textbf{External HW}}}}  \ldelim\{{-6}{0mm}[] &Terra~\cite{garfinkel2003terra}                 &          & \yes  & \yesNope     &      &              &       &           &   &  & \\ 
     \\[-1em]
     \rowcolor{white}
-    \hline
+    \Xhline{1pt}
     \cellcolor{white}&\textbf{\name}                    &          & \yes  &          &      & \yes             & \yes     & \yes         & \yes & \yes & \yes\\
-    \hline
+    \Xhline{1pt}
     \multicolumn{12}{c}{\multirow{2}{*}{\yes~requires/supports \hspace{1cm} \yesNope ~partially requires/supports}} \\
   \end{tabular}
   }
