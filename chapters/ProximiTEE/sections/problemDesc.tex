@@ -8,7 +8,7 @@ In this section, we provide an analysis of relay attacks on SGX.
   %\includegraphics[trim={0 13.4cm 11cm 0},clip,width=\linewidth]{relayAttack.pdf}
   %\includegraphics[trim={0cm 9cm 15.8cm 0},clip,width=0.75\linewidth]{chapters/ProximiTEE/figures/relayAttack2.pdf}
   \includegraphics[trim={0 0 4.5cm 0},clip,width=0.9\linewidth]{chapters/ProximiTEE/images_new/relay.pdf}
- \caption[Relay attack]{\textbf{Relay attack.} The attacker redirects attestation to his own platform which gives him increased (side-channel and kernel-level) abilities to attack the attested enclave.}
+ \caption[An example relay attack]{\textbf{An example relay attack.} The attacker redirects attestation to his own platform which gives him increased (side-channel and kernel-level) abilities to attack the attested enclave. The verifier attest to the enclave running on the attacker's platform rather than the target platform and assigns her secret to the attacker's platform.}
 
  \label{fig:SystemModel}
 \end{figure}
@@ -26,8 +26,17 @@ We consider a system model shown in Figure~\ref{fig:SystemModel} that consists o
 The relay attacker controls the OS and all other privileged software on the attacker's platform \emph{permanently} and has physical access to that platform. The attacker also controls the network between the target platform and his platform. At the time of the attestation, the attacker has not been able to extract attestation or sealing keys from his platform or any other SGX processor.
 
 
-\myparagraph{The process of the relay attack} The relay attacker can redirect the attestation requests intended for the target platform to his platform, as shown in Figure~\ref{fig:SystemModel}. This is a realistic attack for two reasons. First, in the SGX attacker's model, the attacker can control the OS and, hence, easily redirect any network request the target platform receives. Second, even if the attacker cannot compromise the OS in the target platform, it might be able to exploit some vulnerability of the untrusted application managing the enclave. The exploit might allow the attacker to manipulate the application's control flow to redirect attestation requests to any platform he desires.
+\myparagraph{The process of the relay attack} The relay attacker can redirect the attestation requests intended for the target platform to his platform, as shown in Figure~\ref{fig:SystemModel}. This is a realistic attack for two reasons. First, in the SGX attacker's model, the attacker can control the OS and, hence, easily redirect any network request the target platform receives. Second, even if the attacker cannot compromise the OS in the target platform, it might be able to exploit some vulnerability of the untrusted application managing the enclave. The exploit might allow the attacker to manipulate the application's control flow to redirect attestation requests to any platform he desires. 
 
+The process of the relay attack is the following:
+
+\begin{enumerate}
+  \item [\one] The verifier sends an attestation challenge to the target platform.
+  \item [\two] The attacker-controlled OS on the target platform relays the attestation challenge to the target platform over the network. Note the attacker's platform also has the same enclave running.
+  \item [\three] After receiving the relayed challenge, the attacker's platform generates a signed report and relays it back to the target platform.
+  \item [\four] The target platform sends the signed challenge from the attacker's platform to the verifier.
+  \item [\five] Assuming the report is from the target platform, the verifier assigns her secret to the enclave running on the attacker's platform over the secure channel. 
+\end{enumerate}
 
 
 
@@ -69,7 +78,7 @@ sibling distance=12em]]
     
     \end{tikzpicture}
     
-    \caption[Relay attack implications]{\textbf{Relay attack implications.} The tree shows the types of attacks that are enabled by  redirection and ones that are independent of relay.}
+    \caption[Relay attack implications on Intel SGX remote attestation]{\textbf{Relay attack implications on Intel SGX remote attestation.} The tree shows the types of attacks that are enabled by relay and ones that are independent of relay.}
     \label{fig:relayTree}
 \end{figure}
 
@@ -79,13 +88,13 @@ sibling distance=12em]]
 
 Although relay attacks have been known for a long time~\cite{parno2008bootstrapping}, their implications to modern TEEs like SGX have not been carefully analyzed. Next, we perform the first such analysis.
 
-The main consequence of attestation redirection is that it \emph{increases the attacker's ability to attack the attested enclave} through side-channels which are a well-known limitation of SGX (see Section~\ref{sec:background:attacks}). In Figure~\ref{fig:relayTree} we highlight two major classes of attacks: those that are only possible by first performing a relay attack, which we denote as ``enabled by relay'', and those that can be done whether or not the attacker also executes a relay attack, which we call ``independent of relay.''
+The main consequence of attestation relay is that it \emph{increases the attacker's ability to attack the attested enclave} through side-channels which are a well-known limitation of SGX (see Section~\ref{sec:background:attacks}). In Figure~\ref{fig:relayTree} we highlight two major classes of attacks: those that are only possible by first performing a relay attack, which we denote as ``enabled by relay'', and those that can be done whether or not the attacker also executes a relay attack, which we call ``independent of relay.''
 
 
 \myparagraph{Attacks using leaked attestation keys} Our first observation is that attacks are based on leaked attestation keys (e.g., ones obtained through the Foreshadow attack~\cite{foreshadow-usenix18}) are independent of relaying. If the attacker has obtained a valid and non-revoked attestation key, he can emulate an SGX processor on the target platform and obtain any secrets provisioned to it.
 
 
-\myparagraph{Physical side channels} One major benefit of the relay, from the attacker's point of view, is that it enables \emph{physical} side-channel attacks against application enclaves. Once a secret has been provisioned to the attacker's platform, she has as much time as she likes to perform the attack. Some examples of physical side-channel attacks are acoustic, electric, and electromagnetic monitoring, which has been shown to be both effective and inexpensive means to extract secrets from modern PC platforms (see~\cite{genkin2016physical} for a summary of known attacks). Since the attacker does not have physical access to the target platform, such attacks are clearly not possible without a relay. Hardening programs like enclaves against physical side channels is difficult and currently an open problem~\cite{genkin2016physical}. Therefore, developers cannot easily defend their enclaves against physical side channels that are enabled by attestation redirection.
+\myparagraph{Physical side channels} One major benefit of the relay, from the attacker's point of view, is that it enables \emph{physical} side-channel attacks against application enclaves. Once a secret has been provisioned to the attacker's platform, she has as much time as she likes to perform the attack. Some examples of physical side-channel attacks are acoustic, electric, and electromagnetic monitoring, which has been shown to be both effective and inexpensive means to extract secrets from modern PC platforms (see~\cite{genkin2016physical} for a summary of known attacks). Since the attacker does not have physical access to the target platform, such attacks are clearly not possible without a relay. Hardening programs like enclaves against physical side channels is difficult and currently an open problem~\cite{genkin2016physical}. Therefore, developers cannot easily defend their enclaves against physical side channels that are enabled by attestation relay.
 
 
 \myparagraph{Privilege escalation for digital side channels}
@@ -167,7 +176,7 @@ Another possible benefit of relay attacks is that it may enable \emph{privilege 
 
                          
     \end{tikzpicture}
-    \caption[Relay timing of attack]{\textbf{Relay timing of attack.} In Case A the attack success is independent of relay. In Case B attestation redirection enables the attack.} 
+    \caption[Relay timing of attack]{\textbf{Relay timing of attack.} In Case A the attack success is independent of relay. In Case B attestation relay enables the attack.} 
     \label{fig:timeLine}
 \end{figure}
 
@@ -175,7 +184,7 @@ Another possible benefit of relay attacks is that it may enable \emph{privilege 
 \myparagraph{Attacks that depend on the timing of events}    
 The third, and perhaps the most subtle, implication of relay is that it can also enable software-based side-channel attacks that would not be possible to launch on the target platform due to \emph{timing of certain events}. These events include but are not restricted to the provisioning of secrets to the enclave, the possible disinfection of the target platform from malicious software, and the discovery of a new side-channel attack. 
 
-We group the relative ordering of these events into two cases: A and B. Case A covers event sequences that only lead to attacks that are independent of relay, and Case B covers event sequences in which redirection gives extra capabilities to the attacker. Below, and in Figure~\ref{fig:timeLine}, we provide examples of sequences belonging to these two cases:
+We group the relative ordering of these events into two cases: A and B. Case A covers event sequences that only lead to attacks that are independent of relay, and Case B covers event sequences in which relay gives extra capabilities to the attacker. Below, and in Figure~\ref{fig:timeLine}, we provide examples of sequences belonging to these two cases:
 
 \begin{enumerate}
     \item[]\emph{Case A: independent of relay.} A digital side-channel is independent of relay if the attacker could perform it on the target platform as well. An example of such a case is shown in the timeline depicted in Figure~\ref{fig:timeLine}, where a new attack is discovered after secret provisioning but before the target platform, OS is disinfected.
@@ -183,7 +192,7 @@ We group the relative ordering of these events into two cases: A and B. Case A c
 
     \item[]\emph{Case B: attack enabled by relay.} Case B is reached whenever it occurs that by using a side-channel, the enclave is exploitable on the attacker's platform but not on the target platform. 
     %In this case, by having the foresight to provision the enclave on its platform, the attacker has the possibility to launch an attack on an enclave that would otherwise be secure on the target platform. 
-    A timeline of such a case is shown in Figure~\ref{fig:timeLine}, where at the time of attestation and secret provisioning, the enclave is hardened against all known digital side-channel attacks (using tools like Raccoon~\cite{raccoon}, ZeroTrace~\cite{zerotrace} or Obfscuro~\cite{obfscuro}). After secret provisioning, the OS compromise is detected and cleaned. Later, a new side-channel attack vector (that is not prevented by the used tools) is discovered. If the attacker performed redirection and the secret was provisioned to the attacker's machine, the new side-channel is exploitable. Without the relay, the attack is not possible.
+    A timeline of such a case is shown in Figure~\ref{fig:timeLine}, where at the time of attestation and secret provisioning, the enclave is hardened against all known digital side-channel attacks (using tools like Raccoon~\cite{raccoon}, ZeroTrace~\cite{zerotrace} or Obfscuro~\cite{obfscuro}). After secret provisioning, the OS compromise is detected and cleaned. Later, a new side-channel attack vector (that is not prevented by the used tools) is discovered. If the attacker performed relay and the secret was provisioned to the attacker's machine, the new side-channel is exploitable. Without the relay, the attack is not possible.
     
 
 \end{enumerate}
