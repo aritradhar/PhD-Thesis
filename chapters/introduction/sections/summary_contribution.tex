@@ -1,6 +1,6 @@
 \section{Summary of the Contributions}
 
-The contributions of this thesis are divided into four parts and they are summarized as the following:
+The contributions of this thesis are divided into four parts, and they are summarized as the following:
 
 \begin{enumerate}[leftmargin=*]
   
@@ -13,7 +13,7 @@ The contributions of this thesis are divided into four parts and they are summar
 \begin{enumerate}
     \item \emph{New attack.} In \integrikey, we identify swapping attacks as a novel form of user input manipulation against simple user input matching strategies.
     \item \integrikey. We design and implement a user input integrity protection system that is tailored for keyboard input, prevents swapping attacks, and is easy to deploy.
-    \item \integrikey{} tool. We develop a user interface analysis and webpage annotation tool that helps developers to protect their web services and minimizes user effort. However, later analysis shows that the input signing is insecure. This is not due to the implementation of the input signing method, rather the fundamental pitfall of the method.
+    \item \integrikey{} tool. We develop a user interface analysis and web page annotation tool that helps developers protect their web services and minimize user effort. However, later analysis shows that the input signing is insecure. This is not due to the implementation of the input signing method, rather the fundamental pitfall of the method.
     \item \emph{Evaluation.} We verified that our tool could process UIs of existing safety-critical systems and cryptocurrency wallets correctly. Our experiments show that the performance delay of \integrikey user input integrity protection is low. Our preliminary user study indicates that user input labeling prevents swapping attacks in most cases.
    %, and our preliminary user study indicates that users can perform the needed labeling.
 \end{enumerate}
@@ -31,13 +31,13 @@ The contributions of this thesis are divided into four parts and they are summar
 \end{itemize}
 
 
-\item[] \textbf{Part~\ref{part:fundamental}: Fundamental security properties for trusted path, attacks on existing systems and building new systems that incorporate these fundamental security properties.}
+\item[] \textbf{Part~\ref{part:fundamental}: Fundamental security properties for trusted path, attacks on existing systems, and building new systems that incorporate these fundamental security properties.}
 
 \begin{itemize}
     \item Chapter~\ref{ch:protectIOn}: \protection: Root-of-Trust for IO in Compromised Platforms
     \begin{enumerate}
       
-      	\item \textbf{Identification of new attacks:} We identify two new attacks on the existing trusted path systems. The first one is \emph{input addition/reduction} attack on trusted path systems that uses input signing. \integrikey is susceptible to this attack. Another attack is \emph{early form submission} attack that targets target path systems that do not consider all modalities of input.
+      	\item \textbf{Identification of new attacks:} We identify two new attacks on the existing trusted path systems. The first one is \emph{input addition/reduction} attack on trusted path systems that uses input signing. \integrikey is susceptible to this attack. Another attack is \emph{early form submission} attack that targets trusted path systems that do not consider all modalities of input.
       	 
         \item  \textbf{Identification of IO security requirements:} We identify new requirements for trusted path based on the drawbacks of the existing literature: i) unless both output and input integrity are secured simultaneously, it is impossible to achieve any of the two, and ii) without protecting the integrity of all the modalities of inputs, none could be achieved.
         
@@ -54,10 +54,10 @@ The contributions of this thesis are divided into four parts and they are summar
 \item[] \textbf{Part~\ref{part:relay}: Understanding relay attack in the context of Intel SGX remote attestation considering a secure trusted path enclave.}
 
 \begin{itemize}
-    \item Chapter~\ref{ch:proximitee}: \proximitee: Understanding Relay attacks on in Intel SGX remote attestation and building system for addressing the relay attacks in different attacker models (non-emulating vs. emulating attacker).
+    \item Chapter~\ref{ch:proximitee}: \proximitee: Understanding Relay attacks on Intel SGX remote attestation and building a system to address the relay attacks in two different attacker models  -- non-emulating (no leaked attestation key) vs. emulating attacker (at least one leaked attestation key).
     
     \begin{enumerate}
-        \item \textbf{Analysis of relay attacks.} While relay attacks have been known for more than a decade, their implications have not been fully analyzed. We provide the first such analysis and show how relaying amplifies the adversary's capabilities for attacking SGX enclaves.   
+        \item \textbf{Analysis of relay attacks.} While relay attacks have been known for more than a decade; their implications have not been fully analyzed. We provide the first such analysis and show how relaying amplifies the adversary's capabilities for attacking SGX enclaves.   
 
         \item \textbf{\proximitee, a system for addressing relay attacks.} We propose a hardened SGX attestation mechanism based on an embedded device and proximity verification to prevent relay attacks. \proximitee does not rely on the common trust on first use (ToFU) assumption, and hence, our solution improves the security of previous attestation approaches. Note that the distance bounding approaches are well-known in the literature, but using such a method in the context of SGX is non-trivial.
     
