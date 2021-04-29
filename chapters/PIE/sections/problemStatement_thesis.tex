@@ -34,7 +34,7 @@ In this chapter, we divide \sphw two two broad categories as the following:
 In this chapter, we assume the identical attacker model as that of a traditional TEE as the following:
 
 \begin{itemize}
-  \item We assume that the CPU firmware is trusted. Similar to existing TEE proposals, side channel attacks remain out of scope~\cite{costan2016intel} in our adversary model. However, we will discuss the implications of our proposal on existing side channel attacks and defenses in \Cref{sec:securityAnalysis}. 
+  \item We assume that the CPU firmware is trusted. Similar to existing TEE proposals, side channel attacks remain out of scope~\cite{costan2016intel} in our attacker model. However, we will discuss the implications of our proposal on existing side channel attacks and defenses in \Cref{sec:securityAnalysis}. 
   
   \item We assume the \sphw devices to be trusted. However, the attacker may plug his own \sphw. Note that the untrusted OS is still in charge of managing \sphw devices, and thus is able to remap the devices or send a reset or power-off signal.
   
@@ -63,5 +63,5 @@ Finally, the fact that several accelerators may need to support a form of multi-
 Remote attestation is a key part of any TEE. However, with multiple \sphw devices and enclaves on the CPU making up a distributed enclave, the straight-forward approach to just individually attest to every component is vulnerable to time-of-check-time-of-use attacks. Several attestations (one for each component of the TEE) must be linked with a guarantee that nothing has changed in the components already attested since the last attestation. Without this guarantee, an attacker could tamper with the configuration of already attested enclaves and thus tricking the remote verifier.
 
 \myparagraph{Runtime attacks}
-Remapping attacks are also relevant during runtime, as the OS still manages the memory. Well-timed disconnects or memory remappings could result in leakage of confidential data, e.g., if an adversary remaps a \sphw device and replaces it with a malicious device, the CPU enclave should not share sensitive data with the new device. 
+Remapping attacks are also relevant during runtime, as the OS still manages the memory. Well-timed disconnects or memory remappings could result in leakage of confidential data, e.g., if an attacker remaps a \sphw device and replaces it with a malicious device, the CPU enclave should not share sensitive data with the new device. 
 

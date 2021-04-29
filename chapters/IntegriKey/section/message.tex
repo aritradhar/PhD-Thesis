@@ -25,7 +25,7 @@ The goals of our proposed system are the following:
 \begin{enumerate}
   \item The secure USB/Bluetooth device has very small footprint i.e., extremely small trusted computing base (TCB). Also, the solution hardware should be very simple so it does not open additional attack vectors such as the vulnerability in complex operating system or browser program. This ensures minimal trust assumption.
   
-  \item The solution should provide privacy against the strongest adversary model i.e., an attacker who is capable of compromising the entire network and the host system. The solution provides protection against local and remote phishing attacker, provides data (sensitive user input) confidentiality and authenticity.
+  \item The solution should provide privacy against the strongest attacker model i.e., an attacker who is capable of compromising the entire network and the host system. The solution provides protection against local and remote phishing attacker, provides data (sensitive user input) confidentiality and authenticity.
  
   \item The secure device should be resilient against side-channel attacks such as power, timing analysis etc. 
   
@@ -38,7 +38,7 @@ The goals of our proposed system are the following:
 \begin{figure*}[!t]
  \centering
  \includegraphics[trim={3cm 1cm 2cm 1cm},width=\linewidth]{interaction.pdf}
- \caption{Interaction diagram between two secure \usb devices A and B (the high-level system diagram is depicted in Figure~\ref{fig:systemDesignDedicated}). This figure4 shows the device to device communication (Section~\ref{sec:secureMessage:deviceToDevice}). An endpoint consists of a secure \usb device, peripheral devices such as a keyboard and a untrusted host system. The browser and the operating system of the host are fully compromised by a global adversary who also has the precise view of the entire network. Here $A$ wants to transfer a message to $B$ and thus initiate a secure channel between $A$ and \relay, similarly secure channel is established between $B$ and \relay. Finally using these two secure channels, $A$ and $B$ establishes a secure channel to deliver the messages.}
+ \caption{Interaction diagram between two secure \usb devices A and B (the high-level system diagram is depicted in Figure~\ref{fig:systemDesignDedicated}). This figure4 shows the device to device communication (Section~\ref{sec:secureMessage:deviceToDevice}). An endpoint consists of a secure \usb device, peripheral devices such as a keyboard and a untrusted host system. The browser and the operating system of the host are fully compromised by a global attacker who also has the precise view of the entire network. Here $A$ wants to transfer a message to $B$ and thus initiate a secure channel between $A$ and \relay, similarly secure channel is established between $B$ and \relay. Finally using these two secure channels, $A$ and $B$ establishes a secure channel to deliver the messages.}
  \label{fig:interaction}
 \end{figure*}
 
@@ -171,7 +171,7 @@ Now we formally define and analyze the security properties of messaging using th
 
 \subsubsection{Message confidentiality}
 
-In both of the cases described above (Section~\ref{sec:secureMessage:deviceToDevice} and \ref{sec:secureMessage:existingMessgenger}) message confidentiality is fully preserved from the perspective of the compromised host, network and the existing messaging service. For the device to device message relay (Section~\ref{sec:secureMessage:deviceToDevice}), we can assume that the relay server (\relay) can be honest but curious. This assumption is necessary as at the initialization stage, the \usb device relies on the public certificate of \relay to establish the secure channel using the \webusb enabled \js (served by \relay). This requires trust in the \relay but we can assume that it can be a passive adversary. In both of the proposed methods, the \usb devices at the user sides execute key exchange and establish another secure channel. This makes sure that the \relay has no information about the messages exchanged between the users.
+In both of the cases described above (Section~\ref{sec:secureMessage:deviceToDevice} and \ref{sec:secureMessage:existingMessgenger}) message confidentiality is fully preserved from the perspective of the compromised host, network and the existing messaging service. For the device to device message relay (Section~\ref{sec:secureMessage:deviceToDevice}), we can assume that the relay server (\relay) can be honest but curious. This assumption is necessary as at the initialization stage, the \usb device relies on the public certificate of \relay to establish the secure channel using the \webusb enabled \js (served by \relay). This requires trust in the \relay but we can assume that it can be a passive attacker. In both of the proposed methods, the \usb devices at the user sides execute key exchange and establish another secure channel. This makes sure that the \relay has no information about the messages exchanged between the users.
 
 \subsubsection{Message authenticity and integrity}
 

@@ -8,7 +8,7 @@ Many sensitive applications such as e-banking or e-voting, safety-critical syste
 
 The goal of this work is to design a system that protects the interaction between the user (who uses a traditional local host) and the remote server without relying on trusted hypervisors, specialized hardware like TEEs, or solutions with high cognitive load to users and that risk habituation such as transaction confirmation devices.
 
-\subsection{System and Adversary Model}
+\subsection{System and attacker Model}
 \label{sec:problemStatement:systemMode}
 
 Figure~\ref{integriscreen:fig:systemModel} shows an overview of a visual supervision system: the user owns a local host (i.e., a desktop or laptop computer) and provides sensitive inputs via a web form to a remote server over the network. We assume that both the host and the network are fully compromised, while the remote server is a trusted entity. 
@@ -25,10 +25,10 @@ For simplicity, we refer to this device as a smartphone in the rest of this chap
 \end{figure}
 
 
-\myparagraph{Adversary model}
-We assume that the host and the network are fully compromised: the adversary can arbitrarily modify the UI elements on the screen, execute keystrokes, or simulate mouse events in the device it controls. As the adversary controls the network, he can observe, modify, or drop any network packet between the remote server and the host.
+\myparagraph{attacker model}
+We assume that the host and the network are fully compromised: the attacker can arbitrarily modify the UI elements on the screen, execute keystrokes, or simulate mouse events in the device it controls. As the attacker controls the network, he can observe, modify, or drop any network packet between the remote server and the host.
 However, we assume that the smartphone is not compromised; only the legitimate user can unlock the device and run applications. The remote server is considered to be trusted. 
-We assume that it is infeasible for an adversary who performs opportunistic attacks to compromise all the user devices at the same time. This is further reinforced by the fact that these second-factor devices have different hardware architecture and OS compared to the traditional host PC that the user owns. Moreover, such an attacker model is in line with the existing second-factor proposals.
+We assume that it is infeasible for an attacker who performs opportunistic attacks to compromise all the user devices at the same time. This is further reinforced by the fact that these second-factor devices have different hardware architecture and OS compared to the traditional host PC that the user owns. Moreover, such an attacker model is in line with the existing second-factor proposals.
 
-The adversary's goal is to trick the remote server into accepting a request that does not correspond with the legitimate user's intended input.
+The attacker's goal is to trick the remote server into accepting a request that does not correspond with the legitimate user's intended input.
 Finally, we consider the privacy of user inputs and denial of service attacks to be out of the scope of this work.

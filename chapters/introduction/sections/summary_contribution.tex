@@ -57,11 +57,11 @@ The contributions of this thesis are divided into four parts, and they are summa
     \item Chapter~\ref{ch:proximitee}: \proximitee: Understanding Relay attacks on Intel SGX remote attestation and building a system to address the relay attacks in two different attacker models  -- non-emulating (no leaked attestation key) vs. emulating attacker (at least one leaked attestation key).
     
     \begin{enumerate}
-        \item \textbf{Analysis of relay attacks.} While relay attacks have been known for more than a decade; their implications have not been fully analyzed. We provide the first such analysis and show how relaying amplifies the adversary's capabilities for attacking SGX enclaves.   
+        \item \textbf{Analysis of relay attacks.} While relay attacks have been known for more than a decade; their implications have not been fully analyzed. We provide the first such analysis and show how relaying amplifies the attacker's capabilities for attacking SGX enclaves.   
 
         \item \textbf{\proximitee, a system for addressing relay attacks.} We propose a hardened SGX attestation mechanism based on an embedded device and proximity verification to prevent relay attacks. \proximitee does not rely on the common trust on first use (ToFU) assumption, and hence, our solution improves the security of previous attestation approaches. Note that the distance bounding approaches are well-known in the literature, but using such a method in the context of SGX is non-trivial.
     
-        \item \textbf{Experimental evaluation.} We implement a complete prototype of \proximitee and evaluate it against a very strong and fast adversary. Our evaluation is the first to show that proximity verification can be both secure and reliable for TEEs like SGX.
+        \item \textbf{Experimental evaluation.} We implement a complete prototype of \proximitee and evaluate it against a very strong and fast attacker. Our evaluation is the first to show that proximity verification can be both secure and reliable for TEEs like SGX.
     
         \item \textbf{Addressing emulation attacks.} We also propose another attestation mechanism based on boot-time initialization to prevent emulation attacks. This mechanism is a novel variant of TOFU with deployment, security, and revocation benefits.
     \end{enumerate}

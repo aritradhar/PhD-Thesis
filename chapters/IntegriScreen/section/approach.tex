@@ -19,7 +19,7 @@ A visual supervision system consists of three main components: (i) the web form 
 \end{enumerate}
 
 
-Even after compromising the host and obtaining the victim's authentication credentials, the adversary can neither generate new requests nor covertly modify the data before submitting. This is prevented by the server, which would reject the requests due to not receiving a matching \POI.
+Even after compromising the host and obtaining the victim's authentication credentials, the attacker can neither generate new requests nor covertly modify the data before submitting. This is prevented by the server, which would reject the requests due to not receiving a matching \POI.
 
 
 \subsection{Challenges}
@@ -34,7 +34,7 @@ The attacker could lunch a more sophisticated attack targeting the semantics of 
 
 
 \item \emph{On-screen data modification attacks} If the data shown on the host's screen are correctly sent to the remote server, the integrity of user input is not necessarily guaranteed if data extraction happens only when the form is submitted.
-Despite the user entering the intended data, an adversary can subsequently modify the content of the screen in such a way that the user does not notice the change, the \app records it, and the server thus receives the same maliciously modified data from both channels. For example, in the web form shown in Figure~\ref{integriscreen:fig:systemModel}, the attacker can modify the IBAN number while the user sets the transaction amount or the execution date. 
+Despite the user entering the intended data, an attacker can subsequently modify the content of the screen in such a way that the user does not notice the change, the \app records it, and the server thus receives the same maliciously modified data from both channels. For example, in the web form shown in Figure~\ref{integriscreen:fig:systemModel}, the attacker can modify the IBAN number while the user sets the transaction amount or the execution date. 
 
  
 
@@ -49,9 +49,9 @@ Given that detecting computer screens in images is an open research question~\ci
 \myparagraph{Design Goals} Given the challenges mentioned above, a successful user input supervision to extract user intent should:
 
 \begin{enumerate}
-	\item Authenticate inputs that users make through compromised hosts, i.e., ensure that the adversary cannot manipulate existing remote requests successfully.
+	\item Authenticate inputs that users make through compromised hosts, i.e., ensure that the attacker cannot manipulate existing remote requests successfully.
 
-	\item Ensure that users are not manipulated into entering and submitting data that they would not submit in the absence of the adversary.
+	\item Ensure that users are not manipulated into entering and submitting data that they would not submit in the absence of the attacker.
 
 	\item Require minimal added interaction in the absence of attacks: do not require users to input or explicitly verify any data except on the host device.
 \end{enumerate}

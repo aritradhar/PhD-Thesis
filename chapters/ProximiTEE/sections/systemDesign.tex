@@ -53,14 +53,14 @@ To use our solution, enclave developers add function calls to a simple \name API
 \else
 \fi
 \myparagraph{Security assumptions.}
-%\label{sec:ext-adversary-model}
+%\label{sec:ext-attacker-model}
 The \device device is a trusted component in our solution. We deem this choice reasonable since it implements only the strictly necessary functions and therefore it a has significantly smaller software TCB, attack surface, and hardware complexity compared to the host OS. 
 %and hypervisor solutions like~\cite{sgxio}.
-%\todo{Mention that adversary may have leaked keys from other similar devices (extension of system and adversary model).}
+%\todo{Mention that attacker may have leaked keys from other similar devices (extension of system and attacker model).}
 We assume that its issuer certifies each embedded device prior to its deployment (such certification can take place fully offline). %\device has a public and private key hardcoded into it, and it can store the issuer's certificate for its public key.
 %These keys are needed because, among other things, we need to be able to differentiate between different devices. The role of the keys embedded into \device will be discussed in more detail in the following sections.
 
-Concerning the security of the \device device we employ the same adversary model introduced in Section~\ref{sec:problemStatement} for enclaves. While the user's device and its private keys are never exposed to the attacker, another similar device can be in the physical possession of the attacker, which has as much time as she wants to fully compromise it (run arbitrary code and extract keys). %Note that this model makes \device susceptible to relay as well as emulation attacks since given a \device private key the attacker can emulate that \device in any platform in which she controls the OS.
+Concerning the security of the \device device we employ the same attacker model introduced in Section~\ref{sec:problemStatement} for enclaves. While the user's device and its private keys are never exposed to the attacker, another similar device can be in the physical possession of the attacker, which has as much time as she wants to fully compromise it (run arbitrary code and extract keys). %Note that this model makes \device susceptible to relay as well as emulation attacks since given a \device private key the attacker can emulate that \device in any platform in which she controls the OS.
 
 %Finally, we assume that the issuer of the embedded device can secure communicate the identity of the of the specific device to its user, that is, the remote verifier.
 

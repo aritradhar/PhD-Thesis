@@ -2,7 +2,7 @@
 \label{integriscreen:sec:securityAnalysis}
 
 
-We now informally analyze how \sysname provides authenticated user input under our strong adversary model, from the general setting to more specific attacks.
+We now informally analyze how \sysname provides authenticated user input under our strong attacker model, from the general setting to more specific attacks.
 We assume that the user is not a victim of a targeted attack rather than a wide-spread vulnerability in her OS/applications -- hence it is safe to assume that not all of the user devices are compromised at the same time. Such trust assumption is valid in any system that involves two factors, such as OTP. Note that all the data communication between the \sysname phone app and the server-side component is authenticated and replay protected (Cf. Section~\ref{sec:systemDesign:phone}). Hence, any modification or relay attempt by the attacker can be detected by both the phone app and the server-side component.
 
 
@@ -13,16 +13,16 @@ We experimentally measure the performance of this UI verification in Section~\re
 
 
 \myparagraph{Modifying the form header}
-Since the \app relies on optical recognition of the form title to detect which form specification to load, the adversary can cause the \app to load a form specification that he fully controls by changing the title name.
+Since the \app relies on optical recognition of the form title to detect which form specification to load, the attacker can cause the \app to load a form specification that he fully controls by changing the title name.
 Note that this only results in a DoS attack: the application uses the same endpoint to load the specification and to submit the \POI; thus, the original server endpoint never receives a matching \POI and the attack is not successful.
 Similarly, attack vectors exploiting typosquatted domains or phishing cannot trick the \app to submit valid \PsOI to legit endpoints for transactions not performed by users.
 
 
 \subsection{On-screen data modification}
-Another strategy for the adversary to evade the defending mechanisms is to modify the data in form elements while the user fills another field. Below we discuss different attack scenarios and explain how \sysname prevents them.
+Another strategy for the attacker to evade the defending mechanisms is to modify the data in form elements while the user fills another field. Below we discuss different attack scenarios and explain how \sysname prevents them.
 
 
-\myparagraph{Concurrent Data Modification} The attacker may try to modify the data of a text field when the user in the the process of filling up another. As described in Section~\ref{sec:systemDesign:phone:inputerSupervision}, \sysname phone app ensures that it only records the input data from the screen that is in focus and filled up by the user. In case of concurrent modification of the active input element by both the adversary and the user, we assume that the user detects such changes (which are similar to autocorrect not behaving according to user's expectation) and will not move the focus to the next input element until they are satisfied with its content.
+\myparagraph{Concurrent Data Modification} The attacker may try to modify the data of a text field when the user in the the process of filling up another. As described in Section~\ref{sec:systemDesign:phone:inputerSupervision}, \sysname phone app ensures that it only records the input data from the screen that is in focus and filled up by the user. In case of concurrent modification of the active input element by both the attacker and the user, we assume that the user detects such changes (which are similar to autocorrect not behaving according to user's expectation) and will not move the focus to the next input element until they are satisfied with its content.
 
 
 \myparagraph{Rapid change of focus} A potential attack is to change the focused element from one element to another, modify the data there and go back to the first one. This entire process could be extremely fast without the user noticing it in order to evade the concurrent form modification protection. However, the cool-down time for focus change (Cf.Section~\ref{sec:systemDesign:phone:inputerSupervision}) prevents such attacks. The users are thus likely to detect such sudden changes in focus during data input (for at least 2 seconds).

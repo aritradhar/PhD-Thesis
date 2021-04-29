@@ -11,8 +11,8 @@ In this chapter, we focus on the problem of user input manipulation by a comprom
 \begin{figure}[t]
     \centering
     \includegraphics[trim={0 8cm 14cm 0},clip,width=0.9\linewidth]{chapters/IntegriKey/images/Motivation.pdf}
-    %\caption{\textbf{System model.} We consider a setting where the user configures a safety-critical device through a web service from untrusted localhost. The user input device (keyboard) and the target safety-critical device are trusted. The host platform and the network connection can be controlled by the adversary.} 
-    \caption[System model for remote safety-critical services through an attacker-controlled host]{\textbf{System model for remote safety-critical services through an attacker-controlled host.} We consider a setting where the user configures a safety-critical device or executes financial transactions through a web service from untrusted localhost. The user input device (keyboard) and the end-system (target device, bank server, medical implants, etc.) are trusted. The host platform and the network connection can be controlled by the adversary.} 
+    %\caption{\textbf{System model.} We consider a setting where the user configures a safety-critical device through a web service from untrusted localhost. The user input device (keyboard) and the target safety-critical device are trusted. The host platform and the network connection can be controlled by the attacker.} 
+    \caption[System model for remote safety-critical services through an attacker-controlled host]{\textbf{System model for remote safety-critical services through an attacker-controlled host.} We consider a setting where the user configures a safety-critical device or executes financial transactions through a web service from untrusted localhost. The user input device (keyboard) and the end-system (target device, bank server, medical implants, etc.) are trusted. The host platform and the network connection can be controlled by the attacker.} 
 
     \label{fig:systemModel}
 \end{figure}
@@ -21,9 +21,9 @@ Our system model is illustrated in Figure~\ref{fig:systemModel}. We consider a c
 
 We focus on \emph{keyboard} input, as such input is sufficient to use the configuration web interfaces of many existing safety-critical devices~\cite{7306669,controlbyweb,siemens,siemens2,schneider} and online wallets \cite{bitgo,bitcoinwallet,coin,blockchain,coinbase}. Later in this chapter, see Section~\ref{sec:discussion}, we discuss the challenges of protecting other types of input devices, such as mouse input, with the same approach.
 
-\myparagraph{Adversary model} We consider the user input device (i.e., the keyboard) trusted and the target safety-critical device, and the server that receives the user input also trusted. We assume that the adversary may have remotely compromised the host platform completely, i.e., the adversary controls the operating system, the browser, and any other software running on the host. We consider that even the host hardware can be exploitable. We assume that the adversary does not have physical access to the host platform.
+\myparagraph{attacker model} We consider the user input device (i.e., the keyboard) trusted and the target safety-critical device, and the server that receives the user input also trusted. We assume that the attacker may have remotely compromised the host platform completely, i.e., the attacker controls the operating system, the browser, and any other software running on the host. We consider that even the host hardware can be exploitable. We assume that the attacker does not have physical access to the host platform.
 
-We consider such strong adversary realistic since OS vulnerabilities in PC platforms are well-known, browser compromise is increasingly common (see, e.g.,~\cite{provos2007ghost,dougan2012man} for recent attack vectors), and hardware exploits are possible, e.g., through fabrication-time attacks~\cite{Lin2009,a2}. 
+We consider such strong attacker realistic since OS vulnerabilities in PC platforms are well-known, browser compromise is increasingly common (see, e.g.,~\cite{provos2007ghost,dougan2012man} for recent attack vectors), and hardware exploits are possible, e.g., through fabrication-time attacks~\cite{Lin2009,a2}. 
 
 \subsection{Limitations of Known Solutions}
 

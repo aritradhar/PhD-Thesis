@@ -72,7 +72,7 @@ We assume that the remote server is a trusted entity and has a public key certif
 Additionally, the \device also provides a feedback to the user indicating if it has been successfully reprogrammed. In case the \device fails to provide the feedback, the user concludes that the attacker is executing a denial of service attack. Protection against denial of service is outside the scope of this work.
 
 Since the attacker cannot inject messages into the $TLS_2$ channel, the only remaining possibility for the attacker to manipulate the input is to change the user interface (which the attacker controls by controlling the host) such that the user inputs values into the incorrect fields. 
-This attack is feasible since the \device only registers the input keystrokes and their sequence, and assumes in which sequence they need to be filled. However, the \device and the server do not know which interface user is currently seeing on the screen. E.g., the fields can be reordered by the adversary. Depending on the end-system and its function, it might happen that these user interface attacks prove detrimental. 
+This attack is feasible since the \device only registers the input keystrokes and their sequence, and assumes in which sequence they need to be filled. However, the \device and the server do not know which interface user is currently seeing on the screen. E.g., the fields can be reordered by the attacker. Depending on the end-system and its function, it might happen that these user interface attacks prove detrimental. 
 
 We explore this attack further and propose countermeasures in Section~\ref{sec:fieldSwap}.
 \fi

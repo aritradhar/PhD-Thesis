@@ -21,7 +21,7 @@ The device tree is a list that accurately describes the physical memory mappings
 
 % \subsection{Trusted Execution Environments (TEE)}
 
-% Traditional trusted execution environments (TEE) introduce a small protected program called enclave. An enclave runs on the processor isolated from the attacker-controlled OS and hypervisor. Enclaves provide code integrity and data confidentiality, even in the presence of a physical adversary. Integrity of the enclave code at the time of deployment is ensured by remote attestation while the enclave data confidentiality and integrity during runtime are provided by various hardware mechanisms. For example, Intel SGX uses memory encryption and the Memory Management Unit (MMU).
+% Traditional trusted execution environments (TEE) introduce a small protected program called enclave. An enclave runs on the processor isolated from the attacker-controlled OS and hypervisor. Enclaves provide code integrity and data confidentiality, even in the presence of a physical attacker. Integrity of the enclave code at the time of deployment is ensured by remote attestation while the enclave data confidentiality and integrity during runtime are provided by various hardware mechanisms. For example, Intel SGX uses memory encryption and the Memory Management Unit (MMU).
 %, whereas RISC-V Keystone~\cite{keystone} uses PMP to isolate the enclave data from the untrusted OS and other applications. 
 
 %\subsection{Keystone}

@@ -1,24 +1,24 @@
 \section{Security Analysis}
 \label{sec:securityAnalysis_IK}
 
-In this section, we provide an informal security analysis of our system. The goal of the adversary is to violate the \emph{integrity} of web input. Examples include a misconfiguration of a safety-critical device or a false payment against the intention of the user. 
+In this section, we provide an informal security analysis of our system. The goal of the attacker is to violate the \emph{integrity} of web input. Examples include a misconfiguration of a safety-critical device or a false payment against the intention of the user. 
 
 \subsection{Arbitrary Modifications} 
 
-The simplest adversarial strategy is to manipulate only the application payload that is sent to the server. The adversary can, e.g., change one input value provided by the user to another arbitrary value in the HTTP response. Such attacks are detected by the server because the configuration data received over $TLS_1$ does not match the traces received over $TLS_2$.
+The simplest adversarial strategy is to manipulate only the application payload that is sent to the server. The attacker can, e.g., change one input value provided by the user to another arbitrary value in the HTTP response. Such attacks are detected by the server because the configuration data received over $TLS_1$ does not match the traces received over $TLS_2$.
 
 
 \subsection{Swapping Attacks}
 %\label{sec:analysis:swapping}
 
-A more sophisticated adversarial strategy is to manipulate both the application payload and the user interface at the same time. More specifically, the adversary can change the names and the order of the user input fields and modify any instructions that are part of the user interface, such as the labeling instructions. Figure~\ref{fig:swapExample} shows one such example of the attack where the field names `\texttt{Relay temp 1}' and `\texttt{Relay temp 2}' are swapped.
+A more sophisticated adversarial strategy is to manipulate both the application payload and the user interface at the same time. More specifically, the attacker can change the names and the order of the user input fields and modify any instructions that are part of the user interface, such as the labeling instructions. Figure~\ref{fig:swapExample} shows one such example of the attack where the field names `\texttt{Relay temp 1}' and `\texttt{Relay temp 2}' are swapped.
 
 
-The goal of a swapping attack is that the server interprets the received input values with different semantics than the user intended. Assuming that the user interface contains interchangeable fields, the adversary can construct an HTTP response where all input values are listed in the correct order, and their values match the input events. Two variants of such attacks are possible. 
+The goal of a swapping attack is that the server interprets the received input values with different semantics than the user intended. Assuming that the user interface contains interchangeable fields, the attacker can construct an HTTP response where all input values are listed in the correct order, and their values match the input events. Two variants of such attacks are possible. 
 
 \myparagraph{Manipulated field names or instructions} 
 \label{sec:securityAnalysis_IK:cases}
-In the first variant, the adversary manipulates \emph{either} the field names \emph{or} the instructions. In such a case, the user interface that is shown to the user has an \emph{inconsistency} because the input field names and the labeling instructions do not correspond to each other. The user may react in different ways that we enumerate below:
+In the first variant, the attacker manipulates \emph{either} the field names \emph{or} the instructions. In such a case, the user interface that is shown to the user has an \emph{inconsistency} because the input field names and the labeling instructions do not correspond to each other. The user may react in different ways that we enumerate below:
 %\vspace{-5pt}
 \begin{itemize}
     \item \emph{Case 1: Abort.} The user may notice the inconsistency in the UI and abort the process. \label{detect}
@@ -37,7 +37,7 @@ In Section~\ref{sec:results:userStudy} we report results of a small-scale user s
 
 
 \myparagraph{Manipulated field names and instructions} 
-In the second variant, the adversary manipulates \emph{both} the field names and the labeling instructions. In this variant, there are two possible cases. First, the labeling instructions do not correspond to the UI field order, in which case the effect is the same as above. Second, the modified labeling instructions correspond to the modified UI, i.e., the matching field names and labeling instructions are both modified the same way. In this case, the labeling instruction reordering essentially nullifies the effect of UI field name reordering, and the UI is consistent again (no risk of misconfiguration).
+In the second variant, the attacker manipulates \emph{both} the field names and the labeling instructions. In this variant, there are two possible cases. First, the labeling instructions do not correspond to the UI field order, in which case the effect is the same as above. Second, the modified labeling instructions correspond to the modified UI, i.e., the matching field names and labeling instructions are both modified the same way. In this case, the labeling instruction reordering essentially nullifies the effect of UI field name reordering, and the UI is consistent again (no risk of misconfiguration).
 
 
 We conclude that any manipulation of (\emph{i}) UI field names, (\emph{ii}) values in the application payload, (\emph{iii}) labeling instructions in the UI, or (\emph{iv}) the combination of thereof cannot violate input integrity unless there is a visible indication of it (i.e., inconsistency) in the user interface. This is the \emph{Case 4} above, which we evaluate with a small user study.
@@ -66,7 +66,7 @@ Finally, we emphasize that even in the worst case where the user forgets to remo
 
 \myparagraph{Default values} \name eliminates any default values on the webpage. However, the host can always show default values to the user. If the user does not type the value by herself, the server rejects the input as the data from the browser, and the trace does not match.
 
-\myparagraph{Trace dropping} Since all communication from \device to the server is mediated by the untrusted host; the adversary may also attempt to manipulate the traces by selectively dropping packets (e.g., remove certain user input). However, such attacks are prevented by the use of a standard TLS connection.
+\myparagraph{Trace dropping} Since all communication from \device to the server is mediated by the untrusted host; the attacker may also attempt to manipulate the traces by selectively dropping packets (e.g., remove certain user input). However, such attacks are prevented by the use of a standard TLS connection.
 
 \myparagraph{Cross-device attacks} An additional attack strategy is to trick the user into providing input for the configuration of one safety-critical device but using this user input for the configuration of another device. In such cross-device attacks, the host presents to the user the configuration user interface from server A but tricks \device to establish a connection with server B.
 

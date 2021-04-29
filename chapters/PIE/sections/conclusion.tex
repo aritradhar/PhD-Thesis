@@ -3,5 +3,5 @@
 
 
 
-We introduce \name, a secure platform design with a configurable hardware and software TCB. \name allows to integrate \sphw into TEEs, something that before was not possible without violating TEEs' adversary model.  
+We introduce \name, a secure platform design with a configurable hardware and software TCB. \name allows to integrate \sphw into TEEs, something that before was not possible without violating TEEs' attacker model.  
 \name provides two new security properties: platform-wide attestation and platform awareness. The former expands on the traditional notion of the attestation to provide a complete view of the platform's state, and platform awareness provides mechanisms to the enclave to cope with the platform's change, such as the disconnection of a \sphw. We present a prototype based on RISC-V Keystone, which shows that \name is feasible and only adds $600$ LoC to the TCB.
