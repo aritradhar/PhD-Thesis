@@ -4,7 +4,7 @@
 
 In this section, we provide an evaluation of the \name system and the \tool UI analysis tool. We also report results from a small-scale user study, where we simulated a swapping attack on 15 study participants.
 
-\myparagraph{Experiment setup} All experiments were performed on a laptop with a $3.2$ GHz quad-core Intel i5 CPU and $16$ GB memory running Ubuntu $16.10$ $64$-bit. We used Google Chrome version $61$ and JDK v$1.8$.
+\myparagraph{Experiment setup} All experiments were performed on a laptop with a 3.2 GHz quad-core Intel i5 CPU and 16 GB memory running Ubuntu 16.10 64-bit. We used Google Chrome version 61 and JDK v1.8.
 
 %\vspace{-5pt}
 \subsection{\name Performance}
@@ -20,11 +20,11 @@ We evaluated the performance of our \device prototype using the following three 
   \item \emph{Communication overhead.} The communication overhead between the \device and the remote server. As the \device establishes a separate \tls channel with the server, this adds data overhead to the standard HTTP communication between the browser and the remote server.
 \end{enumerate}
 
-We measured the page loading latency as $500$ ms (includes loading of the \webusb \js and establishment of the \tls channel between the \device and the remote server) and the keystroke latency as $5$ ms (both averaged over 500K iterations). These latencies are specific to the implementation architecture and the used boards, and that they can be reduced significantly using newer prototyping boards.\footnote{The master-slave $I^2C$ channel is limited to $1$ kHz. A Standalone implementation based on Arduino Genuino Zero, supported by the new version of the \webusb driver, eliminates the $I^2C$ channel and reduces the latencies significantly.} 
+We measured the page loading latency as 500 ms (includes loading of the \webusb \js and establishment of the \tls channel between the \device and the remote server) and the keystroke latency as 5 ms (both averaged over 500K iterations). These latencies are specific to the implementation architecture and the used boards, and that they can be reduced significantly using newer prototyping boards.\footnote{The master-slave $I^2C$ channel is limited to $1$ kHz. A Standalone implementation based on Arduino Genuino Zero, supported by the new version of the \webusb driver, eliminates the $I^2C$ channel and reduces the latencies significantly.} 
 
-Here, we emphasize that our solution is intended for user input integrity protection for specific security-critical operations. While a page loading latency of $500$ ms may be a significant performance penalty for many web applications like online commerce in general, such a delay is insignificant for the types of operations like configuration of safety-critical devices that we focus on.
+Here, we emphasize that our solution is intended for user input integrity protection for specific security-critical operations. While a page loading latency of 500 ms may be a significant performance penalty for many web applications like online commerce in general, such a delay is insignificant for the types of operations like configuration of safety-critical devices that we focus on.
 
-The communication overhead between the host system and the \device is very small. At the time of initialization, the \device and the remote server exchange \tls handshake messages to establish the session. The handshake messages are $60$ bytes each. Each \tls message adds an extra overhead of $80$ bytes (signature and announcement of next key). 
+The communication overhead between the host system and the \device is very small. At the time of initialization, the \device and the remote server exchange \tls handshake messages to establish the session. The handshake messages are 60 bytes each. Each \tls message adds an extra overhead of 80 bytes (signature and announcement of next key). 
 
 We also tested the performance overhead of the server-side processing. The server has to maintain an additional TLS connection ($TLS_2$) which has a small cost and matches the parsed HTTP response with the received user input events, which takes less than a microsecond. 
 From a bandwidth point of view, the overhead of the second TLS channel is also small (this channel is only used to send the characters typed in by the user).
@@ -42,18 +42,18 @@ We evaluated our UI analysis tool implementation using two existing systems: PLC
 \begin{tabular}{lccc}
 \textbf{Web page} & \textbf{\#Fields} &\textbf{Processing time (ms.)} & \textbf{SD}\\ \toprule
 \multicolumn{4}{c}{x600m Web PLC} \\ \midrule
-Register configuration & $6$ & $1.654$ & $0.0131$\\ 
-Counter configuration & $7$ & $0.771$ & $0.0089$\\ 
-Event configuration & $8$ & $0.622$ & $0.0085$\\ 
-Action configuration & $5$ & $1.241$ & $0.0111$\\ 
-Supply voltage & $4$ & $0.673$ & $0.0099$\\ 
-Calender configuration & $11$ & $0.713$ & $0.0105$\\ \midrule
+Register configuration & 6 & 1.654 & 0.0131\\ 
+Counter configuration & 7 & 0.771 & 0.0089\\ 
+Event configuration & 8 & 0.622 & 0.0085\\ 
+Action configuration & 5 & 1.241 & 0.0111\\ 
+Supply voltage & 4 & 0.673 & 0.0099\\ 
+Calender configuration & 11 & 0.713 & 0.0105\\ \midrule
 \multicolumn{4}{c}{Home automation} \\ \midrule
-Home configuration & $6$ & $0.016$ & $0.0018$\\ 
-Room configuration & $5$ & $0.012$ & $0.0015$\\ 
+Home configuration & 6 & 0.016 & 0.0018\\ 
+Room configuration & 5 & 0.012 & 0.0015\\ 
 \hline
 \multicolumn{4}{c}{Bitcoin wallet} \\ \midrule
-Send Bitcoin & $4$ & $0.9$ & $0.024$\\ 
+Send Bitcoin & 4 & 0.9 & 0.024\\ 
 \bottomrule
 \end{tabular}
 
@@ -62,7 +62,7 @@ Send Bitcoin & $4$ & $0.9$ & $0.024$\\
 \end{table}
 
 
-Additionally, we tested our UI analysis tool on user interfaces of other PLC controllers, home automation systems, medical device control, personal data management, and online banking. Again, we wrote specifications for these user interfaces and processed them through our tool that founds swappable input elements in many of the tested user interfaces. We mined around $35$ different text fields from $4$ different application types. We list our findings in Table~\ref{tab:inputFields}. We enumerate the user input fields on each page, their specifications that we manually created (including types and constraints), and the output of the tool that is a grouping of swappable fields. We verified each output of the tool manually. We observe that in some cases, the tool outputs as ``swappable'' input fields that can, in fact, be easily detected at the server. For example, `start date' and `end date' are not swappable as the former has to be less than the latter. This is an example of a case where both fields are specified correctly, but their relationship imposes additional constraints that can be checked by the server. For such types of fields, the developers can exclude them from the input specification.
+Additionally, we tested our UI analysis tool on user interfaces of other PLC controllers, home automation systems, medical device control, personal data management, and online banking. Again, we wrote specifications for these user interfaces and processed them through our tool that founds swappable input elements in many of the tested user interfaces. We mined around 35 different text fields from 4 different application types. We list our findings in Table~\ref{tab:inputFields}. We enumerate the user input fields on each page, their specifications that we manually created (including types and constraints), and the output of the tool that is a grouping of swappable fields. We verified each output of the tool manually. We observe that in some cases, the tool outputs as ``swappable'' input fields that can, in fact, be easily detected at the server. For example, `start date' and `end date' are not swappable as the former has to be less than the latter. This is an example of a case where both fields are specified correctly, but their relationship imposes additional constraints that can be checked by the server. For such types of fields, the developers can exclude them from the input specification.
 
 \begin{table}[!htpb]
 \centering
@@ -134,7 +134,7 @@ configuration & Start time & \Time &  $[min=00:00, max=23:59]$ & Stop time \\ \c
 
 \begin{table}[!htpb]
 \centering
-\caption[\tool evaluation]{\textbf{\tool evaluation 2.} Similar to Table~\ref{tab:evaluation}, we tested our implementation of the UI analysis tool on `home-assistant' home automation systems.}
+\caption[\tool evaluation 2]{\textbf{\tool evaluation 2.} Similar to Table~\ref{tab:evaluation}, we tested our implementation of the UI analysis tool on `home-assistant' home automation systems.}
 \resizebox{\textwidth}{!}{
 \begin{tabular}{llccp{2.4cm}}
 \textbf{Web pages} & \textbf{Fields} & \textbf{Type} & \textbf{Length/value constraint} &\textbf{Swappable fields} \\
@@ -165,7 +165,7 @@ configuration & Celling lights & \radio & &Celling lights \\
 \myparagraph{Example input fields}
 Table~\ref{tab:inputFields} provides a listing of additional web UIs that we analyzed using the tool. The list includes web pages for online banking pages, medical programmer devices, PLC server, and home automation system. The main purpose of this table is to provide examples (or templates) for the developer for the fields which they are likely to encounter while analyzing with \tool. The table provides the names of the input fields along with their specifications, such as the regular expression and the length/value constraints, and whether some of the fields are mutually swappable or not.
 
-We notice that some user input fields are strictly swappable only with another identical field.  Such as an arbitrary field is not swappable with bank account number such as \emph{IBAN} number due to the specific format (e.g., $[ISO 3166-1\ \text{IBAN code}] [0-9A-Z]^+$ with minimum and the maximum length of $20$ and $30$ respectively).
+We notice that some user input fields are strictly swappable only with another identical field.  Such as an arbitrary field is not swappable with bank account number such as \emph{IBAN} number due to the specific format (e.g., $[ISO 3166-1\ \text{IBAN code}] [0-9A-Z]^+$ with minimum and the maximum length of 20 and 30 respectively).
 
 
 %% -----------------
@@ -277,7 +277,7 @@ Transaction amount. & \float & $(ISO 4217\ \text{currency code}) [0-9]^+((.)[0-9
 
 \myparagraph{Processing time} We measured the processing time of our tool. Table~\ref{tab:frameworkPerformance} shows our results: the processing time of one web page varies from 0.01 ms to 1.65 ms. The processing time depends on the number of states in the DFA constructed from the regular expression of the specification and the number of input fields. 
 
-The time complexity of our UI analysis algorithm is exponential~\cite{Salomaa1997} ($\mathcal{O}(2^S)$) with respect to the number of states $S$ in the non-deterministic finite automaton (NFA) that is derived from the regular expression that is quadratic $\mathcal{O}(|F|^2)$ with respect to the number of input fields $|F|$. In practice, the analysis of tested UIs was very fast as i) the number of input fields is usually $6$ or less and ii) the DFAs from the specifications contain 2-3 states for most of the input fields.
+The time complexity of our UI analysis algorithm is exponential~\cite{Salomaa1997} ($\mathcal{O}(2^S)$) with respect to the number of states $S$ in the non-deterministic finite automaton (NFA) that is derived from the regular expression that is quadratic $\mathcal{O}(|F|^2)$ with respect to the number of input fields $|F|$. In practice, the analysis of tested UIs was very fast as i) the number of input fields is usually 6 or less and ii) the DFAs from the specifications contain 2-3 states for most of the input fields.
 
 %Algorithm~\ref{algo:makeGroup} is $\mathcal{O}(|F|^22^{|S|})$. Even though the running time is exponential in the number of states, most of the regular expressions of the text fields we encountered are around 3-4, making the actual running time in the order of few milliseconds (refer Table~\ref{tab:frameworkPerformance} in Section~\ref{sec:results}).
 

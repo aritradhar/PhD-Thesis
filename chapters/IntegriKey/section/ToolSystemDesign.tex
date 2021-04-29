@@ -22,7 +22,7 @@ Figure~\ref{fig:tool} illustrates an overview of the tool that takes two inputs.
 
 The UI specification needs to be manually written by the developer. The specification captures the fact whether two user input fields in the UI are interchangeable. One such example is a home automation system, where the user can set the temperature of a specific room by providing the input to the web application. The attacker can swap input fields for temperatures of two rooms. Another and more interesting example is a UI where two fields are semantically different but share the similar format. Consider, for example, the configuration of a medical device, where the doctor can set blood pressure and heart rate limit. As the range of these two fields is overlapping, the attacker can swap the two fields even though they are semantically very different.
 
-\lstset{language=XML, frame=tb, caption=\textbf{A webpage specification example.} This web page specification corresponds to our running user interface example that is illustrated in Figure~\ref{fig:swapExample}., label = snippet:specificationXML, firstnumber =1}
+\lstset{language=XML, frame=tb, caption=[A webpage specification example that is analyzed by \tool]\textbf{A webpage specification example.} This web page specification corresponds to our running user interface example that is illustrated in Figure~\ref{fig:swapExample}., label = snippet:specificationXML, firstnumber =1}
 \begin{figure}[t]
 \begin{lstlisting}[mathescape=true]
 <InputSchema>

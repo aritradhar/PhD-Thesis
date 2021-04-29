@@ -16,34 +16,34 @@ Mouse latency & 250 $\mu$s\\
 Keyboard latency & 170 $\mu$s\\\midrule
 Image analysis accuracy of mouse pointer & 0.997 \\\bottomrule
 \end{tabular} 
-\caption[\device performance]{\textbf{\device performance}. The table shows the latency and accuracy corresponding to \name prototype operations.}
+\caption[\device performance in terms of latency and accuracy]{\textbf{\device performance}. The table shows the latency and accuracy corresponding to \name prototype operations.}
 %\spacesave
 \label{tab:performance}
 \end{table}
 
 We evaluate the performance of our prototype by measuring the overheads introduced by \name to the system and whether they influence the user's interaction. Initially, we measure the default latency introduced by \device when the user interacts with applications that do not require protection. Table~\ref{tab:performance} provides the relevant latencies and the accuracy of the pointer detection.
-The delay in forwarding keystrokes is $170\ \mu s$, and for frames is $21.76\ ms$. This allows the \device to achieve the maximum display frame rate of $47.69$ per second (e.g., most of the movies are shot and shown in  ~24-30 fps). However, an optimized implementation of the technique to encode information in the HDMI frame would reduce the processing time of a frame significantly and increase further the frame rate as a result. The B101 HDMI to CSI HDMI interceptor has a hardware limit of 25 frames at 1080p resolution. We report 0.997 accuracy of the pointer detection mechanism that involves image analysis and pointer motion tracking. The accuracy is evaluated from 4196 captured frames.
+The delay in forwarding keystrokes is 170 $\mu$s, and for frames is 21.76 ms. This allows the \device to achieve the maximum display frame rate of 47.69 per second (e.g., most of the movies are shot and shown in  ~24-30 fps). However, an optimized implementation of the technique to encode information in the HDMI frame would reduce the processing time of a frame significantly and increase further the frame rate as a result. The B101 HDMI to CSI HDMI interceptor has a hardware limit of 25 frames at 1080p resolution. We report 0.997 accuracy of the pointer detection mechanism that involves image analysis and pointer motion tracking. The accuracy is evaluated from 4196 captured frames.
 %\blue{In an hour of usage on our test UIs (simple web forms), we observe that \device re-calibrates the mouse pointer only once.} Note that the accuracy may vary depending on the screen composition.} 
 We observe that the misdetection happens only when the pointer is not completely visible, i.e., the pointer is on the border of the screen and the OS displays it partially. Note that one could improve the logic of \device to run the adjustment phase (see Section~\ref{sec:systemDesign:analysis}) only when the pointer is within the screen completely.
 
 Our prototype of \name does not require the user to install any additional software in her machine to facilitate the communication between the remote server and the \device. Instead, the \device communicates with the remote server by using the host as an untrusted transporter. Therefore, we start by measuring the delay of sending data from the device to the host and vice versa:
 
 \begin{enumerate}
-  \item \emph{\device $\rightarrow$ host} The \device transmits data (encrypted) to the host by simulating keystrokes. In our system, \device sends the keystrokes in a chunk of $256$ bytes of data to the host. The keystroke has an average latency of $5\ ms$, which is undetectable by humans.  
+  \item \emph{\device $\rightarrow$ host} The \device transmits data (encrypted) to the host by simulating keystrokes. In our system, \device sends the keystrokes in a chunk of 256 bytes of data to the host. The keystroke has an average latency of 5 ms, which is undetectable by humans.  
 
 
-\item \emph{Host $\rightarrow$ \device} The host sends data to the device by encoding them into the HDMI frame. The QR-code is generated locally in the browser and displayed on the screen. For a specification of a form with two/four elements, QR-code generation takes $14\ ms$. The \device detects the QR-code, decodes it, and creates the overlay. This process takes $6\ ms$ for the same form considered previously.
+\item \emph{Host $\rightarrow$ \device} The host sends data to the device by encoding them into the HDMI frame. The QR-code is generated locally in the browser and displayed on the screen. For a specification of a form with two/four elements, QR-code generation takes 14\ ms. The \device detects the QR-code, decodes it, and creates the overlay. This process takes 6 ms for the same form considered previously.
  
  \item \emph{Initial Page Load} The first time the user visits a web page that employs \name, the remote server, and the \device should exchange a cryptographic key to protect the communication. This step requires only one additional \texttt{xmlHttpRequest} to the server; therefore the delay is relatively low. Initially, the browser encodes the server's public key into a QR-code that is decoded by the \device, which sends the response to the server by simulating the keystrokes.
 
 
-\item \emph{Frame processing for mouse} \device processes every frame of the host for pointer detection. This takes $1.76 ms$, which does not impact the frame rate. The image analysis routine achieves an accuracy of $0.997$. 
+\item \emph{Frame processing for mouse} \device processes every frame of the host for pointer detection. This takes 1.76 ms, which does not impact the frame rate. The image analysis routine achieves an accuracy of 0.997. 
 
 
-\item \emph{Keystroke latency} The \device intercepts all user's keystrokes and forwards them to the host or renders them on the screen. When rendering on the screen, the latency is $170\ \mu s$.
+\item \emph{Keystroke latency} The \device intercepts all user's keystrokes and forwards them to the host or renders them on the screen. When rendering on the screen, the latency is 170 $\mu$s.
 
 
-\item \emph{Cursor latency} Similarly to keystrokes, the \device intercepts mouse events also. However, the latency of event forwarding is $250\ \mu s$.
+\item \emph{Cursor latency} Similarly to keystrokes, the \device intercepts mouse events also. However, the latency of event forwarding is 250 $\mu$s.
 
 \item \emph{Codebase comparison} In Table~\ref{tab:loc}, we provide the code base and executable binary sizes of \device with respect to some of the most popular open-source browsers, JavaScript interpreter engines, and OS's. All of the codes are measured with the \texttt{cloc} open-source code line counting tool. The table shows that \name has a significantly lower code base, resulting in a smaller attack surface.
 
@@ -60,18 +60,18 @@ Our prototype of \name does not require the user to install any additional softw
 \begin{tabular}{lll}
 \multicolumn{2}{c}{\textbf{Projects}} & \textbf{LOC} \\\toprule
 %&\multicolumn{2}{c}{\textbf{Browsers}}\\\hline
-&Chromium~\footnote{Google Chrome and Microsoft Edge are based on the Chromium project}~\cite{chromium_2019} &  $25,163,547$\\
-\multirow{-2}{*}{Browser} &Mozilla Firefox~\cite{mozilla_2019} & $20,928,358$\\\midrule
-\multirow{2}{*}{JS Engine}&Chrome V8~\cite{V8} & $2,009,183$\\
-&Firefox SpiderMonkey~\cite{spiderMonkey} & $2,908,550$\\\midrule
-& Ubuntu 19.10 w/o kernel & $600,712$\\
-& Arch Linux w/o kernel & $71,188$\\
-\multirow{-3}{*}{OS}&Linux Kernel & $36,680,915$\\\toprule
-\multirow{5}{*}{\textbf{\device}}&HDMI interceptor + overlay & $1,911$\\ 
-&USB stack & $893$\\
-&Crypto stack & $3,500$\\ 
-&RPi tiny core Linux & $121,899$ \\
-&\device total codebase & $128,203$ \\\bottomrule
+&Chromium~\footnote{Browsers such as Google Chrome and Microsoft Edge are based on the Chromium project}~\cite{chromium_2019} &  25,163,547\\
+\multirow{-2}{*}{Browser} &Mozilla Firefox~\cite{mozilla_2019} & 20,928,358\\\midrule
+\multirow{2}{*}{JS Engine}&Chrome V8~\cite{V8} & 2,009,183\\
+&Firefox SpiderMonkey~\cite{spiderMonkey} & 2,908,550\\\midrule
+& Ubuntu 19.10 w/o kernel & 600,712\\
+& Arch Linux w/o kernel & 71,188\\
+\multirow{-3}{*}{OS}&Linux Kernel & 36,680,915\\\toprule
+\multirow{5}{*}{\textbf{\device}}&HDMI interceptor + overlay & 1,911\\ 
+&USB stack & 893\\
+&Crypto stack & 3,500\\ 
+&RPi tiny core Linux & 121,899 \\
+&\device total codebase & 128,203 \\\bottomrule
 \end{tabular} 
 \caption[\name \device code-base comparison]{\textbf{\name \device code-base comparison} with respect to some of the open-source browsers, JS engines and OSs.}
 %\spacesaveL
