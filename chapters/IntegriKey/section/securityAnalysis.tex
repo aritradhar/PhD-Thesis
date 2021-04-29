@@ -17,6 +17,7 @@ A more sophisticated adversarial strategy is to manipulate both the application 
 The goal of a swapping attack is that the server interprets the received input values with different semantics than the user intended. Assuming that the user interface contains interchangeable fields, the adversary can construct an HTTP response where all input values are listed in the correct order, and their values match the input events. Two variants of such attacks are possible. 
 
 \myparagraph{Manipulated field names or instructions} 
+\label{sec:securityAnalysis_IK:cases}
 In the first variant, the adversary manipulates \emph{either} the field names \emph{or} the instructions. In such a case, the user interface that is shown to the user has an \emph{inconsistency} because the input field names and the labeling instructions do not correspond to each other. The user may react in different ways that we enumerate below:
 %\vspace{-5pt}
 \begin{itemize}
