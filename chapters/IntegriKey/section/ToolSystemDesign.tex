@@ -105,28 +105,28 @@ In general, two fields $f_i$ (corresponding regular expression $RE_i$) and $f_j$
                 %$addField \leftarrow false$\\         
                 $f.regEx, f_{in}.regEx \leftarrow$ read from $S$\\        
                 \If{$f.type = $ \texttt{string}} {       
-                    \lIf{$f.regEx \subset f_{in}.regEx$} {  \label{algo:makeGroup:regEx}   
+                    \If{$f.regEx \subset f_{in}.regEx$} {  \label{algo:makeGroup:regEx}   
                         $addField \leftarrow true$ 
                      }
                      \If{$f_{in}.type = (\menu\ \vee \radio$)} { 
-                            \lIf{$f_{in}.elements \in f.regEx$} { \label{algo:makeGroup:member} 
+                            \If{$f_{in}.elements \in f.regEx$} { \label{algo:makeGroup:member} 
                              $addField \leftarrow true$ 
                          }
                      }  
                 }
-                \If{$f.type=(\texttt{integer} \vee \texttt{float} \vee \texttt{time} \vee \texttt{date})$} {
-                    \If{$f_{in}.type=(\menu \vee \radio)$} {\label{algo:makeGroup:menuNum} 
+                \If{$f.type=($\texttt{integer} $\vee$ \texttt{float} $\vee$ \texttt{time} $\vee$ \texttt{date}$)$} {
+                    \If{$f_{in}.type=($\menu $\vee$ \radio$)$} {\label{algo:makeGroup:menuNum} 
                     
                         $f_{in}^{min} \leftarrow min(f_{in}.elements)$\\
                         $f_{in}^{max} \leftarrow max(f_{in}.elements)$\\
                     }
-                    \lIf{$\lnot(f^{max} < f_{in}^{min} \vee f^{min} > f_{in}^{max})$}{ \label{algo:makeGroup:numCheck}
+                    \If{$\lnot(f^{max} < f_{in}^{min} \vee f^{min} > f_{in}^{max})$}{ \label{algo:makeGroup:numCheck}
                         $addField \leftarrow true$  
                     }
                     
                 }
                 \If{$f.type = $ (\texttt{menu} $\vee$ \texttt{radio button}) $\wedge f_{in}.type = $ (\texttt{menu} $\vee$ \texttt{radio button})}{ \label{algo:makeGroup:intersection}
-                    \lIf{$f.elements \cap f_{in}.elements \neq \phi$}
+                    \If{$f.elements \cap f_{in}.elements \neq \phi$}
                     {
                         $addField \leftarrow true$      
                     }
