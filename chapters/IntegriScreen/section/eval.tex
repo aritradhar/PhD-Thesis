@@ -18,7 +18,7 @@ Each form in the dataset is displayed for exactly 5 seconds.
 During this time, the \app automatically detects the form based on its title, loads its specification from the server, and performs UI verification.
 Mismatching forms are stored for later analysis.
 
-We use three Android devices: Samsung Galaxy S9+, Google Pixel 2XL, and Samsung Galaxy S6. Each device is evaluated in two positions: i) in front of the screen (straight setup) and ii) to the right of the keyboard, observing the client's screen with an angle (inclined setup).
+We use three Android devices: Samsung Galaxy S9+, Google Pixel 2XL, and Samsung Galaxy S6. Each device is evaluated in two positions: i) in front of the screen (straight setup) and ii) to the right of the keyboard, observing the host's screen with an angle (inclined setup).
 
 \begin{table}[t]
   \setlength{\tabcolsep}{10pt}
@@ -54,7 +54,7 @@ Note that the errors in this experiment on randomly generated forms that often f
 
 
 \myparagraph{Positioning and verification time}
-Table~\ref{table:UIVerificationResults} also shows the performance of the UI verification procedure when the mobile device is on the right side of the client's keyboard (inclined setup), resulting in a significant angle between the camera and the client's screen.
+Table~\ref{table:UIVerificationResults} also shows the performance of the UI verification procedure when the mobile device is on the right side of the host's keyboard (inclined setup), resulting in a significant angle between the camera and the host's screen.
 Our evaluation shows that realigning and then detecting elements with such a large angle is successful at \emph{correctly verifying 93\%} of the forms from the dataset, resulting in an overall per-element detection rate of 99.12\%.
 
 Finally, when the total time allowed for the application to verify a single form is reduced to 3~seconds, the application maintains a high detection rate: the form verification rate for this short duration remains at a high 93\%, with a per-element detection rate of 98.97\%.
