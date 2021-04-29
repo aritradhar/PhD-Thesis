@@ -113,7 +113,7 @@ Upon creation of a new processor-local enclave, SM assigns a unique identifier t
 \begin{figure}[t]
   \centering
   \includegraphics[trim={0 5cm 15cm 0}, clip, width=.8\linewidth]{chapters/PIE/images/localAttestation.pdf}
-  \caption[Flow of remote attestation process between \nameenclave{}'s components]{\textbf{Flow of the remote attestation process} between the user, $E_1$, $E_2$ and the \sphw firmware.} %\vspace{-1.5em}
+  \caption[Flow of (remote) platform-wide attestation process between \nameenclave{}'s components]{\textbf{Flow of the (remote) platform-wide attestation process} between the remote verifier, $E_1$, $E_2$ and the \sphw firmware. At the end of this process, the remote verifier receives the attestation report of $E_1$, $E_2$, and \sphw firmware, including their connection parameters such as DMA size, peripheral access control policy, etc.}   
   \label{fig:attestationFlow}
 \end{figure}
 

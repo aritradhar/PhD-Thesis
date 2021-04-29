@@ -40,39 +40,40 @@
 }
 
 
-
 @inproceedings{zerotrace,
-  title={ZeroTrace: Oblivious memory primitives from Intel SGX},
-  author={Sasy et al., Sajin},
-  booktitle={NDSS'17},
-  year={2017}
+  title={ZeroTrace: Oblivious Memory Primitives from Intel SGX.},
+  author={Sasy, Sajin and Gorbunov, Sergey and Fletcher, Christopher W},
+  booktitle={NDSS},
+  year={2018}
 }
 
 @inproceedings{raccoon,
-  title={Raccoon: Closing Digital Side-Channels through Obfuscated Execution.},
-  author={Rane et al., Ashay},
-  booktitle={USENIX Security'15},
+  title={Raccoon: Closing digital side-channels through obfuscated execution},
+  author={Rane, Ashay and Lin, Calvin and Tiwari, Mohit},
+  booktitle={24th {USENIX} Security Symposium ({USENIX} Security 15)},
+  pages={431--446},
   year={2015}
 }
 
 
 @article{genkin2016physical,
   title={Physical key extraction attacks on PCs},
-  author={Genkin et al., Daniel},
+  author={Genkin, Daniel and Pachmanov, Lev and Pipman, Itamar and Shamir, Adi and Tromer, Eran},
   journal={Communications of the ACM},
   volume={59},
   number={6},
+  pages={70--79},
   year={2016},
+  publisher={ACM New York, NY, USA}
 }
 
-
-@inproceedings {foreshadow-usenix18,
-author = {Jo Van Bulck et al.},
-title = {Foreshadow: Extracting the Keys to the Intel {SGX} Kingdom with Transient Out-of-Order Execution},
-booktitle = {USENIX Security'18},
-year = {2018}
+@inproceedings{foreshadow-usenix18,
+  title={Foreshadow: Extracting the keys to the intel {SGX} kingdom with transient out-of-order execution},
+  author={Van Bulck, Jo and Minkin, Marina and Weisse, Ofir and Genkin, Daniel and Kasikci, Baris and Piessens, Frank and Silberstein, Mark and Wenisch, Thomas F and Yarom, Yuval and Strackx, Raoul},
+  booktitle={27th {USENIX} Security Symposium ({USENIX} Security 18)},
+  pages={991--1008},
+  year={2018}
 }
-
 
 
 % Rollback related work
@@ -149,54 +150,60 @@ journal={Intel Software}, publisher={Intel}, author={Johnson, Simon and Intel}, 
     year = {2016}
 }
 
-
 @inproceedings{schuster2015vc3,
   title={VC3: Trustworthy data analytics in the cloud using SGX},
-  author={Schuster et al., Felix},
-  booktitle={S\&P'15},
-	year = {2015}
+  author={Schuster, Felix and Costa, Manuel and Fournet, C{\'e}dric and Gkantsidis, Christos and Peinado, Marcus and Mainar-Ruiz, Gloria and Russinovich, Mark},
+  booktitle={2015 IEEE Symposium on Security and Privacy},
+  pages={38--54},
+  year={2015},
+  organization={IEEE}
 }
 
-
 @inproceedings{tofu,
- author = {Wendlandt  et al., Dan},
- title = {Perspectives: Improving SSH-style Host Authentication with Multi-path Probing},
- booktitle = {USENIX ATC'08},
- year = {2008},
-} 
-
+  title={Perspectives: Improving SSH-style Host Authentication with Multi-Path Probing.},
+  author={Wendlandt, Dan and Andersen, David G and Perrig, Adrian},
+  booktitle={USENIX Annual Technical Conference},
+  volume={8},
+  pages={321--334},
+  year={2008}
+}
 
 %trustzone
 
-@InProceedings{CatchingCuckoo,
-author="Fink et al., Russell A.",
-title="Catching the Cuckoo: Verifying TPM Proximity Using a Quote Timing Side-Channel",
-booktitle="Trust and Trustworthy Computing",
-year="2011"
+@inproceedings{CatchingCuckoo,
+  title={Catching the cuckoo: Verifying tpm proximity using a quote timing side-channel},
+  author={Fink, Russell A and Sherman, Alan T and Mitchell, Alexander O and Challener, David C},
+  booktitle={International Conference on Trust and Trustworthy Computing},
+  pages={294--301},
+  year={2011},
+  organization={Springer}
 }
 
-
-
 @inproceedings{Lipp2018meltdown,
- author = {Lipp et al., Moritz},
- title = {Meltdown: Reading Kernel Memory from User Space},
- journal = {USENIX Security'18},
- year = 2018
+  title={Meltdown: Reading kernel memory from user space},
+  author={Lipp, Moritz and Schwarz, Michael and Gruss, Daniel and Prescher, Thomas and Haas, Werner and Fogh, Anders and Horn, Jann and Mangard, Stefan and Kocher, Paul and Genkin, Daniel and others},
+  booktitle={27th {USENIX} Security Symposium ({USENIX} Security 18)},
+  pages={973--990},
+  year={2018}
 }
 
 @inproceedings{Kocher2018spectre,
- author = {Kocher, Paul et al.},
- title = {Spectre Attacks: Exploiting Speculative Execution},
- booktitle = {S\&P'19},
- year = 2019,
+  title={Spectre attacks: Exploiting speculative execution},
+  author={Kocher, Paul and Horn, Jann and Fogh, Anders and Genkin, Daniel and Gruss, Daniel and Haas, Werner and Hamburg, Mike and Lipp, Moritz and Mangard, Stefan and Prescher, Thomas and others},
+  booktitle={2019 IEEE Symposium on Security and Privacy (SP)},
+  pages={1--19},
+  year={2019},
+  organization={IEEE}
 }
 
-@inproceedings {sgxcache,
-	author = {Ferdinand Brasser et al.},
-	title = {Software Grand Exposure: {SGX} Cache Attacks Are Practical},
-	booktitle = {USENIX WOOT'17},
-	year = {2017}
+
+@inproceedings{sgxcache,
+  title={Software grand exposure:$\{$SGX$\}$ cache attacks are practical},
+  author={Brasser, Ferdinand and M{\"u}ller, Urs and Dmitrienko, Alexandra and Kostiainen, Kari and Capkun, Srdjan and Sadeghi, Ahmad-Reza},
+  booktitle={11th {USENIX} Workshop on Offensive Technologies ({WOOT} 17)},
+  year={2017}
 }
+
 
 @inproceedings{gotzfried2017cache,
   title={Cache attacks on Intel SGX},
@@ -205,13 +212,12 @@ year="2011"
   year={2017}
 }
 
+
 @article{dall2018cachequote,
   title={Cachequote: Efficiently recovering long-term secrets of SGX EPID via cache attacks},
-  author={Dall et al., Fergus},
-  journal={TCHES},
-  volume={2018},
-  number={2},
-  year={2018}
+  author={Dall, Fergus and De Micheli, Gabrielle and Eisenbarth, Thomas and Genkin, Daniel and Heninger, Nadia and Moghimi, Ahmad and Yarom, Yuval},
+  year={2018},
+  publisher={IACR Transactions on Cryptographic Hardware and Embedded Systems}
 }
 
 
@@ -223,18 +229,23 @@ year="2011"
 }
 
 @inproceedings{xu2015controlled,
-	title={Controlled-channel attacks: Deterministic side channels for untrusted operating systems},
-	author={Xu, Yuanzhong et al.},
-	booktitle={S\&P'15},
-	year={2015}
+  title={Controlled-channel attacks: Deterministic side channels for untrusted operating systems},
+  author={Xu, Yuanzhong and Cui, Weidong and Peinado, Marcus},
+  booktitle={2015 IEEE Symposium on Security and Privacy},
+  pages={640--656},
+  year={2015},
+  organization={IEEE}
 }
 
+
 @inproceedings{lee2017inferring,
-	title={Inferring fine-grained control flow inside SGX enclaves with branch shadowing},
-	author={Lee, Sangho et al.},
-	booktitle={USENIX Security'17},
-	year = {2017}
+  title={Inferring fine-grained control flow inside {SGX} enclaves with branch shadowing},
+  author={Lee, Sangho and Shih, Ming-Wei and Gera, Prasun and Kim, Taesoo and Kim, Hyesoon and Peinado, Marcus},
+  booktitle={26th {USENIX} security symposium ({USENIX} security 17)},
+  pages={557--574},
+  year={2017}
 }
+
 
 @InProceedings{distanceBounding,
 	author={Brands, Stefan and Chaum, David},
@@ -244,16 +255,16 @@ year="2011"
 }
 
 @inproceedings{matetic2017rote,
-  title={$\{$ROTE$\}$: Rollback protection for trusted execution},
+  title={{ROTE}: Rollback protection for trusted execution},
   author={Matetic, Sinisa and Ahmed, Mansoor and Kostiainen, Kari and Dhar, Aritra and Sommer, David and Gervais, Arthur and Juels, Ari and Capkun, Srdjan},
-  booktitle={26th $\{$USENIX$\}$ Security Symposium ($\{$USENIX$\}$ Security 17)},
+  booktitle={26th {USENIX} Security Symposium ({USENIX} Security 17)},
   pages={1289--1306},
   year={2017}
 }
 
 
 @misc{tinyCore, title={Tiny Core Linux, Micro Core Linux, 12MB Linux GUI Desktop, Live, Frugal, Extendable},
-howpublished={https://distro.ibiblio.org/tinycorelinux/}, journal={Tiny Core Linux, Micro Core Linux, 12MB Linux GUI Desktop, Live, Frugal, Extendable}, year={2018}}
+howpublished={\url{https://distro.ibiblio.org/tinycorelinux/}}, journal={Tiny Core Linux, Micro Core Linux, 12MB Linux GUI Desktop, Live, Frugal, Extendable}, year={2018}}
 
 
 @inproceedings{presenceAttestation,
@@ -317,7 +328,8 @@ howpublished={https://distro.ibiblio.org/tinycorelinux/}, journal={Tiny Core Lin
 }
 
 @misc{agarwal_agarwal_2018, 
-title={Public Cloud Inter-region Network Latency as Heat-maps}, url={http://tiny.cc/vvbvbz}, 
+title={Public Cloud Inter-region Network Latency as Heat-maps}, 
+howpublished={\url{https://medium.com/@sachinkagarwal/public-cloud-inter-region-network-latency-as-heat-maps-134e22a5ff19}}, 
 publisher={Medium}, 
 author={Agarwal, Sachin}, 
 year={2018}}
@@ -329,11 +341,13 @@ journal={mbed TLS},
 author={Limited, ARM}}
 
  @misc{fx3, 
+ title={EZ-USB FX$3^{TM}$ SuperSpeed USB 3.0 peripheral controller},
  howpublished={\url{https://www.cypress.com/products/ez-usb-fx3-superspeed-usb-30-peripheral-controller}}, 
  journal={EZ-USB FX$3^{TM}$ SuperSpeed USB 3.0 peripheral controller},
  author={Cypress}} 
  
   @misc{fx3_sdk, 
+  title={EZ-USB FX3 Software Development Kit},
   howpublished={\url{https://www.cypress.com/documentation/software-and-drivers/ez-usb-fx3-software-development-kit}}, 
   journal={EZ-USB FX3 Software Development Kit},
   author={Cypress}} 
