@@ -16,6 +16,12 @@
 %     headinclude=true
 % ]{scrbook}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%for sending to the thesis commmittee
+\newif \ifreviewDraft
+\reviewDraftfalse
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \usepackage{etex}
 \reserveinserts{10}
 \pdfcompresslevel=0
@@ -58,8 +64,13 @@
 \include{frontbackmatter/titleback}
 \cleardoublepage\include{frontbackmatter/quote}
 \cleardoublepage\include{frontbackmatter/dedication}
-\cleardoublepage\include{frontbackmatter/abstract}
+\cleardoublepage\include{frontbackmatter/abstract_EN}
+
+\ifreviewDraft
+\cleardoublepage\include{frontbackmatter/abstract_DE}
 \cleardoublepage\include{frontbackmatter/acknowledgments}
+\fi
+
 \pagestyle{scrheadings}
 \cleardoublepage\include{frontbackmatter/contents}
 
