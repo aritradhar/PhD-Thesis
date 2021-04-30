@@ -16,32 +16,25 @@ Many science fields require a vast amount of computation power, which a general-
 In all of the above applications that handle sensitive data and use a \sphw device can be deployed securely with one of the following three existing approaches: 1) designing a fully dedicated system, or 2) renting a dedicated virtual machine and placing trust in the hypervisor, or 3) relying on the OS. None of these approaches to be satisfactory due to lack of generality, cost, and the need to trust codebases with millions of lines of code~\cite{torvalds2020linux,barham2003xen}. Existing TEEs such as Intel SGX, RISC-V Keystone, ARM TrustZone, etc., provide security guarantees only to the applications running on the CPU cores leaving \sphw unprotected. Moreover, SGX and Keystone enclaves rely on the untrusted OS to communicate with \sphw. On the other hand, ARM TrustZone provides isolated communication between the enclaves and components such as a touchscreen, fingerprint sensor, but requires trusting the entire secure OS, including device drivers not used by the enclave. 
 
 
-\subsection{\Sphw}
-\label{pie:sec:problemStatement:sphw}
-
-In this chapter, we divide \sphw two two broad categories as the following:
-
-\begin{enumerate}
-\item \emph{\Sphw with no computation capability:} This comprises of a broad range of IO peripheral devices such as keyboard, mice, display, touchscreen and simple sensors such as temperature, humidity, pressure, voltage etc. Such devices does execute programs on their own. In many case, they do offer a limited range of programmability (such as reconfigurable macro keys on a keyboard) through a embedded low-power micro controller. However, such reprogrammability is geared toward the specific operation that the device execute. 
-
-\item \emph{\Sphw with computation capability:} Accelerators, GPUs, etc. are example of such \sphw. GPUs have multiple cores that provide massive parallelism in certain workloads. 
-
-\end{enumerate}
-
 \subsection{Attacker Model}
 \label{pie:sec:problemStatement:attackerModel}
 
-In this chapter, we assume the identical attacker model as that of a traditional TEE as the following:
+The attacker model is tightly coupled with the type of \sphw. We separate the \sphw into two main classes due to their distinct effect on the attacker model: 
+%\sphw that explicitly interact with their physical environment and those that do not. Intuitively, sensors interact with their environment by taking measurements. Accelerators, however, do not explicitly interact with the real-world. The \sphw classes and their respective attacker models are described in the following:
 
-\begin{itemize}
-  \item We assume that the CPU firmware is trusted. Similar to existing TEE proposals, side channel attacks remain out of scope~\cite{costan2016intel} in our attacker model. However, we will discuss the implications of our proposal on existing side channel attacks and defenses in \Cref{sec:securityAnalysis}. 
-  
-  \item We assume the \sphw devices to be trusted. However, the attacker may plug his own \sphw. Note that the untrusted OS is still in charge of managing \sphw devices, and thus is able to remap the devices or send a reset or power-off signal.
-  
-  \item  The attacker controls entire software stack, including the OS and hypervisor and the network.
-   
-  \item Finally, we consider denial-of-service attacks to be out of scope in this chapter. 
-\end{itemize}
+\begin{enumerate}
+\item \emph{\Sphw with physical interaction:}
+\Sphw that interact with their environment range from input-only, such as input peripherals (e.g., mouse, keyboard) and sensors (e.g., temperature sensor) to output-only devices (e.g., monitor) and combined IO devices (e.g., touchscreen). For any such device, a local physical adversary can manipulate the environment and thus the input (and potentially the output). E.g., a physical adversary can point a laser at a light sensor, thus changing the sensor's reading but not the room's overall light intensity. Hence, any \sphw that interacts with its physical environment cannot tolerate a physical adversary.
+
+\item \emph{\Sphw without physical interaction:}
+There are \sphw units that do not explicitly interact with their environment. They draw power and produce heat, but their input and output are not related to the environment. GPUs and other accelerators are the prime examples of this class of \sphw, for whom a local physical adversary can be tolerated. 
+\end{enumerate}
+
+For the most part of this chapter, we assume a remote attacker who remotely controls the entire software stack - the OS and hypervisor. While the remote attacker model is a weaker assumption compared to the local physical one considered in the existing TEEs, the former covers a wide class of \sphw (e.g., \sphw with physical interaction) that cannot tolerate physical attackers. Hence, the attacker cannot access the platform of the \sphw physically or hot-swap a device. Note that the untrusted OS is still in charge of managing \sphw devices, and thus is able to remap the devices or send a reset or power-off signal. In addition, an adversary may launch DMA attacks using rogue peripherals.
+
+Later in this chapter, in~\Cref{pie:sec:localAttacker}, we also discuss how we can make some modification to our proposal to adopt with a local physical attacker. 
+
+In both of the cases (remote and local attacker), we assume that the CPU firmware is trusted. Similar to existing TEE proposals, side channel attacks remain out of scope~\cite{costan2016intel} in our adversary model. However, we will discuss the implications of our proposal on existing side channel attacks and defenses in \Cref{sec:securityAnalysis}. Finally, we consider denial-of-service attacks to be out of scope in this paper. 
 
 
 

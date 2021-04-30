@@ -139,11 +139,10 @@ Another possible benefit of relay attacks is that it may enable \emph{privilege 
  \draw[->, thick] (provisioning1) edge[] node{} (independent);
  \draw[->, thick] (dummy) edge[] node{} (attestation1);
  \draw[->, thick] (cleanup1) edge[] node{} (end);
-  \node[below=0cm of independent] {Case (A)};
  
 
  \node[right=0.79cm of attackA](point1){};
- \node[below=19em of point1](point2){Time};
+ \node[below=22em of point1](point2){Time};
  \draw[->] (point1) edge[] node{} (point2);
  
  \node[right=50pt of attackA] (targetB) {\textbf{Target}};
@@ -171,7 +170,9 @@ Another possible benefit of relay attacks is that it may enable \emph{privilege 
  \draw[->, thick] (attestation) edge[] node{} (provisioning);        
  \draw[->, thick] (dummy1) edge[] node{} (attestation);
  \draw[->, thick] (discovery) edge[] node{} (end1);
-\node[below=0cm of attack] {Case (B)};
+ 
+ \node[left=5em of point2](caseA) {Case (A)};
+ \node[right=5em of point2](caseB) {Case (B)};
    
 
                          
@@ -190,7 +191,7 @@ We group the relative ordering of these events into two cases: A and B. Case A c
     \item[]\emph{Case A: independent of relay.} A digital side-channel is independent of relay if the attacker could perform it on the target platform as well. An example of such a case is shown in the timeline depicted in Figure~\ref{fig:timeLine}, where a new attack is discovered after secret provisioning but before the target platform, OS is disinfected.
     
 
-    \item[]\emph{Case B: attack enabled by relay.} Case B is reached whenever it occurs that by using a side-channel, the enclave is exploitable on the attacker's platform but not on the target platform. 
+    \item[]\emph{Case B: attack enabled by relay.} This case is reached whenever it occurs that by using a side-channel, the enclave is exploitable on the attacker's platform but not on the target platform. 
     %In this case, by having the foresight to provision the enclave on its platform, the attacker has the possibility to launch an attack on an enclave that would otherwise be secure on the target platform. 
     A timeline of such a case is shown in Figure~\ref{fig:timeLine}, where at the time of attestation and secret provisioning, the enclave is hardened against all known digital side-channel attacks (using tools like Raccoon~\cite{raccoon}, ZeroTrace~\cite{zerotrace} or Obfscuro~\cite{obfscuro}). After secret provisioning, the OS compromise is detected and cleaned. Later, a new side-channel attack vector (that is not prevented by the used tools) is discovered. If the attacker performed relay and the secret was provisioned to the attacker's machine, the new side-channel is exploitable. Without the relay, the attack is not possible.
     
