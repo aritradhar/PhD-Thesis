@@ -4,7 +4,7 @@ The contributions of this thesis are divided into four parts, and they are summa
 
 \begin{enumerate}[leftmargin=*]
   
-  \item[] \textbf{Part~\ref{part:howNot}: How (not) to build a trusted path: providing negative results on how system-oriented way of proposing trusted path solution can lead to insecure systems.}
+  \item[] \textbf{Part~\ref{part:howNot}: How (not) to build a trusted path.} This part provides negative results on how system-oriented way of proposing trusted path solution can lead to insecure systems.
   
   \begin{itemize}
   \item Chapter~\ref{ch:integrikey}: \integrikey, an input signing approach to provide the second factor for integrity in user input through input signing
@@ -18,7 +18,7 @@ The contributions of this thesis are divided into four parts, and they are summa
    %, and our preliminary user study indicates that users can perform the needed labeling.
 \end{enumerate}
 
-	\item Chapter~\ref{ch:integriscreen}: \integriscreen, second factor for user intention integrity through UI analysis captured through a smartphone\footnote{\integriscreen was a collaboration between multiple researchers. This thesis only includes my primary contribution in \integriscreen: the development of \integriscreen{}'s main idea, security analysis, and implementation of the \integriscreen{}s server-side component.}.
+	\item Chapter~\ref{ch:integriscreen}: \integriscreen, second factor for user intention integrity through UI analysis captured through a smartphone\footnote{\integriscreen was a collaboration between multiple researchers. This thesis only includes a part of the paper, where my contributions lies: the development of \integriscreen{}'s main idea, security analysis, and implementation of the \integriscreen{}s server-side component.}.
 
 \begin{enumerate}
 \item \textbf{Novel approach for transaction confirmation.} We design \integriscreen based on \emph{screen supervision}, which differs fundamentally from the existing alternatives, integrates well with user devices (e.g., smartphones), and has the potential to offer high integrity guarantees for the user inputs in the presence of compromised hosts.
@@ -31,13 +31,13 @@ The contributions of this thesis are divided into four parts, and they are summa
 \end{itemize}
 
 
-\item[] \textbf{Part~\ref{part:fundamental}: Fundamental security properties for trusted path, attacks on existing systems, and building new systems that incorporate these fundamental security properties.}
+\item[] \textbf{Part~\ref{part:fundamental}: Fundamentals of trusted path.} This part provides the fundamental security properties for trusted path, describes attacks on existing systems, and proposes a new system that incorporate these fundamental security properties.
 
 \begin{itemize}
     \item Chapter~\ref{ch:protectIOn}: \protection: Root-of-Trust for IO in Compromised Platforms
     \begin{enumerate}
       
-      	\item \textbf{Identification of new attacks:} We identify two new attacks on the existing trusted path systems. The first one is \emph{input addition/reduction} attack on trusted path systems that uses input signing. \integrikey is susceptible to this attack. Another attack is \emph{early form submission} attack that targets trusted path systems that do not consider all modalities of input.
+      	\item \textbf{Identification of new attacks:} We identify two new attacks on the existing trusted path systems. The first one is \emph{input addition/reduction} attack on trusted path systems that uses input signing. Existing input signing-based approaches including \integrikey is susceptible to this attack. Another attack is \emph{early form submission} attack that targets trusted path systems that do not consider all modalities of input. Most of the existing trusted path approaches including \integriscreen is susceptible to this attack.
       	 
         \item  \textbf{Identification of IO security requirements:} We identify new requirements for trusted path based on the drawbacks of the existing literature: i) unless both output and input integrity are secured simultaneously, it is impossible to achieve any of the two, and ii) without protecting the integrity of all the modalities of inputs, none could be achieved.
         
@@ -51,7 +51,7 @@ The contributions of this thesis are divided into four parts, and they are summa
 \end{itemize}
    
    
-\item[] \textbf{Part~\ref{part:relay}: Understanding relay attack in the context of Intel SGX remote attestation considering a secure trusted path enclave.}
+\item[] \textbf{Part~\ref{part:relay}: Relay attacks on TEE: effects on trusted path.} This part provides an in-depth understanding of the implications relay attack on Intel SGX remote attestation and system to address the attack.
 
 \begin{itemize}
     \item Chapter~\ref{ch:proximitee}: \proximitee: Understanding Relay attacks on Intel SGX remote attestation and building a system to address the relay attacks in two different attacker models  -- non-emulating (no leaked attestation key) vs. emulating attacker (at least one leaked attestation key).
@@ -67,7 +67,7 @@ The contributions of this thesis are divided into four parts, and they are summa
     \end{enumerate}
 \end{itemize}   
 
-\item[] \textbf{Part~\ref{part:platform}: Handling TEEs distributed over CPU cores and peripherals and generalizing platform security}
+\item[] \textbf{Part~\ref{part:platform}: Trusted Path in Disaggregated TEEs.} This part discusses TEEs distributed over CPU cores and peripherals and generalizes platform security
     
   \begin{itemize}  
     \item Chapter~\ref{ch:pie}: \pie:A Platform-wide TEE
