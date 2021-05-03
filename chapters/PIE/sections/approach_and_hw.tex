@@ -1,34 +1,24 @@
 \section{Platform Isolation Environment}
 \label{sec:approach}
 
-In this section, we describe platform isolation environment or \name in detail. \name is based on the idea of \nameenclave{}s that integrates \sphw devices to the traditional processor-core enclaves while maintaining small hardware and software TCB. First, we discuss the changes needed to incorporate into the \sphw to make them compatible with \name. Then we introduce a shared memory model that allows enclaves to communicate with each other and \sphw securely. Next, we discuss how the enclave life cycle changes given these modifications and how a remote verifier can get proof of the state of a \nameenclave{}. Finally, we provide a software design for \name that makes \name for the software developers easy to adapt.
+In this section, we describe Platform Isolation Environment or \name in detail. \name is based on the idea of \nameenclave{}s that integrates \sphw devices to the traditional processor-core enclaves while maintaining small hardware and software TCB. First, we discuss the changes needed to incorporate into the \sphw to make them compatible with \name. Then we introduce a shared memory model that allows enclaves to communicate with each other and \sphw securely. Next, we discuss how the enclave life cycle changes given these modifications and how a remote verifier can get proof of the state of a \nameenclave{}. Finally, we provide a software design for \name that makes \name for the software developers easy to adapt.
 
 
-% \begin{figure}[t]
-%     \centering
-%     \includegraphics[width=0.8\linewidth]{images/accelerator.pdf}
-%     \caption{Example of a TEE on an accelerator with multiple enclaves running simultaneously while being isolated from each other. In this example, there are three distinct enclaves running on a subset of the compute units of the accelerator indicated by a yellow, green, and blue overlay.}
-%     \label{fig:accelerator}
-% \end{figure}
+ \begin{figure}[t]
+     \centering
+     \includegraphics[width=0.8\linewidth]{chapters/PIE/images/accelerator.pdf}
+     \caption[Example of a TEE on an accelerator with multiple enclaves running simultaneously while being isolated from each other]{\textbf{Example of a TEE on an accelerator} with multiple enclaves running simultaneously while being isolated from each other. In this example, there are three distinct enclaves running on a subset of the compute units of the accelerator indicated by a yellow, green, and blue overlay.}
+     \label{fig:accelerator}
+ \end{figure}
 
 \subsection{Changes to \sphw} There exists a wide range of \sphw{} devices that have unique behavior and integrate differently into \name{}.  In this chapter, we try to cover most devices but stress that some special cases require further analysis. We go from the simplest \sphw device we can imagine, a simple sensor, to one of the most complex, a sophisticated accelerator for a data center. Most other \sphw devices should fall in between these two examples and thus may require modifications between these two extremes. 
 
 \begin{enumerate}
 \item\emph{Sensors and IO peripherals} e.g., a temperature sensor only requires a minimal form of attestation to be integrated into \name{}. They must contain some key materials to sign some statements about themselves. This is mandatory for (remote) attestation of a \nameenclave that includes an attestation report of such a sensor. Usually, these sensors do not contain any secret data from a processor-local enclave and hence do not need to protect such data.
 
-\item\emph{Accelerators} on the other hand, tend to be very complex and require more extensive modifications. Like the former, they must support attestation, but they may also support isolation for multiple enclaves' secret data. Let us assume data-center applications, where multiple stakeholders want to move multiple compute-intensive tasks from the CPU to the accelerator. The individual tasks' data should remain confidential and isolated, not only on the CPU but also on the accelerator. Thus, such an accelerator requires isolated and attestable domains -- in other words -- enclaves that run on the \sphw. 
+\item\emph{Accelerators} on the other hand, tend to be very complex and require more extensive modifications. Like the former, they must support attestation, but they may also support isolation for multiple enclaves' secret data. Let us assume data-center applications, where multiple stakeholders want to move multiple compute-intensive tasks from the CPU to the accelerator. The individual tasks' data should remain confidential and isolated, not only on the CPU but also on the accelerator (as seen in Figure~\ref{fig:accelerator}). Thus, such an accelerator requires isolated and attestable domains -- in other words -- enclaves that run on the \sphw. 
 
 \end{enumerate}
-
-%\subsection{Communication with \sphw}
-%\label{sec:system:comm}
-
-%Platforms with a diverse set of \sphw are usually complex. Specifically, \sphw are connected to the processor over buses, which are, in turn, controlled by bus controllers as shown in \Cref{fig:bus}. This section describes how \sphw and processor-local enclaves can communicate in a secure way. As mentioned in \Cref{sec:overview}, \sphw communicate communicate over memory mapped address ranges either in the form of MMIO registers or DMA memory regions. To isolate these address regions we rely on existing hardware mechanisms, mainly PMP.
-%Until now such hardware mechanisms have predominantly been used to restrict access to memory, but they can also be used to restrict access to any other address that is not in the DRAM range. The specific address ranges and model numbers of \sphw are described in a format called device tree. The device tree tells the OS, or any software during boot, where it can find which \sphw. It is usually stored in on-chip ROM and is provided to the OS by a zero-stage boot-loader, and thus, it can be considered trusted. The SM has access to this specification and can verify that only one specific enclave can access the correct address range for a certain \sphw. This limits the number of enclaves per bus type to one, e.g., only a single enclave can access all devices connected to the SPI bus at once. 
-
-%\Sphw and buses that are used in a direct memory access (DMA) fashion behave differently. Such devices usually first negotiate a shared memory range through memory mapped registers. The established shared memory range is then used for all future communication. 
-%For these \sphw, our proposal must support shared memory between an enclave and a \sphw.
-%However, the DMA region can be established by an untrusted source, e.g., the OS. Therefore, the shared memory region supplied to the SM from the untrusted OS must be verified to detect any manipulation attempts. In our design, the SM verifies this in by performing an initial attestation to the \sphw and to its DMA configuration.
 
 \subsection{Shared memory}
 \label{sec:approach:sharedMemory}
@@ -99,7 +89,7 @@ A specific application may require any sensitive data from $E_1$ that is still o
 \subsection{Attestation of a \nameenclave{}}
 \label{sec:approach:attestation}
 
-We extend the existing notion of attestation from processor-local enclaves to \nameenclave{}s that run on multiple components of the platform. Traditionally, attestation ensures the current state of an enclave through a measurement of the code. The standard attestation report of a traditional enclave contains the measurements of the both enclave, and the low-level firmware (e.g., the security monitor in RISC-V keystone). Both of which are signed by the platform key (known as the device root key). In contrast, an attestation of a \nameenclave{} must also reflect all included components. 
+We extend the existing notion of attestation from processor-local enclaves to \nameenclave{}s that run on multiple components of the platform. Traditionally, attestation ensures the current state of an enclave through a measurement of the code. The standard attestation report of a traditional enclave contains the measurements of both enclaves and the low-level firmware (e.g., the security monitor in RISC-V keystone). Both of which are signed by the platform key (known as the device root key). In contrast, an attestation of a \nameenclave{} must also reflect all included components. 
 A potential attestation mechanism for a \nameenclave{} would be a lengthy report containing all the components' measurements. %However, for very 
 Contrary to that, we provide the verifier with an option to decide which other enclaves he wants to attest. When the verifier attests a specific component of a \nameenclave, a list of identifiers of all the connected components is provided alongside the attestation report. These identifiers are assigned by the SM on the processor and can be used to specify which enclave one wants to attest. A verifier can then chose to attest some or all the connected enclaves from the list of identifiers if he wishes to do so.
 
@@ -120,7 +110,7 @@ Upon creation of a new processor-local enclave, SM assigns a unique identifier t
 \myparagraph{Attestation Flow}
 
 Figure~\ref{fig:attestationFlow} depicts an example \nameenclave{} and the sequence of the attestations between its different components.The \name enclave contains three components \emph{enclave 1} ($E_1$), \emph{enclave 2} ($E_2$) and a \sphw firmware. Note that the platform-wide attestation process starts from the verifier who initiates a remote attestation request of $E_2$. 
-The attestation report of $E_2$ includes a list  of connected enclaves' identifiers, notably $E_1$. The verifier then executes a series of individual remote attestation of all connected enclaves. Note that both individual attestations of $E_1$ and $E_2$ include each other's identifier in their list of connected components. Note that both the attestation reports of $E_1$ and $E_2$ are signed by the same platform key. This proves to the remote verifier that both the enclaves are running on the same platform.
+The attestation report of $E_2$ includes a list  of connected enclaves' identifiers, notably $E_1$. The verifier then executes a series of individual remote attestations of all connected enclaves. Note that both individual attestations of $E_1$ and $E_2$ include each other's identifier in their list of connected components. Note that both the attestation reports of $E_1$ and $E_2$ are signed by the same platform key. This proves to the remote verifier that both the enclaves are running on the same platform.
 
 For \sphw, the attestation mechanism is different. First of all, a \sphw needs to contain some key material and a signed certificate from the manufacturer. This allows a verifier to observe the legitimacy of the \sphw. Secondly, the verifier from \Cref{fig:attestationFlow} needs to be able to verify that the \sphw is directly talking to $E_1$. This is facilitated by the SM, who checks the address regions for MMIO registers. DMA regions can even be established by an untrusted entity such as the OS. However, the attestation report of both the \sphw and $E_1$ contains the physical memory region that they share.
 

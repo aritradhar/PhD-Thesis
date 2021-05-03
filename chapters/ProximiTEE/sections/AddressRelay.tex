@@ -18,7 +18,7 @@ To use our solution, enclave developers use a simple API that facilitates commun
 
 \myparagraph{Security assumptions}
 %\label{sec:ext-attacker-model}
-In our solution, the \device device is a trusted component. We deem this choice reasonable since it implements only the strictly necessary functions and therefore, it has significantly smaller software TCB, attack surface, and complexity compared to a general-purpose commodity OS. We assume that its issuer certifies each embedded device prior to its deployment and such certification can take place fully offline.
+In our solution, the \device device is a trusted component. We deem this choice reasonable since it implements only the strictly necessary functions, and therefore, it has significantly smaller software TCB, attack surface, and complexity compared to a general-purpose commodity OS. We assume that its issuer certifies each embedded device prior to its deployment, and such certification can take place fully offline.
 
 Concerning the security of the \device device we employ the same attacker model introduced in Section~\ref{sec:problemStatement} for enclaves. While the user's device and its private keys are never exposed to the attacker, another similar device can be in the physical possession of the attacker, which has as much time as she wants to fully compromise it (run arbitrary code and extract keys). 
 
@@ -94,12 +94,12 @@ After the initial connection establishment, the \device device performs \emph{pe
     \label{fig:slidingWindow}
 \end{figure}
 
-As elaborated in Section~\ref{sec:evaluation} there are three types of latencies in the presence of relay attacks. The first type of response is received faster than the threshold \connect (green in Figure~\ref{fig:slidingWindow}). These responses can only be produced if no attack is taking place. In the second type of response, the latency exceeds \connect, but it is below another, higher threshold \detach (yellow); these are sometimes observed during legitimate connections and sometimes during relay attacks. And third, the latency is equal to or exceeds \detach (red); these latencies are only observed while a relay attack is being performed. Given such a sliding window of periodic challenge-response latencies, we define the following rules for halting or terminating the connection:
+As elaborated in Section~\ref{sec:evaluation}, there are three types of latencies in the presence of relay attacks. The first type of response is received faster than the threshold \connect (green in Figure~\ref{fig:slidingWindow}). These responses can only be produced if no attack is taking place. In the second type of response, the latency exceeds \connect, but it is below another, higher threshold \detach (yellow); these are sometimes observed during legitimate connections and sometimes during relay attacks. And third, the latency is equal to or exceeds \detach (red); these latencies are only observed while a relay attack is being performed. Given such a sliding window of periodic challenge-response latencies, we define the following rules for halting or terminating the connection:
 
 \begin{enumerate}
-  \item \emph{Successful window: no action.} If at least $k$ responses have latency $\leq$\connect and none of the responses has latency$\geq$\detach, the current window legitimate and \device keeps the connection active.
+  \item \emph{Successful window: no action.} If at least $k$ responses have latency $\leq$\connect and none of the responses has latency$\geq$\detach, the current window legitimate, and \device keeps the connection active.
  
   \item \emph{Halt window: prevent communication.} If one of the responses has latency $\geq$\detach, we consider the current window a ``halt window,'' and \device stops forwarding data to the enclave until the current window is legitimate again.
 
-  \item \emph{Failed window: terminate channel.} If two or more responses have latencies $\geq$\detach, we consider the current window a ``failed window'' and \device terminates the communication and thus revokes the attested platform.
+  \item \emph{Failed window: terminate channel.} If two or more responses have latencies $\geq$\detach, we consider the current window a ``failed window'', and \device terminates the communication and thus revokes the attested platform.
 \end{enumerate}

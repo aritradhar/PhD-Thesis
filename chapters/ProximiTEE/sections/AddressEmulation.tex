@@ -106,7 +106,7 @@ The third subtask is to establish a secure communication channel from the \namec
 In the TOFU solution, the standard and general-purpose OS needs to be trusted on first use, and the CA needs to remain online for enrollment of new SGX platforms. In our solution, a significantly smaller and single-purpose kernel needs to be trusted on first use. Additionally, we require trust in the BIOS (or UEFI). In our solution, the CA can remain offline when a new platform is enrolled.
 
 
-\item \emph{Reboot instead of re-install.} Our solution requires that the target platform is rebooted once from \device. In most TOFU solutions, the target platform requires a clean state which is difficult to achieve without reinstall that makes deployment difficult.
+\item \emph{Reboot instead of reinstall.} Our solution requires that the target platform is rebooted once from \device. In most TOFU solutions, the target platform requires a clean state which is difficult to achieve without reinstall that makes deployment difficult.
 
 
 \item \emph{Secure offline revocation.} When boot-time initialization is combined with the previously explained periodic proximity verification, our solution provides an additional property of secure offline revocation that requires no interaction with the CA. Such property is missing from previous TOFU solutions.
