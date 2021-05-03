@@ -66,7 +66,7 @@ Finally, we emphasize that even in the worst case where the user forgets to remo
 
 \myparagraph{Default values} \name eliminates any default values on the webpage. However, the host can always show default values to the user. If the user does not type the value by herself, the server rejects the input as the data from the browser, and the trace does not match.
 
-\myparagraph{Trace dropping} Since all communication from \device to the server is mediated by the untrusted host; the attacker may also attempt to manipulate the traces by selectively dropping packets (e.g., remove certain user input). However, such attacks are prevented by the use of a standard TLS connection.
+\myparagraph{Trace dropping} Since all communication from \device to the server is mediated by the untrusted host, the attacker may also attempt to manipulate the traces by selectively dropping packets (e.g., remove certain user input). However, such attacks are prevented by the use of a standard TLS connection.
 
 \myparagraph{Cross-device attacks} An additional attack strategy is to trick the user into providing input for the configuration of one safety-critical device but using this user input for the configuration of another device. In such cross-device attacks, the host presents to the user the configuration user interface from server A but tricks \device to establish a connection with server B.
 

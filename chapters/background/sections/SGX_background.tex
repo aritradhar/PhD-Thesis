@@ -11,14 +11,14 @@
 
 
 
-Intel SGX is a TEE architecture that isolates application enclaves from all other software running on the system, including the privileged OS, hypervisor, BIOS etc.~\cite{sgxexplained}. Enclave's data is encrypted and integrity protected whenever it is moved outside the CPU chip. The untrusted OS is responsible for the enclave creation and its initialization actions are recorded securely inside the CPU, creating a \emph{measurement} that captures the enclave's code. Enclaves can perform local attestation, which allows one enclave to ask the CPU to generate a signed report that includes its measurement. Another enclave on the same platform can verify the validity of the report without interacting with any other external services. Enclaves can \emph{seal} data to disk, which allows them to securely store confidential data such that only the same enclave running in the same CPU will be able to retrieve it later.
+Intel SGX is a TEE architecture that isolates application enclaves from all other software running on the system, including the privileged OS, hypervisor, BIOS etc.~\cite{sgxexplained}. Enclave's data is encrypted and integrity protected whenever it is moved outside the CPU chip. The untrusted OS is responsible for the enclave creation, and its initialization actions are recorded securely inside the CPU, creating a \emph{measurement} that captures the enclave's code. Enclaves can perform local attestation, which allows one enclave to ask the CPU to generate a signed report that includes its measurement. Another enclave on the same platform can verify the validity of the report without interacting with any other external services. Enclaves can \emph{seal} data to disk, which allows them to securely store confidential data such that only the same enclave running in the same CPU will be able to retrieve it later.
 
 
 
 \subsection{Attestation}
 \label{ch:background:SGX:attestation}
 
-Attestation is important security primitive for a TEE that ensures that the SGX platform runs a correct piece of software (enclave). Upon instantiation by the trusted hardware, the platform can compute the \emph{measurement} of the enclave that includes the cryptographic hash of the code, data, stack, heap, etc. The platform's private key then signs the measurement of the enclave. This signed measurement is known as the report. A verifier can then check the signature of the report to verify the following:
+Attestation is an important security primitive for a TEE that ensures that the SGX platform runs a correct piece of software (enclave). Upon instantiation by the trusted hardware, the platform can compute the \emph{measurement} of the enclave that includes the cryptographic hash of the code, data, stack, heap, etc. The platform's private key then signs the measurement of the enclave. This signed measurement is known as the report. A verifier can then check the signature of the report to verify the following:
 
 \begin{enumerate}
   \item The enclave is running on a legitimate platform.
@@ -26,7 +26,7 @@ Attestation is important security primitive for a TEE that ensures that the SGX 
   \item Corresponding public key of the platform to create a secure channel with the enclave in order to provision secret to that enclave.
 \end{enumerate}  
 
-Intel SGX also implements an attestation scheme that follows the same principles. Every Intel processor comes with two device root key that fused into the processor during the production phase~\cite{attestation_primitive} -  root provisioning key and root sealing key. These keys are the related key generations are shown in Figure~\ref{fig:keys_bg}. The attestation key is derived from these initial platform keys that are used to generate a report from the enclave measurement.
+Intel SGX also implements an attestation scheme that follows the same principles. Every Intel processor comes with two device root keys that fused into the processor during the production phase~\cite{attestation_primitive} -  root provisioning key and root sealing key. These keys are the related key generations are shown in Figure~\ref{fig:keys_bg}. The attestation key is derived from these initial platform keys that are used to generate a report from the enclave measurement.
 
 
 \begin{figure}[t]
@@ -37,7 +37,7 @@ Intel SGX also implements an attestation scheme that follows the same principles
 \end{figure}
 
 
-\myparagraph{Measurement} When an enclave is built and initialized, Intel SGX will generate a cryptographic log of all the build activities (for more details, refer to the Intel's white paper on attestation in sealing~\cite{attestation_primitive_all}), including:
+\myparagraph{Measurement} When an enclave is built and initialized, Intel SGX will generate a cryptographic log of all the build activities (for more details, refer to Intel's white paper on attestation in sealing~\cite{attestation_primitive_all}), including:
 
 \begin{itemize}
   \item The content of the enclave that includes code, data, stack, and heap
@@ -57,7 +57,7 @@ The "Enclave Identity", which is a 256-bit hash digest of the log, is stored as 
   \item A signature block over the above data, which can be verified by the same platform that produced the report.
 \end{itemize}
 
-Intel SGX provides two form of attestation: local attestation and remote attestation.
+Intel SGX provides two forms of attestation: local attestation and remote attestation.
 
 
 \begin{figure}[t]
@@ -104,7 +104,7 @@ Remote attestation enables an external verifier to check whether a specific encl
 
 \myparagraph{EPID attestation}
 
-The EPID remote attestation is an interactive protocol between three parties: the remote verifier; the attested SGX platform; and the Intel Attestation Service (IAS), an online service operated by Intel. Each SGX platform includes a system service called \emph{Quoting Enclave} (QE) that has exclusive access to an EPID key. EPID is a group signature scheme that allows a platform to sign objects without uniquely identifying the platform or linking different signatures. Instead, each signer belongs to a "group", and verifiers use the group's public key to verify signatures. EPID supports two modes of signatures. In the fully anonymous mode of EPID a verifier cannot associate a giaven signature with a particular member of the group. In Pseudonymous mode, an EPID verifier can determine whether it has verified the platform previously.
+The EPID remote attestation is an interactive protocol between three parties: the remote verifier; the attested SGX platform; and the Intel Attestation Service (IAS), an online service operated by Intel. Each SGX platform includes a system service called \emph{Quoting Enclave} (QE) that has exclusive access to an EPID key. EPID is a group signature scheme that allows a platform to sign objects without uniquely identifying the platform or linking different signatures. Instead, each signer belongs to a "group", and verifiers use the group's public key to verify signatures. EPID supports two modes of signatures. In the fully anonymous mode of EPID, a verifier cannot associate a given signature with a particular member of the group. In Pseudonymous mode, an EPID verifier can determine whether it has verified the platform previously.
 One example flow of the EPID remote attestation is shown in Figure~\ref{fig:ra_bg}. The steps are as the following:
 
 
@@ -126,7 +126,7 @@ One example flow of the EPID remote attestation is shown in Figure~\ref{fig:ra_b
 \end{enumerate} 
 
 
-The attestation key used by the QE is part of a group signature scheme called EPID that supports two signature modes: random base mode and name base mode, also called "linkable" mode. Both signature modes do not uniquely identify the processor to the IAS; but only a group, like a particular processor manufacturing batch. The difference between them is that the linkable signature mode allows to check whether two attestation requests came from the same CPU. 
+The attestation key used by the QE is part of a group signature scheme called EPID that supports two signature modes: random base mode and name base mode, also called "linkable" mode. Both signature modes do not uniquely identify the processor to the IAS, but only a group, like a particular processor manufacturing batch. The difference between them is that the linkable signature mode allows checking whether two attestation requests came from the same CPU. 
 
 
 \myparagraph{DCAP attestation} Whereas the EPID attestation variant requires connectivity to an Intel-operated attestation service and is limited to pre-defined signature algorithms, the main goal of the DCAP attestation variant is to enable corporations to run their own local attestation services with freely chosen signature types. To achieve this, each SGX platform is, at the time of manufacturing, equipped with a unique \emph{Platform Provisioning ID} (PPID) and \emph{Provisioning Certification Key} (PCK). Intel also provides a trusted \emph{Provisioning Certification Enclave} (PCE) that acts as a local CA and certifies custom Quoting Enclaves that can use freely chosen attestation services and signatures.
@@ -138,11 +138,11 @@ DCAP attestation requires a trusted enrollment phase, where the enrolled SGX pla
 \subsection{Side-Channel Leakage}
 \label{sec:background:attacks}
 
-Recent research has demonstrated that the SGX architecture is susceptible to side-channel leakage. Secret-dependent data and code access patterns can be observed by monitoring shared physical resources such as CPU caches~\cite{sgxcache,gotzfried2017cache,moghimi2017cachezoom} or the branch prediction unit~\cite{lee2017inferring}. The OS can also infer enclave's execution control flow or data accesses by monitoring page fault events~\cite{xu2015controlled}. Many such attacks can be addressed by hardening the enclave's code, e.g., using cryptographic implementations where the data or code access patterns are independent of the key.
+Recent research has demonstrated that the SGX architecture is susceptible to side-channel leakage. Secret-dependent data and code access patterns can be observed by monitoring shared physical resources such as CPU caches~\cite{sgxcache,gotzfried2017cache,moghimi2017cachezoom} or the branch prediction unit~\cite{lee2017inferring}. The OS can also infer the enclave's execution control flow or data accesses by monitoring page fault events~\cite{xu2015controlled}. Many such attacks can be addressed by hardening the enclave's code, e.g., using cryptographic implementations where the data or code access patterns are independent of the key.
 
 The recently discovered system vulnerabilities Spectre~\cite{Kocher2018spectre} and Meltdown~\cite{Lipp2018meltdown} allow application-level code to read memory content of privileged processes across separation boundaries by exploiting subtle side-effects of transient execution. The Foreshadow attack~\cite{foreshadow-usenix18} demonstrates how to extract SGX attestation keys from processors by leveraging the Meltdown vulnerability. 
 
 \subsection{Microcode updates}
 As described in Section~\ref{ch:background:SGX:attestation}, during manufacturing, each SGX processor is equipped with two hardware keys. When SGX software is installed on the CPU for the first time, the platform runs a provisioning protocol with Intel. In this protocol, the platform uses one of the hardware keys to demonstrate that it is a genuine Intel CPU running a specific microcode version. It then joins a matching EPID group and obtains an attestation key~\cite{epid_attestation} (or a signing key for the PCE enclave). 
 
-Microcode patches issued by Intel can be installed on processors that are affected by known vulnerabilities such as the Foreshadow attack, as mentioned earlier. When a new microcode version is installed, the processor repeats the provisioning procedure and joins a new group that corresponds to the updated microcode version and obtains a new attestation key which allows IAS to distinguish attestation signatures that originate from patched processors from attestation signatures made by unpatched processors~\cite{epid_attestation}.
+Microcode patches issued by Intel can be installed on processors that are affected by known vulnerabilities such as the Foreshadow attack, as mentioned earlier. When a new microcode version is installed, the processor repeats the provisioning procedure and joins a new group that corresponds to the updated microcode version, and obtains a new attestation key which allows IAS to distinguish attestation signatures that originate from patched processors from attestation signatures made by unpatched processors~\cite{epid_attestation}.
