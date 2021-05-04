@@ -67,7 +67,7 @@ sibling distance=12em]]
     \node[below=-5pt of EM](ac) {Acoustic~\cite{shamir2004acoustic}};
          
     \node[left=10pt of soft](page) {Page fault~\cite{xu2015controlled}};
-    \node[above=-3pt of page](cache) {Cache~\cite{dall2018cachequote,gotzfried2017cache,sgxcache,moghimi2017cachezoom}};
+    \node[above=-3pt of page](cache) {Cache~\cite{dall2018cachequote,gotzfried2017cache,brasser2017software,moghimi2017cachezoom}};
     \node[below=-2pt of page](branch) {Branch prediction~\cite{lee2017inferring}};
     %\node[below=-5pt of branch](synch) {Synchronization~\cite{asyncshock}};
       
@@ -98,7 +98,7 @@ The main consequence of attestation relay is that it \emph{increases the attacke
 
 
 \myparagraph{Privilege escalation for digital side channels}
-Another possible benefit of relay attacks is that it may enable \emph{privilege escalation}. In cases where the attacker has only compromised the user-space application that manages the enclave and not the OS, the application can redirect the attestation to the attacker's remote platform where he controls the OS as well. In such cases, the relay enables \emph{digital} side-channel attacks that require system privileges. Several such attacks have been recently demonstrated against SGX~\cite{moghimi2017cachezoom, sgxcache, gotzfried2017cache}.
+Another possible benefit of relay attacks is that it may enable \emph{privilege escalation}. In cases where the attacker has only compromised the user-space application that manages the enclave and not the OS, the application can redirect the attestation to the attacker's remote platform where he controls the OS as well. In such cases, the relay enables \emph{digital} side-channel attacks that require system privileges. Several such attacks have been recently demonstrated against SGX~\cite{moghimi2017cachezoom, brasser2017software, gotzfried2017cache}.
 
 
 \begin{figure}[t]
