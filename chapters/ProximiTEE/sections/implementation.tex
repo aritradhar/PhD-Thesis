@@ -39,7 +39,7 @@ The \name enclave API consists of two parts: i) the untrusted application that f
 
 \begin{figure}[t]
   \centering
-    \includegraphics[trim={0 9cm 15cm 0}, clip, width=\linewidth]{chapters/ProximiTEE/images_new/hotcalls.pdf}
+    \includegraphics[trim={0 8cm 15cm 0}, clip, width=\linewidth]{chapters/ProximiTEE/images_new/hotcalls.pdf}
     \caption[Program flow control for Intel SGX SDK vs HotCalls]{\textbf{Program flow control for (a) Intel SGX SDK vs (b) HotCalls.} The figure shows efficient communication between the untrusted application and the trusted enclave. In Intel SGX SDK, the developers need to rely on the \texttt{ECALL} and \texttt{OCALL} to context switch to and from the enclave. In HotCalls, the application and the enclave communication over the shared memory -- eliminating the need for time-consuming context switch.}
     \label{fig:hotcalls}
 \end{figure}
