@@ -1,5 +1,5 @@
 
-\begin{table*}[t]
+\begin{table*}[!htpb]
 \centering
 \resizebox{\textwidth}{!}{
   \begin{tabular}{l !{\vline width 1pt} l !{\vline width 1pt} c  c  c  c !{\vline width 1pt} c  c  c  c !{\vline width 1pt} c c} 
@@ -14,6 +14,7 @@
     & & Requires & \multicolumn{1}{c!{\vline width 1pt}}{External} & Isolated & Hypervisor/ & \multirow{2}{*}{Keyboard} & \multirow{2}{*}{Pointer} & \multicolumn{1}{c!{\vline width 1pt}}{\multirow{2}{*}{Touch}} & \multirow{2}{*}{Display} & No & \multirow{2}{*}{PnP}\\
    \cellcolor{white} & & TEE & \multicolumn{1}{c!{\vline width 1pt}}{trusted HW} & API/Drivers & OS & & & \multicolumn{1}{c!{\vline width 1pt}}{} & & SI &\\
    \Xhline{1pt}    
+    &GPU separation~\cite{10.1145/2810103.2813719}             &          &       & \yes         & \yes     &               &       &           & \yesNope &   & \\
     \rowcolor{Gray}
     \cellcolor{white} & Shadowcrypt~\cite{he2014shadowcrypt}                  &          &      &      \yes      &  \yes    &               & \yes     &           &   &    &\yes\\
     
@@ -31,7 +32,7 @@
     \cellcolor{white}&$SP^3$~\cite{yang2008using}                  &          &      &          & \yes     & \yes             &       &           &   &  & \\
     &SGX IO~\cite{weiser2017sgxio}                   & \yes     &      & \yes     & \yes    & \yes             &       &           &   &  & \\
     \rowcolor{Gray}
-    \cellcolor{white}\parbox[t]{1mm}{\multirow{-11}{*}{\rotatebox[origin=c]{90}{\textbf{Hypervisor/OS-based}}}}  \ldelim\{{-11}{0mm}[] & SchrodinText~\cite{sani2017schrodintext}     & \yes     &   &      & \yes     &               &       &           & \yes &  &  \\
+    \cellcolor{white}\parbox[t]{1mm}{\multirow{-12}{*}{\rotatebox[origin=c]{90}{\textbf{Hypervisor/OS-based}}}}  \ldelim\{{-12}{0mm}[] & SchrodinText~\cite{sani2017schrodintext}     & \yes     &   &      & \yes     &               &       &           & \yes &  &  \\
     &BASTION-SGX~\cite{BASTION-SGX}                 & \yes     &       &          &      & \yes             &       &           &   &  &\yes\\
     \rowcolor{Gray}
     \cellcolor{white}&Slice~\cite{azab2011sice}                     & \yesNope &       &          &      &               &       &           &   &  & \\
@@ -52,7 +53,8 @@
     \cellcolor{white}&FPGA-based~\cite{brandon2017trusted}         &          & \yes  &          &      & \yes             &       &           & \yes &   & \\
     &IntegriKey~\cite{integrikey}                 &          & \yes  & \yesNope     &      & \yesNope         &      &          &  & \yes &\yes\\ 
     \rowcolor{Gray}
-    \cellcolor{white} \cellcolor{white}\parbox[t]{5mm}{\multirow{-6}{*}{\rotatebox[origin=c]{90}{\textbf{External HW}}}}  \ldelim\{{-6}{0mm}[] &Terra~\cite{garfinkel2003terra}                 &          & \yes  & \yesNope     &      &              &       &           &   &  & \\ 
+    &Terra~\cite{garfinkel2003terra}                 &          & \yes  & \yesNope     &      &              &       &           &   &  & \\ 
+    \cellcolor{white} \cellcolor{white}\parbox[t]{5mm}{\multirow{-7}{*}{\rotatebox[origin=c]{90}{\textbf{External HW}}}}  \ldelim\{{-7}{0mm}[] &Lockdown~\cite{vasudevan2012lockdown}                 &          & \yes  & \yes     &      &       \yes       &  \yes     &    \yes       & \yesNope  &  & \yes\\ 
     \\[-1em]
     \rowcolor{white}
     \Xhline{1pt}
