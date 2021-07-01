@@ -757,7 +757,41 @@ address = {Los Alamitos, CA, USA},
 month = {may}
 }
 
+@inproceedings{10.1145/1982185.1982305,
+author = {Zhu, Min and Yu, Miao and Xia, Mingyuan and Li, Bingyu and Yu, Peijie and Gao, Shang and Qi, Zhengwei and Liu, Liang and Chen, Ying and Guan, Haibing},
+title = {VASP: Virtualization Assisted Security Monitor for Cross-Platform Protection},
+year = {2011},
+isbn = {9781450301138},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/1982185.1982305},
+doi = {10.1145/1982185.1982305},
+abstract = {Numerous operating systems have been designed to manage and control system resources with large and complicated features, so they need high security protection. However, previous security applications can not provide adequate protection due to the untrusted execution environment. Furthermore, these security strategies cannot support a universal cross-platform system security requirements. This paper presents VASP, a hypervisor based monitor which allows a trusted execution environment to monitor various malicious behaviors in the operating system. This is achieved by taking advantage of \texttimes{}86 hardware virtualization and self-transparency technology, and providing a unified security protection to unmodified operating systems such as Linux and Windows. Our design is targeted at establishing a security monitor which resides completely outside of the target OS environment with a negligible overhead. According to the security analysis and performance experiment result, our approach can effectively protect applications and the kernel at a modest overhead of only 0.9% average in Windows XP and 2.6% average in Linux.},
+booktitle = {Proceedings of the 2011 ACM Symposium on Applied Computing},
+pages = {554–559},
+numpages = {6},
+keywords = {virtualization technology, hypervisor, software protection, hardware virtualization, cross-platform, security},
+location = {TaiChung, Taiwan},
+series = {SAC '11}
+}
 
+@inproceedings{10.1145/2245276.2232063,
+author = {Wang, Junqing and Yu, Miao and Li, Bingyu and Qi, Zhengwei and Guan, Haibing},
+title = {Hypervisor-Based Protection of Sensitive Files in a Compromised System},
+year = {2012},
+isbn = {9781450308571},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/2245276.2232063},
+doi = {10.1145/2245276.2232063},
+abstract = {One of the most fundamental issues in computer security is protecting sensitive files from unauthorized access. Traditional file protection tools run inside the target operating system, which hosts sensitive files. This makes previous approaches vulnerable in face of a compromised OS. To address this limitation, recent approaches seek for a good isolation by putting file system into a dedicated virtual machine or by using a network file system. However, they suffer a sharp increase in trusted computing base size which degrades their reliability.In this paper, we present Filesafe, a special purpose hy-pervisor aimed at protecting sensitive files in a compromised operating system. It bridges the semantic gap between guest OS and hypervisor by reconstructing file hierarchy from raw data, which incurs no runtime overhead. By enforcing security policies created in hypervisor, Filesafe could prevent sensitive files from unauthorized access even if they have kernel privileges in guest OS. We have implemented a proof-of-concept prototype on Windows XP with FAT32 file system. Furthermore, we evaluate Filesafe's performance and code size to demonstrate it is practical in real world scenarios.},
+booktitle = {Proceedings of the 27th Annual ACM Symposium on Applied Computing},
+pages = {1765–1770},
+numpages = {6},
+keywords = {hypervisor, hardware assisted virtualization, file protection, semantic gap},
+location = {Trento, Italy},
+series = {SAC '12}
+}
 
 @misc{rack_server_dell, title={PoweEdge rack server | Dell USA}, howpublished={\url{https://www.dell.com/en-us/work/shop/servers-storage-networking/sf/poweredge-rack-servers}}, author={DELL}, year = {2021}}
 
